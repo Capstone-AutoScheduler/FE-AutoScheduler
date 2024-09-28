@@ -1,9 +1,14 @@
 import { useEffect, useRef } from 'react';
-
 import styled from 'styled-components';
+
+import useStore from '../store/Store'
+
 import Bubble from '../components/Bubble';
 
+
 const Main = () => {
+    const { operations, setStartBubble, setEndBubble } = useStore(state => state)
+
     const bubbles = [
         {
             id : 0,
@@ -19,16 +24,29 @@ const Main = () => {
             width : 80,
             height : 60
         },
+        {
+            id : 2,
+            x : 50,
+            y : 400,
+            width : 80,
+            height : 60
+        },
     ]   
 
+    const handleMouseUp = () => {
+        setStartBubble(null);
+        setEndBubble(null);
+    }
+
     useEffect(() => {
-        console.log(startRef);
-        console.log(endRef);
-    }, [startRef, endRef]);
+        console.log(operations);
+    }, [operations])
 
     return (
         <Container>
-            <Board>
+            <Board
+                onMouseUp={ handleMouseUp }
+            >
                 {bubbles.map((bubble) => {
                     return <Bubble
                         key = {bubble.id}
