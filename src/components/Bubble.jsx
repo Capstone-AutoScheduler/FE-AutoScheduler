@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
 
+import useStore from '../store/Store'
+
 const Bubble = ({ item }) => {
+    const { startBubble, endBubble, operations, setStartBubble, setEndBubble, appendOperation } = useStore(state => state)
+
     const ContainerRef = useRef(null);
 
     const [x, setX] = useState(0);
@@ -20,13 +24,23 @@ const Bubble = ({ item }) => {
         ContainerRef.current.style.left = x + 'px';
     }, [x, y]);
 
-    function handleClick() {
+    function handleMouseDown() {
+        setStartBubble(item);
+    }
+
+    function handleMouseUp() {
+        
+        if ( startBubble != null ) {
+            setEndBubble(item);
+            appendOperation(`Dragged from ${startBubble.id} to ${item.id}`);
+        }
     }
 
     return (
         <Container 
             ref={ContainerRef}
-            onClick={handleClick}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
         >
             {`id: ${item.id}`}
         </Container>
@@ -36,7 +50,7 @@ const Bubble = ({ item }) => {
 const Container = styled.div`
     background-color: green;
     position: absolute;
-
+    user-select: none;
 `
 
 export default Bubble;
