@@ -4,16 +4,16 @@ import styled from 'styled-components';
 import useStore from '../store/Store'
 
 import Bubble from '../components/Bubble';
-
+import Arrow from '../components/Arrow';
 
 const Main = () => {
-    const { operations, setStartBubble, setEndBubble } = useStore(state => state)
+    const { startBubble, operations, setStartBubble, setEndBubble } = useStore(state => state)
 
     const bubbles = [
         {
             id : 0,
-            x : 100,
-            y : 100,
+            x : 10,
+            y : 40,
             width : 80,
             height : 60
         },
@@ -33,6 +33,8 @@ const Main = () => {
         },
     ]   
 
+    const boardRef = useRef(null);
+
     const handleMouseUp = () => {
         setStartBubble(null);
         setEndBubble(null);
@@ -46,6 +48,7 @@ const Main = () => {
         <Container>
             <Board
                 onMouseUp={ handleMouseUp }
+                ref={ boardRef }
             >
                 {bubbles.map((bubble) => {
                     return <Bubble
@@ -53,6 +56,7 @@ const Main = () => {
                         item = {bubble}
                     />
                 })}
+                { (startBubble == null) ? <></> : <Arrow boardRef={ boardRef } /> }
             </Board>
         </Container>
     );
@@ -63,6 +67,7 @@ const Container = styled.div`
 `
 
 const Board = styled.div`
+    position: relative;
     height: 600px;
     border: 1px solid black;
 `

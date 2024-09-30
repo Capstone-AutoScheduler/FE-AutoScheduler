@@ -29,10 +29,11 @@ const Bubble = ({ item }) => {
     }
 
     function handleMouseUp() {
-        
         if ( startBubble != null ) {
-            setEndBubble(item);
-            appendOperation(`Dragged from ${startBubble.id} to ${item.id}`);
+            if (item.id !== startBubble.id) {
+                setEndBubble(item);
+                appendOperation(`Dragged from ${startBubble.id} to ${item.id}`);
+            }
         }
     }
 
