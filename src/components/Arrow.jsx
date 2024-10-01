@@ -21,16 +21,26 @@ const Arrow = ({ boardRef }) => {
         <SVG
             onMouseMove={handleMouseMove}>
             <circle cx={startBubble.x + startBubble.width} cy={startBubble.y + startBubble.height/2} r="4" fill="black" />
+            <defs>
+                <marker id="arrowhead" markerWidth="5" markerHeight="5" 
+                        refX="5" refY="2.5" orient="auto">
+                  <polygon points="0 0, 5 2.5, 0 5" fill="black" />
+                </marker>
+            </defs>
             {
                 ((mouseX === 0) && (mouseY === 0)) 
                 ?
                 <></>
                 :
+                <>
+                
                 <path 
                 d={`M ${startBubble.x + startBubble.width} ${startBubble.y + startBubble.height/2} L ${mouseX - offsetX} ${mouseY - offsetY}`}
                 strokeWidth="4"
                 stroke="black"
+                markerEnd='url(#arrowhead)'
                 />
+                </>
             }
             
         </SVG>
