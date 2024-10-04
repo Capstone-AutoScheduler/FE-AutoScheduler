@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import useStore from '../store/Store'
@@ -7,33 +7,7 @@ import Bubble from '../components/Bubble';
 import Arrow from '../components/Arrow';
 
 const Main = () => {
-    const { startBubble, operations, setStartBubble, setEndBubble } = useStore(state => state)
-
-    const bubbles = [
-        {
-            id : 0,
-            x : 10,
-            y : 40,
-            width : 80,
-            height : 60
-        },
-        {
-            id : 1,
-            x : 200,
-            y : 200,
-            width : 80,
-            height : 60
-        },
-        {
-            id : 2,
-            x : 50,
-            y : 400,
-            width : 80,
-            height : 60
-        },
-    ]   
-
-    const boardRef = useRef(null);
+    const { bubbles, operations, setStartBubble, setEndBubble } = useStore(state => state)
 
     const handleMouseUp = () => {
         setStartBubble(null);
@@ -48,7 +22,6 @@ const Main = () => {
         <Container>
             <Board
                 onMouseUp={ handleMouseUp }
-                ref={ boardRef }
             >
                 {bubbles.map((bubble) => {
                     return <Bubble
@@ -56,7 +29,7 @@ const Main = () => {
                         item = {bubble}
                     />
                 })}
-                { (startBubble == null) ? <></> : <Arrow boardRef={ boardRef } /> }
+                <Arrow />
             </Board>
         </Container>
     );
