@@ -47,15 +47,24 @@ const Bubble = ({ item }) => {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
         >
-            {`id: ${item.id}`}
+            {`${item.str}`}
         </Container>
     );
 };
 
 const Container = styled.div`
-    background-color: green;
+    background-color: rgba(20,200,150,0.3);
     position: absolute;
     user-select: none;
+    font-size: 12px;
+
+    padding: 2px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid rgba(20,200,150,0.5);
 `
 
 export default Bubble;
