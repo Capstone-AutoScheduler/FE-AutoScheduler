@@ -24,7 +24,7 @@ const Arrow = () => {
             setOffsetX(rect.left);
             setOffsetY(rect.top);
         }
-    }, []);
+    }, [bubbles]);
 
     return (
         <SVG

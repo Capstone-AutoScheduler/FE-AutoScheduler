@@ -8,7 +8,7 @@ const Container = styled.div`
 
 const Navbar = ()=> {
     return (
-        <Container>This is navbar</Container>
+        <Container>Auto Scheduler</Container>
     )
 };
 
