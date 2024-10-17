@@ -23,12 +23,13 @@ const Create = () => {
 const Container = styled.div`
 `;
 
-const Top = styled.div``;
+const Top = styled.div`
+`;
 
 const Bottom = styled.div``;
 
 const Src = styled.div`
   width: 300px;
-`;
+`;  
 
 export default Create;

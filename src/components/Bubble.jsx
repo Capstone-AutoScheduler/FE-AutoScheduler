@@ -11,6 +11,7 @@ const Bubble = ({ item }) => {
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
 
+    const bgColor = (item.str === 'target') ? 'rgba(235, 186, 7, 0.3)': 'rgba(20,200,150,0.3)';
     useEffect(() => {
         //console.log(ContainerRef);
         setX(item.x);
@@ -46,6 +47,7 @@ const Bubble = ({ item }) => {
             ref={ContainerRef}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
+            style={{ backgroundColor: bgColor}}
         >
             {`${item.str}`}
         </Container>

@@ -8,7 +8,7 @@ import useStore from "../../store/Store";
 
 const InputPDF = () => {
   //const canvasRef = useRef(null);
-  const { setBubbles } = useStore();
+  const { setBubbles, appendBubble } = useStore();
   const [page, setPage] = useState(1);
   const [numPages, setNumPages] = useState(0);
   const [PDFfile, setPDFfile] = useState(null);
@@ -77,6 +77,42 @@ const InputPDF = () => {
         index++;
       }
     });
+
+    //임시 코드
+    const exampleTarget = [
+      {
+        id: 1001,
+        str: 'target',
+        x: 1000,
+        y: 40,
+        width: 80,
+        height: 60,
+      },
+      {
+        id: 1002,
+        str: 'target',
+        x: 1400,
+        y: 200,
+        width: 80,
+        height: 60,
+      },
+      {
+        id: 1003,
+        str: 'target',
+        x: 1200,
+        y: 400,
+        width: 80,
+        height: 60,
+      },
+    ];
+
+    for (let i = 0; i < exampleTarget.length; i++){
+      const item = exampleTarget[i];
+      item.id = index;
+      bubbles.push(item);
+      index++;
+    }
+
     setBubbles(bubbles);
   });
 
@@ -113,7 +149,6 @@ const InputPDF = () => {
       :
       <></>
       }
-      
     </Container>
   );
 };
