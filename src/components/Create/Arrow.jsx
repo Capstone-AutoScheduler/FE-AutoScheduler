@@ -1,10 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-import useStore from '../store/Store';
+import useStore from '../../store/Store';
 
 const Arrow = () => {
-    const { bubbles, startBubble, operations } = useStore(state => state);
+    const defaultArrowWidth = '4';
+    const expandArrowWidth = '10';
+
+    const { bubbles, startBubble, 
+            operations, setSelectedOperation, selectedOperation,
+            offsetX, offsetY} = useStore(state => state);
     const [ mouseX, setMouseX ] = useState(0);
     const [ mouseY, setMouseY ] = useState(0);
 
@@ -14,23 +19,9 @@ const Arrow = () => {
         setMouseY(event.pageY);
     }
 
-    const svgRef = useRef(null);
-    const [offsetX, setOffsetX] = useState(0);
-    const [offsetY, setOffsetY] = useState(0);
-
-    useEffect(() => {
-        if (svgRef != null) {
-            const rect = svgRef.current.getBoundingClientRect();
-            setOffsetX(rect.left);
-            setOffsetY(rect.top);
-        }
-    }, [bubbles]);
-
     return (
         <SVG
-            ref={svgRef}
             onMouseMove={handleMouseMove}>
-            
             <defs>
                 <marker id="arrowhead" markerWidth="5" markerHeight="5" refX="5" refY="2.5" orient="auto">
                 <polygon points="0 0, 5 2.5, 0 5" fill="black" />
@@ -41,13 +32,21 @@ const Arrow = () => {
                 operations.map((operation, index) => {
                     const start = bubbles[operation.startBubbleId];
                     const end = bubbles[operation.endBubbleId];
+                    const color = (index === selectedOperation) ? "red" : "black";
+
                     return (
                         <path
                         key={index}
                         d={`M ${start.x + start.width} ${start.y + start.height/2} L ${end.x} ${end.y + end.height / 2}`}
-                        strokeWidth="4"
-                        stroke="black"
+                        strokeWidth={defaultArrowWidth}
+                        stroke={color}
                         markerEnd='url(#arrowhead)'
+                        onClick={() => {
+                            console.log("clicked arrow of index ", index);
+                            setSelectedOperation(index);
+                        }}
+                        onMouseEnter={(e) => { e.target.style.strokeWidth = expandArrowWidth; }}
+                        onMouseLeave={(e) => { e.target.style.strokeWidth = defaultArrowWidth; }}
                         />
                     );  
                 })

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
 
-import useStore from '../store/Store'
+import useStore from '../../store/Store'
 
 const Bubble = ({ item }) => {
     const { startBubble, setStartBubble, setEndBubble, appendOperation } = useStore(state => state)
