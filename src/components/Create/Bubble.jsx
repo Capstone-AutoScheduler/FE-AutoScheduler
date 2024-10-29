@@ -28,7 +28,7 @@ const Bubble = ({ item }) => {
 
     function handleMouseUp() {
         if ( startBubble != null ) {
-            if (item.id !== startBubble.id) {
+            if (item !== startBubble) {
                 setEndBubble(item);
                 appendOperation(
                     {
