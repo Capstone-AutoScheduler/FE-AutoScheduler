@@ -8,7 +8,7 @@ import Arrow from "./Arrow";
 import ArrowMenu from "./ArrowMenu";
 
 const Board = () => {
-  const { bubbles, operations, setStartBubble, setEndBubble, setOffsetX, setOffsetY } = useStore(
+  const { bubbles, setStartBubble, setEndBubble, operations, setOffsetX, setOffsetY, frames, appendFrame } = useStore(
     (state) => state
   );
 
@@ -24,20 +24,28 @@ const Board = () => {
   const boardRef = useRef(null);
 
   useEffect(() => {
-      if (boardRef != null) {
-          const rect = boardRef.current.getBoundingClientRect();
-          setOffsetX(rect.left);
-          setOffsetY(rect.top);
-      }
+    if (boardRef != null) {
+      const rect = boardRef.current.getBoundingClientRect();
+      setOffsetX(rect.left);
+      setOffsetY(rect.top);
+    }
   }, [bubbles, setOffsetX, setOffsetY]);
 
+  useEffect(() => {
+    console.log('frames', frames);
+  }, [ frames ])
+
+
   return (
-    <Container 
+    <Container
       onMouseUp={handleMouseUp}
       ref={boardRef}
     >
       {bubbles.map((bubble) => {
         return <Bubble key={bubble.id} item={bubble} />;
+      })}
+      {frames.map((frame) => {
+        return <Bubble key={frame.id} item={frame} />;
       })}
       <Arrow />
       <ArrowMenu />

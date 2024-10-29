@@ -7,9 +7,7 @@ const Arrow = () => {
     const defaultArrowWidth = '4';
     const expandArrowWidth = '10';
 
-    const { bubbles, startBubble, 
-            operations, setSelectedOperation, selectedOperation,
-            offsetX, offsetY} = useStore(state => state);
+    const { bubbles, startBubble, operations, setSelectedOperation, selectedOperation, offsetX, offsetY, frames} = useStore(state => state);
     const [ mouseX, setMouseX ] = useState(0);
     const [ mouseY, setMouseY ] = useState(0);
 
@@ -31,7 +29,7 @@ const Arrow = () => {
                 //render exist operations
                 operations.map((operation, index) => {
                     const start = bubbles[operation.startBubbleId];
-                    const end = bubbles[operation.endBubbleId];
+                    const end = frames[operation.endBubbleId];
                     const color = (index === selectedOperation) ? "red" : "black";
 
                     return (

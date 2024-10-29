@@ -5,13 +5,13 @@ import styled from "styled-components";
 import useStore from "../../store/Store";
 
 const ArrowMenu = () => {
-    const { operations, selectedOperation, setSelectedOperation, removeOperation, bubbles } = useStore(state => state);
+    const { operations, selectedOperation, setSelectedOperation, removeOperation, frames } = useStore(state => state);
     const [ x, setX ] = useState(0);
     const [ y, setY ] = useState(0);
 
     useEffect(() => {
         if (selectedOperation != null){
-            const end = bubbles[operations[selectedOperation].endBubbleId];
+            const end = frames[operations[selectedOperation].endBubbleId];
             console.log("end of clicked", end);
             setX(end.x);
             setY(end.y);

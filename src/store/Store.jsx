@@ -12,6 +12,32 @@ const useStore = create((set) => ({
   appendBubble: (bubble) =>
     set((state) => ({ bubbles: [...state.bubbles, bubble] })),
 
+  frames: [{
+    id: 0,
+    str: 'target',
+    x: 1000,
+    y: 40,
+    width: 80,
+    height: 60,
+  },
+  {
+    id: 1,
+    str: 'target',
+    x: 1400,
+    y: 200,
+    width: 80,
+    height: 60,
+  },
+  {
+    id: 2,
+    str: 'target',
+    x: 1200,
+    y: 400,
+    width: 80,
+    height: 60,
+  }],
+  appendFrame: (frame) =>
+    set((state) => ({ frames: [...state.frames, frame] })),
 
   operations: [],
   selectedOperation: null,
