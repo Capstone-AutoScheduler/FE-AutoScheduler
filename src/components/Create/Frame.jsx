@@ -3,15 +3,15 @@ import styled from "styled-components"
 
 import useStore from '../../store/Store'
 
-const Bubble = ({ item }) => {
-    const { setStartBubble } = useStore(state => state)
+const Frame = ({ item }) => {
+    const { startBubble, setEndBubble, appendOperation } = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
 
-    const bgColor = 'rgba(20,200,150,0.3)';
+    const bgColor = 'rgba(235, 186, 7, 0.3)';
     useEffect(() => {
         //console.log(ContainerRef);
         setX(item.x);
@@ -22,15 +22,28 @@ const Bubble = ({ item }) => {
         ContainerRef.current.style.left = x + 'px';
     }, [x, y, item]);
 
-    function handleMouseDown() {
-        setStartBubble(item);
+
+    function handleMouseUp() {
+        if ( startBubble != null ) {
+            if (item !== startBubble) {
+                setEndBubble(item);
+                appendOperation(
+                    {
+                        type: "drag",
+                        startBubbleId: startBubble.id,
+                        endBubbleId: item.id,
+                        childOperations: []
+                    }
+                );
+            }
+        }
     }
 
     return (
         <Container 
             ref={ContainerRef}
-            onMouseDown={handleMouseDown}
-            style={{ backgroundColor: bgColor}}
+            onMouseUp={handleMouseUp}
+            style={{ backgroundColor: bgColor }}
         >
             {`${item.str}`}
         </Container>
@@ -38,7 +51,6 @@ const Bubble = ({ item }) => {
 };
 
 const Container = styled.div`
-    background-color: rgba(20,200,150,0.3);
     position: absolute;
     user-select: none;
     font-size: 12px;
@@ -49,7 +61,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 4px;
-    border: 1px solid rgba(20,200,150,0.5);
+    border: 2px solid rgba(235, 186, 7, 0.7);
 `
 
-export default Bubble;
+export default Frame;

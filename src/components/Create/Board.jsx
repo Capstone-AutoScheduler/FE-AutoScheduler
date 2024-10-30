@@ -4,11 +4,12 @@ import styled from "styled-components";
 import useStore from "../../store/Store";
 
 import Bubble from "./Bubble";
+import Frame from "./Frame";
 import Arrow from "./Arrow";
 import ArrowMenu from "./ArrowMenu";
 
 const Board = () => {
-  const { bubbles, setStartBubble, setEndBubble, operations, setOffsetX, setOffsetY, frames, appendFrame } = useStore(
+  const { bubbles, setStartBubble, setEndBubble, operations, setOffsetX, setOffsetY, frames } = useStore(
     (state) => state
   );
 
@@ -35,7 +36,6 @@ const Board = () => {
     console.log('frames', frames);
   }, [ frames ])
 
-
   return (
     <Container
       onMouseUp={handleMouseUp}
@@ -45,7 +45,7 @@ const Board = () => {
         return <Bubble key={bubble.id} item={bubble} />;
       })}
       {frames.map((frame) => {
-        return <Bubble key={frame.id} item={frame} />;
+        return <Frame key={frame.id} item={frame} />;
       })}
       <Arrow />
       <ArrowMenu />

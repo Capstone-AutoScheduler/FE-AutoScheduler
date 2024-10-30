@@ -23,7 +23,7 @@ const useStore = create((set) => ({
   {
     id: 1,
     str: 'target',
-    x: 1400,
+    x: 1000,
     y: 200,
     width: 80,
     height: 60,
@@ -31,7 +31,7 @@ const useStore = create((set) => ({
   {
     id: 2,
     str: 'target',
-    x: 1200,
+    x: 1000,
     y: 400,
     width: 80,
     height: 60,
