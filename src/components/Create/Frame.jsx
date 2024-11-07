@@ -4,7 +4,7 @@ import styled from "styled-components"
 import useStore from '../../store/Store'
 
 const Frame = ({ item }) => {
-    const { startBubble, setEndBubble, appendOperation } = useStore(state => state)
+    const { startBubble, selectedFrame, setSelectedFrame, addToTitle, addToDate, addToDetail } = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
@@ -12,8 +12,11 @@ const Frame = ({ item }) => {
     const [y, setY] = useState(0);
 
     const bgColor = 'rgba(235, 186, 7, 0.3)';
+    const selectedBorder = '3px solid red';
+    const defaultBorder = '2px solid rgba(235, 186, 7, 0.7)';
+
     useEffect(() => {
-        //console.log(ContainerRef);
+        //console.log(item);
         setX(item.x);
         setY(item.y);
         ContainerRef.current.style.width = item.width + 'px';
@@ -22,30 +25,61 @@ const Frame = ({ item }) => {
         ContainerRef.current.style.left = x + 'px';
     }, [x, y, item]);
 
-
-    function handleMouseUp() {
+    const handleMouseUp = (endRow) => () => {
         if ( startBubble != null ) {
-            if (item !== startBubble) {
-                setEndBubble(item);
-                appendOperation(
-                    {
-                        type: "drag",
-                        startBubbleId: startBubble.id,
-                        endBubbleId: item.id,
-                        childOperations: []
-                    }
-                );
+            const operation = {
+                type: "drag",
+                startBubbleId: startBubble.id,
+                childOperations: []
+            }
+            if (endRow === 'title') {
+                addToTitle(item.id, operation);
+            } else if ( endRow === 'date') {
+                addToDate(item.id, operation);
+            } else {
+                addToDetail(item.id, operation)
             }
         }
+    }
+    const handleClick = () => {
+        setSelectedFrame(item);
     }
 
     return (
         <Container 
+            onClick={handleClick}
             ref={ContainerRef}
-            onMouseUp={handleMouseUp}
-            style={{ backgroundColor: bgColor }}
+            style={{ 
+                backgroundColor: bgColor ,
+                border: (selectedFrame === item) ? selectedBorder : defaultBorder,
+            }}
         >
-            {`${item.str}`}
+            <Row onMouseUp={handleMouseUp('title')}>
+                <Section>Title</Section>
+                <Content>
+                    {item.title.map((operation) => {
+                        return (<Inner frameId={item.id} type={'title'} operation={operation} />);
+                    })}
+                </Content>
+            </Row>
+            <Row onMouseUp={handleMouseUp('date')}>
+                <Section>Date</Section>
+                <Content>
+                    {item.date.map((operation) => {
+                        return (<Inner frameId={item.id} type={'date'} operation={operation} />);
+                    })}
+                </Content>
+            </Row>
+            <Row
+                onMouseUp={handleMouseUp('detail')}
+                style={{ height: "100%" }}
+            >
+                <Content>
+                    {item.detail.map((operation) => {
+                        return (<Inner frameId={item.id} type={'detail'} operation={operation} />);
+                    })}
+                </Content>
+            </Row>
         </Container>
     );
 };
@@ -55,13 +89,84 @@ const Container = styled.div`
     user-select: none;
     font-size: 12px;
 
-    padding: 2px;
+    padding: 2px 4px;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 4px;
     border: 2px solid rgba(235, 186, 7, 0.7);
+`
+
+const Row = styled.div`
+    border: 2px solid rgba(235, 186, 7, 0.7);
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+`
+
+const Section = styled.div`
+    font-size: 16px;
+    border-right: 2px solid rgba(235, 186, 7, 0.7);
+    width: 18%;
+`
+
+const Content = styled.div`
+    width: 80%;
+`
+
+const Inner = ({frameId, type, operation}) => {
+    const { bubbles, removeFromTitle, removeFromDate, removeFromDetail, selectedOperation, setSelectedOperation } = useStore(state => state)
+    const bubble = bubbles[operation.startBubbleId];
+
+    const defaultBorder = '1px solid black';
+    const selectedBorder = '2px solid red';
+
+    const handleClick = () => {
+        setSelectedOperation(operation)
+    }
+
+    const deleteOperatoin = () => {
+        if (type === 'title') {
+            removeFromTitle(frameId, operation);
+        } else if (type === 'date') {
+            removeFromDate(frameId, operation);
+        } else {
+            removeFromDetail(frameId, operation);
+        }
+
+    }
+
+    return (
+        <InnerContainer
+            onClick={handleClick}
+            style={{border: (selectedOperation === operation) ? selectedBorder : defaultBorder}}
+        >
+            {bubble.str}
+            {
+                (selectedOperation === operation) ? <Menu onClick={deleteOperatoin}>X</Menu> : <></>
+            }
+        </InnerContainer>
+    );
+}
+
+const InnerContainer = styled.span`
+    border : 1px solid black;
+    position : relative;
+`
+
+const Menu = styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    background-color: red;
+    top: -20px;
+    right: -10px;
 `
 
 export default Frame;

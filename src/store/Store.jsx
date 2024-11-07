@@ -2,10 +2,7 @@ import { create } from "zustand";
 
 const useStore = create((set) => ({
   startBubble: null,
-  endBubble: null,
-
   setStartBubble: (ref) => set({ startBubble: ref }),
-  setEndBubble: (ref) => set({ endBubble: ref }),
 
   bubbles: [],
   setBubbles: (list) => set({ bubbles: list }),
@@ -17,38 +14,82 @@ const useStore = create((set) => ({
     str: 'target',
     x: 1000,
     y: 40,
-    width: 80,
-    height: 60,
+    width: 320,
+    height: 140,
+    title: [],
+    date: [],
+    detail: [],
   },
   {
     id: 1,
     str: 'target',
     x: 1000,
     y: 200,
-    width: 80,
-    height: 60,
-  },
-  {
-    id: 2,
-    str: 'target',
-    x: 1000,
-    y: 400,
-    width: 80,
-    height: 60,
+    width: 320,
+    height: 140,
+    title: [],
+    date: [],
+    detail: [],
   }],
   appendFrame: (frame) =>
     set((state) => ({ frames: [...state.frames, frame] })),
+  addToTitle: (frameId, operation) => set((state) => ({
+    frames: state.frames.map((frame) =>
+      frame.id === frameId
+        ? { ...frame, title: [...frame.title, operation] }
+        : frame
+    ),
+  })),
+  addToDate: (frameId, operation) => set((state) => ({
+    frames: state.frames.map((frame) =>
+      frame.id === frameId
+        ? { ...frame, date: [...frame.date, operation] }
+        : frame
+    ),
+  })),
+  addToDetail: (frameId, operation) => set((state) => ({
+    frames: state.frames.map((frame) =>
+      frame.id === frameId
+        ? { ...frame, detail: [...frame.detail, operation] }
+        : frame
+    ),
+  })),
+  removeFromTitle: (frameId, titleItem) => set((state) => ({
+    frames: state.frames.map((frame) =>
+      frame.id === frameId
+        ? { ...frame, title: frame.title.filter((item) => item !== titleItem) }
+        : frame
+    ),
+  })),
+  removeFromDate: (frameId, dateItem) => set((state) => ({
+    frames: state.frames.map((frame) =>
+      frame.id === frameId
+        ? { ...frame, date: frame.date.filter((item) => item !== dateItem) }
+        : frame
+    ),
+  })),
+  removeFromDetail: (frameId, detailItem) => set((state) => ({
+    frames: state.frames.map((frame) =>
+      frame.id === frameId
+        ? { ...frame, detail: frame.detail.filter((item) => item !== detailItem) }
+        : frame
+    ),
+  })),
 
-  operations: [],
+  selectedFrame: null,
+  setSelectedFrame: (frame) =>
+    set({ selectedFrame: frame }),
+
   selectedOperation: null,
-  setSelectedOperation: (index) =>
-    set({ selectedOperation: index }),
-  appendOperation: (line) =>
-    set((state) => ({ operations: [...state.operations, line] })),
-  removeOperation: (index) =>
-    set((state) => ({
-      operations: state.operations.filter((_, i) => i !== index),
-    })),
+  setSelectedOperation: (operation) =>
+    set({ selectedOperation: operation}),
+
+  mouseX: 0,
+  mouseY: 0,
+  setMouseX: (value) =>
+    set({ mouseX: value}),
+  setMouseY: (value) =>
+    set({ mouseY: value}),
 
   offsetX: 0,
   offsetY: 0,
