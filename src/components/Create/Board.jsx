@@ -5,22 +5,20 @@ import useStore from "../../store/Store";
 
 import Bubble from "./Bubble";
 import Frame from "./Frame";
-import Arrow from "./Arrow";
-import ArrowMenu from "./ArrowMenu";
+import Overlay from "./Overlay";
 
 const Board = () => {
-  const { bubbles, setStartBubble, setEndBubble, operations, setOffsetX, setOffsetY, frames } = useStore(
-    (state) => state
-  );
+  const { bubbles, setStartBubble, setSelectedFrame, setMouseX, setMouseY, setOffsetX, setOffsetY, frames } = useStore( (state) => state );
 
   const handleMouseUp = () => {
     setStartBubble(null);
-    setEndBubble(null);
+
   };
 
-  useEffect(() => {
-    console.log(operations);
-  }, [operations]);
+  function handleMouseMove(event) {
+    setMouseX(event.pageX);
+    setMouseY(event.pageY);
+  }
 
   const boardRef = useRef(null);
 
@@ -39,6 +37,7 @@ const Board = () => {
   return (
     <Container
       onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
       ref={boardRef}
     >
       {bubbles.map((bubble) => {
@@ -47,8 +46,8 @@ const Board = () => {
       {frames.map((frame) => {
         return <Frame key={frame.id} item={frame} />;
       })}
-      <Arrow />
-      <ArrowMenu />
+      <Overlay />
+      {/*<ArrowMenu />*/}
     </Container>
   );
 };
