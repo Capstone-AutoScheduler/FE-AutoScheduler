@@ -8,6 +8,12 @@ const useStore = create((set) => ({
   setBubbles: (list) => set({ bubbles: list }),
   appendBubble: (bubble) =>
     set((state) => ({ bubbles: [...state.bubbles, bubble] })),
+  setMapping: (targetId, bool) => set((state) => ({
+    bubbles: state.bubbles.map((bubble) =>
+      bubble.id === targetId ? { ...bubble, mapping: bool} : bubble
+    ),
+  })),
+
 
   frames: [{
     id: 0,
@@ -76,13 +82,32 @@ const useStore = create((set) => ({
     ),
   })),
 
-  selectedFrame: null,
-  setSelectedFrame: (frame) =>
-    set({ selectedFrame: frame }),
-
-  selectedOperation: null,
-  setSelectedOperation: (operation) =>
-    set({ selectedOperation: operation}),
+  selected: {
+    frame: null,
+    operation: null,
+    bubble: null,
+  },
+  setSelectedFrame: (newFrame) => set((state) => ({
+    selected: {
+      frame: newFrame,
+      operation: null,
+      bubble: null,
+    },
+  })),
+  setSelectedOperation: (newOperation, newFrame) => set((state) => ({
+    selected: {
+      frame: newFrame,
+      operation: newOperation,
+      bubble: null,
+    },
+  })),
+  setSelectedBubble: (newBubble) => set((state) => ({
+    selected: {
+      frame: null,
+      operation: null,
+      bubble: newBubble,
+    },
+  })),
 
   mouseX: 0,
   mouseY: 0,

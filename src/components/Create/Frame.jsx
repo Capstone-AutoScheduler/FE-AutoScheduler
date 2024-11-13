@@ -4,7 +4,7 @@ import styled from "styled-components"
 import useStore from '../../store/Store'
 
 const Frame = ({ item }) => {
-    const { startBubble, selectedFrame, setSelectedFrame, addToTitle, addToDate, addToDetail } = useStore(state => state)
+    const { startBubble, selected, setSelectedFrame, addToTitle, addToDate, addToDetail } = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
@@ -51,14 +51,14 @@ const Frame = ({ item }) => {
             ref={ContainerRef}
             style={{ 
                 backgroundColor: bgColor ,
-                border: (selectedFrame === item) ? selectedBorder : defaultBorder,
+                border: (selected.frame === item) ? selectedBorder : defaultBorder,
             }}
         >
             <Row onMouseUp={handleMouseUp('title')}>
                 <Section>Title</Section>
                 <Content>
                     {item.title.map((operation) => {
-                        return (<Inner frameId={item.id} type={'title'} operation={operation} />);
+                        return (<Inner frame={item} type={'title'} operation={operation} />);
                     })}
                 </Content>
             </Row>
@@ -66,7 +66,7 @@ const Frame = ({ item }) => {
                 <Section>Date</Section>
                 <Content>
                     {item.date.map((operation) => {
-                        return (<Inner frameId={item.id} type={'date'} operation={operation} />);
+                        return (<Inner frame={item} type={'date'} operation={operation} />);
                     })}
                 </Content>
             </Row>
@@ -76,7 +76,7 @@ const Frame = ({ item }) => {
             >
                 <Content>
                     {item.detail.map((operation) => {
-                        return (<Inner frameId={item.id} type={'detail'} operation={operation} />);
+                        return (<Inner frame={item} type={'detail'} operation={operation} />);
                     })}
                 </Content>
             </Row>
@@ -116,24 +116,25 @@ const Content = styled.div`
     width: 80%;
 `
 
-const Inner = ({frameId, type, operation}) => {
-    const { bubbles, removeFromTitle, removeFromDate, removeFromDetail, selectedOperation, setSelectedOperation } = useStore(state => state)
+const Inner = ({frame, type, operation}) => {
+    const { bubbles, removeFromTitle, removeFromDate, removeFromDetail, selected, setSelectedOperation } = useStore(state => state)
     const bubble = bubbles[operation.startBubbleId];
 
     const defaultBorder = '1px solid black';
     const selectedBorder = '2px solid red';
 
-    const handleClick = () => {
-        setSelectedOperation(operation)
+    const handleClick = (event) => {
+        event.stopPropagation();
+        setSelectedOperation(operation, frame);
     }
 
     const deleteOperatoin = () => {
         if (type === 'title') {
-            removeFromTitle(frameId, operation);
+            removeFromTitle(frame.id, operation);
         } else if (type === 'date') {
-            removeFromDate(frameId, operation);
+            removeFromDate(frame.id, operation);
         } else {
-            removeFromDetail(frameId, operation);
+            removeFromDetail(frame.id, operation);
         }
 
     }
@@ -141,11 +142,11 @@ const Inner = ({frameId, type, operation}) => {
     return (
         <InnerContainer
             onClick={handleClick}
-            style={{border: (selectedOperation === operation) ? selectedBorder : defaultBorder}}
+            style={{border: (selected.operation === operation) ? selectedBorder : defaultBorder}}
         >
             {bubble.str}
             {
-                (selectedOperation === operation) ? <Menu onClick={deleteOperatoin}>X</Menu> : <></>
+                (selected.operation === operation) ? <Menu onClick={deleteOperatoin}>X</Menu> : <></>
             }
         </InnerContainer>
     );
@@ -154,6 +155,7 @@ const Inner = ({frameId, type, operation}) => {
 const InnerContainer = styled.span`
     border : 1px solid black;
     position : relative;
+    background-color : white;
 `
 
 const Menu = styled.div`
