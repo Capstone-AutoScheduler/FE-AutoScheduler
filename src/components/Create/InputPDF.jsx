@@ -71,7 +71,8 @@ const InputPDF = () => {
           y: (800 - item.transform[5]) * 1.5,
           width: item.width * 1.5,
           height: item.height * 1.5,
-          str: item.str
+          str: item.str,
+          mapping: false,
         };
         bubbles.push(bubble);
         index++;

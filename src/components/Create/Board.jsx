@@ -8,14 +8,13 @@ import Frame from "./Frame";
 import Overlay from "./Overlay";
 
 const Board = () => {
-  const { bubbles, setStartBubble, setSelectedFrame, setMouseX, setMouseY, setOffsetX, setOffsetY, frames } = useStore( (state) => state );
+  const { bubbles, setStartBubble, setMouseX, setMouseY, setOffsetX, setOffsetY, frames } = useStore((state) => state);
 
   const handleMouseUp = () => {
     setStartBubble(null);
-
   };
 
-  function handleMouseMove(event) {
+  const handleMouseMove = (event) => {
     setMouseX(event.pageX);
     setMouseY(event.pageY);
   }

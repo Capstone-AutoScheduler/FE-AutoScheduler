@@ -5,23 +5,26 @@ import useStore from '../../store/Store';
 import Arrow from './Overlay/Arrow';
 
 const Overlay = () => {
-    const { bubbles, startBubble, mouseX, mouseY, offsetX, offsetY, selectedFrame } = useStore(state => state);
+    const { bubbles, startBubble, mouseX, mouseY, offsetX, offsetY, selected } = useStore(state => state);
 
     const [title, setTitle] = useState(null);
     const [date, setDate] = useState(null);
     const [detail, setDetail] = useState(null);
+    const [end , setEnd] = useState(null);
 
     useEffect(() => {
-        if (selectedFrame !== null) {
-            setTitle(selectedFrame.title);
-            setDate(selectedFrame.date);
-            setDetail(selectedFrame.detail);
+        if (selected.frame !== null) {
+            setTitle(selected.frame.title);
+            setDate(selected.frame.date);
+            setDetail(selected.frame.detail);
+            setEnd(selected.frame);
         } else {
             setTitle(null);
             setDate(null);
             setDetail(null);
+            setEnd(null);
         }
-    }, [selectedFrame])
+    }, [selected.frame])
 
     return (
         <>
@@ -32,31 +35,31 @@ const Overlay = () => {
                     </marker>
                 </defs>
                 {
-                    (title !== null) && (selectedFrame !== null)
+                    (title !== null) && (end !== null)
                     ?
                     title.map((operation) => {
                         const start = bubbles[operation.startBubbleId];
-                        return ( <Arrow end={selectedFrame} start={start} /> );
+                        return ( <Arrow end={end} start={start} /> );
                     })
                     :
                     <></>
                 }
                 {
-                    (date !== null) && (selectedFrame !== null)
+                    (date !== null) && (end !== null)
                     ?
                     date.map((operation) => {
                         const start = bubbles[operation.startBubbleId];
-                        return ( <Arrow end={selectedFrame} start={start} /> );
+                        return ( <Arrow end={end} start={start} /> );
                     })
                     :
                     <></>
                 }
                 {
-                    (detail !== null) && (selectedFrame !== null)
+                    (detail !== null) && (end !== null)
                     ?
                     detail.map((operation) => {
                         const start = bubbles[operation.startBubbleId];
-                        return ( <Arrow end={selectedFrame} start={start} /> );
+                        return ( <Arrow end={end} start={start} /> );
                     })
                     :
                     <></>
