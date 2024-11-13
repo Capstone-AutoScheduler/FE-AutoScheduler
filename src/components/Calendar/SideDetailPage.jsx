@@ -4,95 +4,6 @@ import { styled } from "styled-components";
 // import { deleteSchedule } from "../service/portal/calendar";
 // import UpdateDateModal from "./updateDateModal";
 
-const Container = styled.div`
-  position: fixed;
-  top: 18%;
-  left: 33%;
-  width: 600px;
-  height: 100%;
-  z-index: 150;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  border-top-left-radius: 18px;
-  border-radius: 18px;
-  box-shadow: 10px 15px 20px;
-  overflow: hidden;
-  .topButton {
-    width: 80%;
-    display: flex;
-    justify-content: end;
-  }
-  .closeButton {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    border: none;
-    font-size: 30px;
-    color: #a1a1a1;
-    cursor: pointer;
-    &:hover {
-      color: black;
-    }
-  }
-  .buttonDesign {
-    width: 90px;
-    height: 30px;
-    border-radius: 7px;
-    border: none;
-    font-size: 15px;
-    background-color: #e1e1e1;
-    color: #a1a1a1;
-    cursor: pointer;
-    &:hover {
-      background-color: rgba(49, 116, 173);
-      color: white;
-    }
-  }
-  .scheduleInfo {
-    width: 80%;
-    height: 60%;
-    .scheduleInfoHead {
-      width: 100;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      font-size: 34px;
-      margin-top: 10px;
-      padding-left: 10px;
-      background-color: rgba(49, 116, 173);
-      color: white;
-      border-radius: 10px;
-    }
-    .scheduleDate {
-      display: flex;
-      justify-content: space-evenly;
-      width: 100%;
-      height: 50px;
-      border-bottom: 1px solid rgba(49, 116, 173);
-      .scheduleInfoDate {
-        width: 140px;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-    .todoMemo {
-      margin: 20px 0 0 0;
-      width: 100%;
-    }
-  }
-  .footerButton {
-    width: 80%;
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-`;
-
 const InputDatePage = (props) => {
   const { openModal, closeModal, close, onData, formatToShowDate } = props;
   //refetchOnLoadData, formatToShowDate, onFormatChange 삭제
@@ -190,5 +101,94 @@ const InputDatePage = (props) => {
     </Container>
   );
 };
+
+const Container = styled.div`
+  position: fixed;
+  top: 18%;
+  left: 33%;
+  width: 600px;
+  height: 100%;
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-top-left-radius: 18px;
+  border-radius: 18px;
+  box-shadow: 5px 5px 30px #aaa;
+  overflow: hidden;
+  .topButton {
+    width: 80%;
+    display: flex;
+    justify-content: end;
+  }
+  .closeButton {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    font-size: 30px;
+    color: #a1a1a1;
+    cursor: pointer;
+    &:hover {
+      color: black;
+    }
+  }
+  .buttonDesign {
+    width: 90px;
+    height: 30px;
+    border-radius: 7px;
+    border: none;
+    font-size: 15px;
+    background-color: #e1e1e1;
+    color: #a1a1a1;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(49, 116, 173);
+      color: white;
+    }
+  }
+  .scheduleInfo {
+    width: 80%;
+    height: 60%;
+    .scheduleInfoHead {
+      width: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-size: 34px;
+      margin-top: 10px;
+      padding-left: 10px;
+      background-color: rgba(49, 116, 173);
+      color: white;
+      border-radius: 10px;
+    }
+    .scheduleDate {
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+      height: 50px;
+      border-bottom: 1px solid rgba(49, 116, 173);
+      .scheduleInfoDate {
+        width: 140px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .todoMemo {
+      margin: 20px 0 0 0;
+      width: 100%;
+    }
+  }
+  .footerButton {
+    width: 80%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+`;
 
 export default InputDatePage;
