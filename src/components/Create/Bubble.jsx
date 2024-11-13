@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
 
-import useStore from '../store/Store'
+import useStore from '../../store/Store'
 
 const Bubble = ({ item }) => {
-    const { startBubble, setStartBubble, setEndBubble, appendOperation } = useStore(state => state)
+    const { setStartBubble } = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
 
+    const bgColor = 'rgba(20,200,150,0.3)';
     useEffect(() => {
         //console.log(ContainerRef);
         setX(item.x);
@@ -25,37 +26,30 @@ const Bubble = ({ item }) => {
         setStartBubble(item);
     }
 
-    function handleMouseUp() {
-        if ( startBubble != null ) {
-            if (item.id !== startBubble.id) {
-                setEndBubble(item);
-                appendOperation(
-                    {
-                        type: "drag",
-                        startBubbleId: startBubble.id,
-                        endBubbleId: item.id,
-                        childOperations: []
-                    }
-                );
-            }
-        }
-    }
-
     return (
         <Container 
             ref={ContainerRef}
             onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
+            style={{ backgroundColor: bgColor}}
         >
-            {`id: ${item.id}`}
+            {`${item.str}`}
         </Container>
     );
 };
 
 const Container = styled.div`
-    background-color: green;
+    background-color: rgba(20,200,150,0.3);
     position: absolute;
     user-select: none;
+    font-size: 12px;
+
+    padding: 2px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid rgba(20,200,150,0.5);
 `
 
 export default Bubble;
