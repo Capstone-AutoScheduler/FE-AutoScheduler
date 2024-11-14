@@ -25,18 +25,14 @@ const Create = () => {
   );
 };
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
-const Top = styled.div`
-`;
+const Top = styled.div``;
 
 const Bottom = styled.div``;
 
-const Src = styled.div`
-`; 
+const Src = styled.div``;
 
-const Tool = styled.div`
-`;  
+const Tool = styled.div``;
 
 export default Create;
