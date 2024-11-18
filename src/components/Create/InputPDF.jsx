@@ -64,7 +64,7 @@ const InputPDF = () => {
     const bubbles = [];
     var index = 0;
     content.items.forEach(function (item) {
-      if ((item.str !== "")&&(item.str !== " ")) {
+      //if ((item.str !== "")&&(item.str !== " ")) {
         const bubble = {
           id: index,
           x: item.transform[4] * 1.5,
@@ -76,7 +76,7 @@ const InputPDF = () => {
         };
         bubbles.push(bubble);
         index++;
-      }
+      //}
     });
 
     setBubbles(bubbles);
