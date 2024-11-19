@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Main from "./pages/Main";
 import Create from "./pages/Create";
+import GeneratorStore from "./pages/GeneratorStore";
 import Generate from "./pages/Generate";
 
 import "./App.css";
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/store" element={<GeneratorStore />} />
           <Route path="/generate" element={<Generate />} />
         </Routes>
       </div>
