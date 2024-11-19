@@ -14,7 +14,6 @@ const useStore = create((set) => ({
     ),
   })),
 
-
   frames: [{
     id: 0,
     str: 'target',
