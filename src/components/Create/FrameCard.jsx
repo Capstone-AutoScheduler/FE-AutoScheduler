@@ -1,40 +1,14 @@
-import { useEffect, useRef } from "react"
 import styled from "styled-components"
 
 import useStore from '../../store/Store'
 
-const Frame = ({ item }) => {
-    const { selectedFrame, selected, setSelectedFrame, removeFrame, addToTitle, addToDate, addToDetail } = useStore(state => state)
-
-    const ContainerRef = useRef(null);
+const FrameCard = ({ item }) => {
+    const { selectedFrame, setSelectedFrame, removeFrame, } = useStore(state => state)
 
     const bgColor = 'rgba(235, 186, 7, 0.3)';
     const selectedBorder = '3px solid red';
     const defaultBorder = '2px solid rgba(235, 186, 7, 0.7)';
 
-    useEffect(() => {
-        ContainerRef.current.style.width = 320 + 'px';
-        ContainerRef.current.style.height = 140 + 'px';
-        ContainerRef.current.style.top = 100 + 'px';
-        ContainerRef.current.style.left = 1000 + 'px';
-    }, []);
-
-    const handleMouseUp = (endRow) => () => {
-        if ( selected.area != null ) {
-            const operation = {
-                type: "drag",
-                area: selected.area,
-                childOperations: []
-            }
-            if (endRow === 'title') {
-                addToTitle(item.id, operation);
-            } else if ( endRow === 'date') {
-                addToDate(item.id, operation);
-            } else {
-                addToDetail(item.id, operation)
-            }
-        }
-    }
     const handleClick = () => {
         setSelectedFrame(item);
     }
@@ -47,13 +21,12 @@ const Frame = ({ item }) => {
     return (
         <Container 
             onClick={handleClick}
-            ref={ContainerRef}
             style={{ 
                 backgroundColor: bgColor ,
                 border: (selectedFrame === item) ? selectedBorder : defaultBorder,
             }}
         >
-            <Row onMouseUp={handleMouseUp('title')}>
+            <Row>
                 <Section>Title</Section>
                 <Content>
                     {item.title.map((operation) => {
@@ -61,7 +34,7 @@ const Frame = ({ item }) => {
                     })}
                 </Content>
             </Row>
-            <Row onMouseUp={handleMouseUp('date')}>
+            <Row>
                 <Section>Date</Section>
                 <Content>
                     {item.date.map((operation) => {
@@ -70,8 +43,7 @@ const Frame = ({ item }) => {
                 </Content>
             </Row>
             <Row
-                onMouseUp={handleMouseUp('detail')}
-                style={{ height: "100%" }}
+                style={{height: '100%'}}
             >
                 <Content>
                     {item.detail.map((operation) => {
@@ -96,7 +68,6 @@ const Frame = ({ item }) => {
 };
 
 const Container = styled.div`
-    position: absolute;
     user-select: none;
     font-size: 12px;
 
@@ -108,6 +79,11 @@ const Container = styled.div`
     align-items: center;
     border-radius: 4px;
     border: 2px solid rgba(235, 186, 7, 0.7);
+
+    width: 180px;
+    height: 120px;
+
+    flex-shrink: 0;
 `
 
 const Row = styled.div`
@@ -180,4 +156,4 @@ const Menu = styled.div`
     right: -10px;
 `
 
-export default Frame;
+export default FrameCard;

@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-  startBubble: null,
-  setStartBubble: (ref) => set({ startBubble: ref }),
+  isDragging : false,
+  setIsDragging : (bool) => set({isDragging : bool}),
 
   bubbles: [],
   setBubbles: (list) => set({ bubbles: list }),
@@ -17,10 +17,6 @@ const useStore = create((set) => ({
   frames: [{
     id: 0,
     str: 'target',
-    x: 1000,
-    y: 40,
-    width: 320,
-    height: 140,
     title: [],
     date: [],
     detail: [],
@@ -28,16 +24,15 @@ const useStore = create((set) => ({
   {
     id: 1,
     str: 'target',
-    x: 1000,
-    y: 200,
-    width: 320,
-    height: 140,
     title: [],
     date: [],
     detail: [],
   }],
   appendFrame: (frame) =>
     set((state) => ({ frames: [...state.frames, frame] })),
+  removeFrame: (frame) => set((state) => ({
+    frames : state.frames.filter((item) => item !==frame),
+  })),
   addToTitle: (frameId, operation) => set((state) => ({
     frames: state.frames.map((frame) =>
       frame.id === frameId
@@ -81,31 +76,38 @@ const useStore = create((set) => ({
     ),
   })),
 
+
+  selectedFrame: null,
+  setSelectedFrame: (newFrame) => set((state) => ({
+    selectedFrame: newFrame
+  })),
+
   selected: {
-    frame: null,
     operation: null,
     bubble: null,
+    area: null,
   },
-  setSelectedFrame: (newFrame) => set((state) => ({
-    selected: {
-      frame: newFrame,
-      operation: null,
-      bubble: null,
-    },
-  })),
   setSelectedOperation: (newOperation, newFrame) => set((state) => ({
     selected: {
       frame: newFrame,
       operation: newOperation,
       bubble: null,
+      area: null,
     },
   })),
   setSelectedBubble: (newBubble) => set((state) => ({
     selected: {
-      frame: null,
       operation: null,
       bubble: newBubble,
+      area: null,
     },
+  })),
+  setSelectedArea: (newArea) => set((state) => ({
+    selected: {
+      operation: null,
+      bubble: null,
+      area: newArea,
+    }
   })),
 
   mouseX: 0,
@@ -115,12 +117,15 @@ const useStore = create((set) => ({
   setMouseY: (value) =>
     set({ mouseY: value}),
 
-  offsetX: 0,
-  offsetY: 0,
-  setOffsetX: (value) =>
-    set({ offsetX: value}),
-  setOffsetY: (value) =>
-    set({ offsetY: value}),
+  areaStart: null,
+  setAreaStart: (coord) =>
+    set({ areaStart: coord }),
+  setAreaEnd: (coord) =>
+    set({ areaEnd: coord}),
+
+  areas: [],
+  appendArea: (area) =>
+    set((state) => ({ areas: [...state.areas, area] })),
 }));
 
 export default useStore;
