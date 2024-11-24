@@ -8,7 +8,15 @@ import Frame from "./Frame";
 import Overlay from "./Overlay";
 
 const Board = () => {
-  const { bubbles, setStartBubble, setMouseX, setMouseY, setOffsetX, setOffsetY, frames } = useStore((state) => state);
+  const {
+    bubbles,
+    setStartBubble,
+    setMouseX,
+    setMouseY,
+    setOffsetX,
+    setOffsetY,
+    frames,
+  } = useStore((state) => state);
 
   const handleMouseUp = () => {
     setStartBubble(null);
@@ -17,7 +25,7 @@ const Board = () => {
   const handleMouseMove = (event) => {
     setMouseX(event.pageX);
     setMouseY(event.pageY);
-  }
+  };
 
   const boardRef = useRef(null);
 
@@ -30,8 +38,8 @@ const Board = () => {
   }, [bubbles, setOffsetX, setOffsetY]);
 
   useEffect(() => {
-    console.log('frames', frames);
-  }, [ frames ])
+    console.log("frames", frames);
+  }, [frames]);
 
   return (
     <Container
