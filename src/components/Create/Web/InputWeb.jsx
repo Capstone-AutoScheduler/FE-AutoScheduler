@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import useUrlStore from "../../../store/HtmlStore.jsx";
+import useHtmlStore from "../../../store/HtmlStore.jsx";
 
 const InputWeb = () => {
   // 상태 관리: textField의 값을 저장
   const [inputValue, setInputValue] = useState("");
-  const { cssFile, setCssFile, htmlBody, setHtmlBody } = useUrlStore();
+  const { cssFile, setCssFile, htmlBody, setHtmlBody } = useHtmlStore();
 
   // 버튼 클릭 시 호출되는 함수
   const handleClick = () => {
@@ -57,7 +57,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  padding: 16px;
+  padding: 20px;
 `;
 
 // Styled-components 사용하여 스타일 정의

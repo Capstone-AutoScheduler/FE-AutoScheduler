@@ -1,18 +1,18 @@
 import { create } from "zustand";
 
 const useHtmlStore = create((set) => ({
-  url: null,
-  setUrl: (url) =>
-    set({
-      url: url,
-    }),
-  cssFile: null,
+  // url: null,
+  // setUrl: (url) =>
+  //   set({
+  //     url: url,
+  //   }),
+  cssFile: "",
   setCssFile: (cssFile) =>
     set({
       cssFile: cssFile,
     }),
 
-  htmlBody: null,
+  htmlBody: "",
   setHtmlBody: (htmlBody) =>
     set({
       htmlBody: htmlBody,

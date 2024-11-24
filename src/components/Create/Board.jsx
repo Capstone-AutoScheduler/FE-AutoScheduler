@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import useStore from "../../store/Store";
@@ -7,53 +7,76 @@ import Bubble from "./Bubble";
 import Frame from "./Frame";
 import Overlay from "./Overlay";
 
+import WebHtml from "./Web/WebHtml";
+
 const Board = () => {
   const {
+    setSelectedArea,
+    isDragging,
+    setIsDragging,
     bubbles,
-    setStartBubble,
+    mouseX,
+    mouseY,
     setMouseX,
     setMouseY,
-    setOffsetX,
-    setOffsetY,
-    frames,
+    selectedFrame,
+    areaStart,
+    setAreaStart,
+    appendArea,
+    areas,
   } = useStore((state) => state);
 
-  const handleMouseUp = () => {
-    setStartBubble(null);
-  };
-
-  const handleMouseMove = (event) => {
-    setMouseX(event.pageX);
-    setMouseY(event.pageY);
-  };
-
+  // init offset
   const boardRef = useRef(null);
-
   useEffect(() => {
     if (boardRef != null) {
       const rect = boardRef.current.getBoundingClientRect();
-      setOffsetX(rect.left);
-      setOffsetY(rect.top);
+      setOffset({ x: rect.left, y: rect.top });
     }
-  }, [bubbles, setOffsetX, setOffsetY]);
+  }, [bubbles]);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseDown = (event) => {
+    //console.log('board mousedown', 'mouseX', event.pageX, 'mouseY', event.pageY);
+    //console.log('start dragging');
+    setAreaStart({ x: event.pageX - offset.x, y: event.pageY - offset.y });
+    setIsDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    //console.log('end dragging');
+    setSelectedArea(null);
+    if (isDragging) {
+      setIsDragging(false);
+      if (mouseX - areaStart.x > 50 && mouseY - areaStart.y > 50) {
+        appendArea({ start: areaStart, end: { x: mouseX, y: mouseY } });
+      }
+    }
+  };
+
+  const handleMouseMove = (event) => {
+    setMouseX(event.pageX - offset.x);
+    setMouseY(event.pageY - offset.y);
+  };
 
   useEffect(() => {
-    console.log("frames", frames);
-  }, [frames]);
+    console.log("areas", areas);
+  }, [areas]);
 
   return (
     <Container
+      onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       ref={boardRef}
     >
+      <WebHtml></WebHtml>
       {bubbles.map((bubble) => {
         return <Bubble key={bubble.id} item={bubble} />;
       })}
-      {frames.map((frame) => {
-        return <Frame key={frame.id} item={frame} />;
-      })}
+      {selectedFrame !== null ? <Frame item={selectedFrame} /> : <></>}
       <Overlay />
+      {/*<Area />*/}
       {/*<ArrowMenu />*/}
     </Container>
   );

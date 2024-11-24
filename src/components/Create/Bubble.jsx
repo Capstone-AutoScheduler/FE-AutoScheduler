@@ -5,7 +5,7 @@ import useStore from '../../store/Store'
 import LockPNG from '../../images/lock.png'
 
 const Bubble = ({ item }) => {
-    const { setStartBubble, selected, setSelectedBubble, setMapping } = useStore(state => state)
+    const { selected, setSelectedBubble, setMapping } = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
@@ -25,26 +25,25 @@ const Bubble = ({ item }) => {
         ContainerRef.current.style.left = x + 'px';
     }, [x, y, item]);
 
-    function handleMouseDown() {
-        setStartBubble(item);
-    }
-
     const defaultBorder = '1px solid rgba(20,200,150,0.5)';
     const selectedBorder = '2px solid red';
 
-    function handleMouseUp() {
+    function handleClick() {
         setSelectedBubble(item);
+        console.log('select bubble', 'x:', item.x, 'y:', item.y);
     }
 
-    function mapBubble() {
+    function mapBubble(event) {
+        console.log('click');
         setMapping(item.id, true);
+        event.stopPropagation();
     }
 
     return (
         <Container 
             ref={ContainerRef}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
+            //onMouseDown={handleMouseDown}
+            onClick={handleClick}
             style={{ 
                 backgroundColor: (item.mapping) ? mappedBgColor : bgColor,
                 border: (selected.bubble === item) ? selectedBorder : defaultBorder
@@ -55,7 +54,7 @@ const Bubble = ({ item }) => {
             (selected.bubble === item) 
             ? 
             <Menu 
-                onClick={mapBubble}
+                onMouseDown={mapBubble}
             >
                 <IMG src={LockPNG}></IMG>
             </Menu>
@@ -95,8 +94,8 @@ const Menu = styled.div`
 `
 
 const IMG = styled.img`
-width: 20px;
-height: 20px;
+    width: 20px;
+    height: 20px;
 `
 
 export default Bubble;

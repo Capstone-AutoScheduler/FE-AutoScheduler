@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import InputPDF from "../components/Create/InputPDF";
 import ToolBox from "../components/Create/ToolBox";
+import FrameBox from "../components/Create/FrameBox";
 import Board from "../components/Create/Board";
 import InputWeb from "../components/Create/Web/InputWeb";
 
@@ -21,6 +22,7 @@ const Create = () => {
       </Top>
       <Bottom>
         <h2>#규칙 생성</h2>
+        <FrameBox></FrameBox>
         <Board></Board>
       </Bottom>
     </Container>

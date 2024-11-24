@@ -7,10 +7,8 @@ import "pdfjs-dist/webpack";
 import * as pdfjsLib from "pdfjs-dist";
 
 const ReadPDF = () => {
-    const {setPdfContent} = useGenerateStore(state => state);
+    const { setNumPages, targetPage, setPdfContent} = useGenerateStore(state => state);
 
-    const [page, setPage] = useState(1);
-    const [numPages, setNumPages] = useState(0);
     const [PDFfile, setPDFfile] = useState(null);
 
     const handleFileChange = (event) => {
@@ -57,12 +55,21 @@ const ReadPDF = () => {
     const updatePage = useCallback(async () => {
         //console.log("update page", page);
         //console.log(PDFfile);
-        /*
-        const currentPage = await PDFfile.getPage(page);
+        const currentPage = await PDFfile.getPage(targetPage);
         //items
         const content = await currentPage.getTextContent();
-        setPdfContent(content.items);
-        */
+        //modify items
+        const modified = [];
+        content.items.forEach((item) => {
+            modified.push({
+                str: item.str,
+                x: item.transform[4] * 1.5,
+                y: (800 - item.transform[5]) * 1.5,
+            });
+        });
+        setPdfContent(modified);
+        //read all pdf file
+        /*
         var contents = [];
         for (var page=1; page<=numPages; page++) {
             const currentPage = await PDFfile.getPage(page);
@@ -70,41 +77,19 @@ const ReadPDF = () => {
             contents = [...contents, ...(content.items)];
         }
         setPdfContent(contents);
+        */
     });
-
-    const nextPage = () => {
-        if (page < numPages) {
-            setPage(page + 1);
-        }
-    }
-
-    const prevPage = () => {
-        if (page > 1) {
-            setPage(page - 1);
-        }
-    }
 
     useEffect(() => {
         if (PDFfile !== null) {
             updatePage();
         }
-    }, [page, PDFfile]);
+    }, [targetPage, PDFfile]);
 
     return (
         <Container>
             <span>PDF 파일</span>
             <input type="file" onChange={handleFileChange}></input>
-            {
-                (PDFfile)
-                    ?
-                    <div>
-                        <span>Page: {page}/{numPages}</span>
-                        <button onClick={prevPage}>prev page</button>
-                        <button onClick={nextPage}>next page</button>
-                    </div>
-                    :
-                    <></>
-            }
         </Container>
     );
 };
