@@ -77,9 +77,9 @@ const useStore = create((set) => ({
   })),
 
 
-  selectedFrame: null,
-  setSelectedFrame: (newFrame) => set((state) => ({
-    selectedFrame: newFrame
+  selectedFrameId: 0,
+  setSelectedFrameId: (newId) => set((state) => ({
+    selectedFrameId: newId
   })),
 
   selected: {

@@ -3,14 +3,14 @@ import styled from "styled-components"
 import useStore from '../../store/Store'
 
 const FrameCard = ({ item }) => {
-    const { selectedFrame, setSelectedFrame, removeFrame, } = useStore(state => state)
+    const { selectedFrameId, setSelectedFrameId, removeFrame, } = useStore(state => state)
 
     const bgColor = 'rgba(235, 186, 7, 0.3)';
     const selectedBorder = '3px solid red';
     const defaultBorder = '2px solid rgba(235, 186, 7, 0.7)';
 
     const handleClick = () => {
-        setSelectedFrame(item);
+        setSelectedFrameId(item.id);
     }
 
     const deleteFrame = () => {
@@ -23,7 +23,7 @@ const FrameCard = ({ item }) => {
             onClick={handleClick}
             style={{ 
                 backgroundColor: bgColor ,
-                border: (selectedFrame === item) ? selectedBorder : defaultBorder,
+                border: (selectedFrameId === item.id) ? selectedBorder : defaultBorder,
             }}
         >
             <Row>
@@ -52,7 +52,7 @@ const FrameCard = ({ item }) => {
                 </Content>
             </Row>
             {
-                (selectedFrame === item)
+                (selectedFrameId === item.id)
                 ?
                 <Menu
                     onMouseDown={(event) => { event.stopPropagation(); }}
@@ -124,12 +124,16 @@ const Inner = ({frame, type, operation}) => {
         }
     }
 
+    var content = JSON.stringify(operation);
+    if (content.length > 25){
+        content = content.slice(0, 25) + '...';
+    }
     return (
         <InnerContainer
             onClick={handleClick}
             style={{border: (selected.operation === operation) ? selectedBorder : defaultBorder}}
         >
-            {JSON.stringify(operation)}
+            { content }
             {
                 (selected.operation === operation) ? <Menu onClick={deleteOperatoin}>X</Menu> : <></>
             }
