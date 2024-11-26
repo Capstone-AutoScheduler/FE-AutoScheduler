@@ -1,16 +1,21 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import useGenerateStore from '../../store/GenerateStore';
 
+import Schedule from './Schedule';
+
 const Result = () => {
     const { numPages, targetPage, increaseTargetPage, pdfContent } = useGenerateStore(state=>state);
     
+    const [results, setResults] = useState([]);
+
     const frames = JSON.parse(localStorage.getItem('frames'));
     const mapping = JSON.parse(localStorage.getItem('mapping'));
 
     const GenerateSchedule = () => {
         console.log('start generating');
+        setResults([]);
         //traverse content
         //find mapping on content
         //get offset
@@ -51,20 +56,23 @@ const Result = () => {
         //console.log('frames : ', frames);
         //console.log('frame.title : ', pdfContent[frames[0].title[0].startBubbleId + offset].str);
         frames.forEach((frame, index)=>{
-            console.log('### FRAME ' + index + '###');
-            console.log('title');
+            const result = {titles: null, dates: null, details: null};
             frame.title.forEach((item) => {
-                console.log(findItemInArea(item.area, offsetX, offsetY));
+                //console.log(findItemInArea(item.area, offsetX, offsetY));
+                result.titles = findItemInArea(item.area, offsetX, offsetY);
             })
-            console.log('date');
             frame.date.forEach((item) => {
-                console.log(findItemInArea(item.area, offsetX, offsetY));
+                //console.log(findItemInArea(item.area, offsetX, offsetY));
+                result.dates = findItemInArea(item.area, offsetX, offsetY);
             })
-            console.log('detail');
             frame.detail.forEach((item) => {
-                console.log(findItemInArea(item.area, offsetX, offsetY));
+                //console.log(findItemInArea(item.area, offsetX, offsetY));
+                result.details = findItemInArea(item.area, offsetX, offsetY);
             })
+            setResults((prev) => [...prev, result]);
         });
+
+        console.log(results);
     }
 
     const findItemInArea = (area, offsetX, offsetY) => {
@@ -90,12 +98,24 @@ const Result = () => {
 
     return (
         <Container>
-            {JSON.stringify(pdfContent)}
+            <h2>#생성한 일정</h2>
+            <Box>
+                { results.map((result) => { return <Schedule result={result} /> }) }
+            </Box>
         </Container>
     );
 };
 
 const Container = styled.div`
+`
+
+const Box = styled.div`
+    border : 1px solid black;
+    width : 700px;
+    height : 500px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow-y: auto;
 `
 
 export default Result;

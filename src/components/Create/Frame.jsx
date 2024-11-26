@@ -4,7 +4,7 @@ import styled from "styled-components"
 import useStore from '../../store/Store'
 
 const Frame = ({ item }) => {
-    const { selectedFrame, selected, setSelectedFrame, removeFrame, addToTitle, addToDate, addToDetail } = useStore(state => state)
+    const { selectedFrameId, selected, setSelectedFrameId, removeFrame, addToTitle, addToDate, addToDetail } = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
@@ -13,8 +13,6 @@ const Frame = ({ item }) => {
     const defaultBorder = '2px solid rgba(235, 186, 7, 0.7)';
 
     useEffect(() => {
-        ContainerRef.current.style.width = 320 + 'px';
-        ContainerRef.current.style.height = 140 + 'px';
         ContainerRef.current.style.top = 100 + 'px';
         ContainerRef.current.style.left = 1000 + 'px';
     }, []);
@@ -35,9 +33,6 @@ const Frame = ({ item }) => {
             }
         }
     }
-    const handleClick = () => {
-        setSelectedFrame(item);
-    }
 
     const deleteFrame = () => {
         console.log('delete frame');
@@ -46,14 +41,16 @@ const Frame = ({ item }) => {
 
     return (
         <Container 
-            onClick={handleClick}
             ref={ContainerRef}
             style={{ 
                 backgroundColor: bgColor ,
-                border: (selectedFrame === item) ? selectedBorder : defaultBorder,
+                border: defaultBorder,
             }}
         >
-            <Row onMouseUp={handleMouseUp('title')}>
+            <Row 
+                onMouseUp={handleMouseUp('title')}
+                style={{ height: "10%" }}
+            >
                 <Section>Title</Section>
                 <Content>
                     {item.title.map((operation) => {
@@ -61,7 +58,10 @@ const Frame = ({ item }) => {
                     })}
                 </Content>
             </Row>
-            <Row onMouseUp={handleMouseUp('date')}>
+            <Row 
+                onMouseUp={handleMouseUp('date')}
+                style={{ height: "10%" }}
+            >
                 <Section>Date</Section>
                 <Content>
                     {item.date.map((operation) => {
@@ -71,7 +71,7 @@ const Frame = ({ item }) => {
             </Row>
             <Row
                 onMouseUp={handleMouseUp('detail')}
-                style={{ height: "100%" }}
+                style={{ height: "80%" }}
             >
                 <Content>
                     {item.detail.map((operation) => {
@@ -79,18 +79,6 @@ const Frame = ({ item }) => {
                     })}
                 </Content>
             </Row>
-            {
-                (selectedFrame === item)
-                ?
-                <Menu
-                    onMouseDown={(event) => { event.stopPropagation(); }}
-                    onMouseUp={(event) => { event.stopPropagation(); }}
-                    onClick={deleteFrame}>
-                    X
-                </Menu>
-                :
-                <></>
-            }
         </Container>
     );
 };
@@ -108,6 +96,9 @@ const Container = styled.div`
     align-items: center;
     border-radius: 4px;
     border: 2px solid rgba(235, 186, 7, 0.7);
+
+    width: 400px;
+    height: 300px;
 `
 
 const Row = styled.div`
