@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 import InputPDF from "../components/Create/InputPDF";
 import ToolBox from "../components/Create/ToolBox";
-import FrameBox from "../components/Create/FrameBox"
+import FrameBox from "../components/Create/FrameBox";
 import Board from "../components/Create/Board";
+import InputWeb from "../components/Create/Web/InputWeb";
 
 const Create = () => {
   return (
@@ -12,6 +13,7 @@ const Create = () => {
         <Src>
           <h2>#Source Type</h2>
           <InputPDF />
+          <InputWeb />
         </Src>
         <Tool>
           <h2>#Tool Box</h2>

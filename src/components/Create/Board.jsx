@@ -7,6 +7,8 @@ import Bubble from "./Bubble";
 import Frame from "./Frame";
 import Overlay from "./Overlay";
 
+import WebHtml from "./Web/WebHtml";
+
 const Board = () => {
   const { setSelectedArea, 
     isDragging, setIsDragging, 
@@ -20,22 +22,22 @@ const Board = () => {
   useEffect(() => {
     if (boardRef != null) {
       const rect = boardRef.current.getBoundingClientRect();
-      setOffset({x:rect.left, y:rect.top});
+      setOffset({ x: rect.left, y: rect.top });
     }
   }, [bubbles]);
-  const [offset, setOffset] = useState({x:0, y:0});
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleMouseDown = (event) => {
     //console.log('board mousedown', 'mouseX', event.pageX, 'mouseY', event.pageY);
     //console.log('start dragging');
-    setAreaStart({x: event.pageX-offset.x, y: event.pageY-offset.y});
+    setAreaStart({ x: event.pageX - offset.x, y: event.pageY - offset.y });
     setIsDragging(true);
-  }
+  };
 
   const handleMouseUp = () => {
     //console.log('end dragging');
     setSelectedArea(null);
-    if(isDragging){
+    if (isDragging) {
       setIsDragging(false);
       if ((mouseX - areaStart.x > 30) && (mouseY - areaStart.y > 30)) {
         appendArea({start: areaStart, end: {x:mouseX, y:mouseY}})
@@ -44,13 +46,13 @@ const Board = () => {
   };
 
   const handleMouseMove = (event) => {
-      setMouseX(event.pageX-offset.x);
-      setMouseY(event.pageY-offset.y);
-  }
+    setMouseX(event.pageX - offset.x);
+    setMouseY(event.pageY - offset.y);
+  };
 
   useEffect(() => {
-    console.log('areas', areas);
-  }, [ areas ])
+    console.log("areas", areas);
+  }, [areas]);
 
   const [currentFrame, setCurrentFrame] = useState(null);
   useEffect(() => {
@@ -68,6 +70,7 @@ const Board = () => {
       onMouseMove={handleMouseMove}
       ref={boardRef}
     >
+      <WebHtml></WebHtml>
       {bubbles.map((bubble) => {
         return <Bubble key={bubble.id} item={bubble} />;
       })}
