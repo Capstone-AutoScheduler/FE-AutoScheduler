@@ -98,24 +98,18 @@ const Result = () => {
 
     return (
         <Container>
-            <h2>#생성한 일정</h2>
-            <Box>
-                { results.map((result) => { return <Schedule result={result} /> }) }
-            </Box>
+            { results.map((result) => { return <Schedule result={result} /> }) }
         </Container>
     );
 };
 
 const Container = styled.div`
-`
+    display: flex;
+    height : 100px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
 
-const Box = styled.div`
-    border : 1px solid black;
-    width : 700px;
-    height : 500px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    overflow-y: auto;
 `
 
 export default Result;

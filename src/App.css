@@ -1,9 +1,14 @@
 html {
     margin:0px;
     padding:0px;
+
 }
 
 body {
     margin: 0px;
     padding: 0px;
+}
+
+#main-content { 
+    background-color: #E7E9EA;
 }

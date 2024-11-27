@@ -5,26 +5,38 @@ const Schedule = ({ result }) => {
         <Container>
             <Date>{result.dates}</Date>
             <Title>{result.titles}</Title>
-            <Content>{result.content}</Content>
+            <Detail>{result.details}</Detail>
         </Container>
     )
 }
 
 const Container = styled.div`
-    width : 300px;
-    height : 140px;
+    width : 280px;
+    height : 80%;
     border : 2px solid blue;
 
-    margin : 10px;
+    margin : 8px;
+
+    flex-shrink : 0;
 `
 
 const Date = styled.div`
 `
 
 const Title = styled.div`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 `
 
-const Content = styled.div`
+const Detail = styled.div`
+    color: gray;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 `
 
 
