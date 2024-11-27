@@ -123,7 +123,6 @@ const Main = () => {
       eventMemo: newEventDataToServer.eventBody,
     };
     setMyEvents([...myEvents, newEventData]);
-    console.log("#####", myEvents);
   };
 
   async function getEvents() {
