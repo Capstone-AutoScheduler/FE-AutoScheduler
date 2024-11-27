@@ -88,14 +88,13 @@ const ReadPDF = () => {
 
     return (
         <Container>
-            <span>PDF 파일</span>
             <input type="file" onChange={handleFileChange}></input>
         </Container>
     );
 };
 
 const Container = styled.div`
-  border: 1px solid black;
+    margin-left: 8px;
 `;
 
 export default ReadPDF;

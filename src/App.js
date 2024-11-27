@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import SideBtn from "./components/SideBtn"
 import Main from "./pages/Main";
 import Create from "./pages/Create";
 import GeneratorStore from "./pages/GeneratorStore";
@@ -15,6 +16,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <div id="main-content">
+        <SideBtn />
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/create" element={<Create />} />
@@ -23,7 +25,6 @@ function App() {
           <Route path="/test" element={<Test />} />
         </Routes>
       </div>
-      <Footer />
     </BrowserRouter>
   );
 }

@@ -10,21 +10,12 @@ import Overlay from "./Overlay";
 import WebHtml from "./Web/WebHtml";
 
 const Board = () => {
-  const {
-    setSelectedArea,
-    isDragging,
-    setIsDragging,
-    bubbles,
-    mouseX,
-    mouseY,
-    setMouseX,
-    setMouseY,
-    selectedFrame,
-    areaStart,
-    setAreaStart,
-    appendArea,
-    areas,
-  } = useStore((state) => state);
+  const { setSelectedArea, 
+    isDragging, setIsDragging, 
+    bubbles, frames,
+    mouseX, mouseY, setMouseX, setMouseY, 
+    setSelectedFrameId, selectedFrameId, 
+    areaStart, setAreaStart, appendArea, areas } = useStore((state) => state);
 
   // init offset
   const boardRef = useRef(null);
@@ -48,8 +39,8 @@ const Board = () => {
     setSelectedArea(null);
     if (isDragging) {
       setIsDragging(false);
-      if (mouseX - areaStart.x > 50 && mouseY - areaStart.y > 50) {
-        appendArea({ start: areaStart, end: { x: mouseX, y: mouseY } });
+      if ((mouseX - areaStart.x > 30) && (mouseY - areaStart.y > 30)) {
+        appendArea({start: areaStart, end: {x:mouseX, y:mouseY}})
       }
     }
   };
@@ -63,6 +54,15 @@ const Board = () => {
     console.log("areas", areas);
   }, [areas]);
 
+  const [currentFrame, setCurrentFrame] = useState(null);
+  useEffect(() => {
+    for(var i = 0; i < frames.length; i++) {
+      if (frames[i].id === selectedFrameId) {
+        setCurrentFrame(frames[i])
+      }
+    }
+  }, [selectedFrameId, frames])
+
   return (
     <Container
       onMouseDown={handleMouseDown}
@@ -74,7 +74,13 @@ const Board = () => {
       {bubbles.map((bubble) => {
         return <Bubble key={bubble.id} item={bubble} />;
       })}
-      {selectedFrame !== null ? <Frame item={selectedFrame} /> : <></>}
+      {
+        currentFrame !== null
+        ?
+        <Frame item={currentFrame}/>
+        :
+        <></>
+      }
       <Overlay />
       {/*<Area />*/}
       {/*<ArrowMenu />*/}
