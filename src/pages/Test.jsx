@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useCallback, useEffect } from "react"; // useState, useCallback 추가
-import parse from "html-react-parser";
+import parse, { domToReact } from "html-react-parser";
 import { Helmet } from "react-helmet";
 
 const Test = () => {
@@ -109,20 +109,143 @@ const Test = () => {
         window['EAGER-DATA']['GV'] = {
             svt: '20241124160921',  }; </script> <script>!function(){function t(t){var e=document.getElementById("search_area"),n=document.getElementById("search-btn");if(!t)return e&&e.removeAttribute("style"),void(n&&n.setAttribute("style","fill: #03c75a"));e&&e.setAttribute("style","border-color: "+t),n&&n.setAttribute("class","ico_btn_search type_color"),n&&n.setAttribute("style","fill: "+t)}var e=window["EAGER-DATA"]["CAS-MINICONTENT-PC-SPECIAL-LOGO"];if(!e||!e.items||e.items.length>0==!1)return void t();var n=Math.floor(Math.random()*e.items.length),i=e.items[n];e.items=[i],t(i&&i.content&&i.content.input&&i.content.input.color);const l=document.getElementById("search");l&&l.classList.add("type_special_logo_full"),window.addEventListener("header-sticky-state-change",(function(){var t;(t=document.getElementById("header"))&&t.classList.contains("ani_fixed")?l&&l.classList.remove("type_special_logo_full"):l&&l.classList.add("type_special_logo_full")}));var o=i&&i.content&&i.content.input&&i.content.input.placeholder;if(o){var s=document.getElementById("query");s&&o&&s.setAttribute("title",o),s&&o&&s.setAttribute("placeholder",o)}}()</script>   </body>`);
   const [jsx, setJsx] = useState("");
-
-  //   const handleConvert = () => {
-  //     const converter = new HtmlToJsx({
-  //       createClass: true,
-  //       outputClassName: "AwesomeComponent",
-  //     });
-  //     const convertedJsx = converter.convert(html);
-  //     setJsx(convertedJsx);
-  //   };
+  const [test_div, setTest_div] = useState(`
+  <p class="MyView-module__login_text___G0Dzv">네이버를 더 안전하고 편리하게 이용하세요!!</p>`);
+  const [test_click, setTest_click] = useState(parse(test_div));
 
   const [css, setcss] = useState(`<link
           href="https://pm.pstatic.net/resources/css/main.d2a35f78.css"
           rel="stylesheet"
         ></link>`);
+
+  const handleClick = () => {
+    alert("Input clicked!");
+  };
+
+  // style string을 style 객체로 파싱
+  const parseStyle = (style) => {
+    if (!style) return {};
+    return style
+      .split(";")
+      .filter(Boolean) // 빈 문자열을 필터링
+      .map((s) => s.split(":").map((str) => str.trim())) // key와 value로 나누기
+      .reduce((acc, [key, value]) => {
+        const camelKey = key.replace(/-([a-z])/g, (match) =>
+          match[1].toUpperCase()
+        );
+        acc[camelKey] = value;
+        return acc;
+      }, {});
+  };
+
+  const replace = (node) => {
+    // if (node.name === "p") {
+    //   var text = node.children[0].data;
+    //   var style = node.attribs.style;
+    //   // 스타일 문자열을 객체로 변환
+    //   const styleObject = parseStyle(
+    //     "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px;"
+    //   );
+    //   const newNode = {
+    //     type: "tag",
+    //     name: "span",
+    //     attribs: {
+    //       class: "newSpan",
+    //       style:
+    //         "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px",
+    //       onClick: handleClick,
+    //     },
+    //     children: [{ type: "text", data: text }],
+    //   };
+    //   // node.childeren.push(newNode);
+    //   // delete node.children[0].data;
+    //   node.children = [];
+    //   node.children = [...node.children, newNode];
+    //   return node;
+    //   // <p style={style}>
+    //   //   <span onClick={handleClick} style={styleObject}>
+    //   //     {text}
+    //   //   </span>
+    //   // </p>
+    // }
+    // if (node.children && node.children[0].type === "text") { // callstack size exceeded 에러남.
+    // if (node.name === "a" && node.children[0].type === "text") {
+    //   // if (
+    //   //   node.name === "a" &&
+    //   //   node.attribs.class === "link_naver type_motion_n is_fadein"
+    //   // ) {
+    //   // 첫번째 type이 text가 아닐 수 있음
+    //   var text = node.children[0].data;
+    //   console.log(node);
+    //   console.log(node.attribs.class);
+    //   console.log(node.children);
+    //   node.attribs.href = null;
+    //   const newNode = {
+    //     type: "tag",
+    //     name: "span",
+    //     attribs: {
+    //       class: "newSpan",
+    //       style:
+    //         "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px",
+    //       onClick: handleClick,
+    //     },
+    //     children: [{ type: "text", data: text }],
+    //   };
+    //   node.children[0] = newNode;
+    //   // node.children = [...node.children, newNode];
+    //   return node;
+    //   // <a onClick={handleClick} style={style}>
+    //   //   <span style={styleObject}>{text}</span>
+    //   // </a>
+    // }
+    // if (
+    //   // 상위에 a태그 있으면 href지워주어야 함.
+    //   node.name === "span" &&
+    //   node.children &&
+    //   node.children[0] &&
+    //   node.children[0].type === "text" &&
+    //   node.attribs.class &&
+    //   node.attribs.class != "newSpan"
+    // ) {
+    //   var text = node.children[0].data;
+    //   const newNode = {
+    //     type: "tag",
+    //     name: "span",
+    //     attribs: {
+    //       class: "newSpan",
+    //       style:
+    //         "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px",
+    //       onClick: handleClick,
+    //     },
+    //     children: [{ type: "text", data: text }],
+    //   };
+    //   node.children[0] = newNode;
+    //   return node;
+    // }
+    if (
+      // a태그 일부는 왜 적용되지 않을까?, div태그 일부도 적용되지 않음..., 새로운 html이 포함돼있으면 그것도 안됨...(네이버 한정)
+      node.children &&
+      node.children[0] &&
+      node.children[0].type === "text" &&
+      node.attribs.class &&
+      node.attribs.class != "newSpan"
+    ) {
+      var text = node.children[0].data;
+      const newNode = {
+        type: "tag",
+        name: "span",
+        attribs: {
+          class: "newSpan",
+          style:
+            "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px",
+          onClick: handleClick,
+        },
+        children: [{ type: "text", data: text }],
+      };
+      node.children[0] = newNode;
+      return node;
+    }
+  };
 
   return (
     <div>
@@ -134,7 +257,8 @@ const Test = () => {
       </Helmet>
       <Name>Test</Name>
       <Container>
-        <WebContainer>{parse(html)}</WebContainer>
+        <WebContainer>{parse(html, { replace })}</WebContainer>
+        {/* <p onClick={handleClick}>ㅎㅇ</p> */}
       </Container>
     </div>
   );
