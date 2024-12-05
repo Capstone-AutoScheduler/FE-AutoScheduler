@@ -7,6 +7,7 @@ import Main from "./pages/Main";
 import Create from "./pages/Create";
 import GeneratorStore from "./pages/GeneratorStore";
 import Generate from "./pages/Generate";
+import Generator from "./pages/Generator";
 import Test from "./pages/Test";
 
 import "./App.css";
@@ -22,6 +23,7 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/store" element={<GeneratorStore />} />
           <Route path="/generate" element={<Generate />} />
+          <Route path="/generator" element={<Generator />} />
           <Route path="/test" element={<Test />} />
         </Routes>
       </div>
