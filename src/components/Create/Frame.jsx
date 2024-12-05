@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
 
 import useStore from '../../store/Store'
@@ -116,10 +116,12 @@ const Section = styled.div`
 
 const Content = styled.div`
     width: 80%;
+    display: flex;
+    align-items: flex-start;
 `
 
 const Inner = ({frame, type, operation}) => {
-    const { removeFromTitle, removeFromDate, removeFromDetail, selected, setSelectedOperation } = useStore(state => state)
+    const { bubbles, removeFromTitle, removeFromDate, removeFromDetail, selected, setSelectedOperation } = useStore(state => state)
 
     const defaultBorder = '1px solid black';
     const selectedBorder = '2px solid red';
@@ -139,23 +141,46 @@ const Inner = ({frame, type, operation}) => {
         }
     }
 
+    const getContentOfArea = (area) => {
+        const start = area.start;
+        const end = area.end;
+        const items = [];
+        bubbles.forEach((bubble) => {
+            if ((start.x < bubble.x) && (bubble.x < end.x) && (start.y < bubble.y) && ( bubble.y < end.y)) {
+                items.push(bubble.str);
+            }
+        })
+        return items;
+    }
+    const [items, setItems] = useState([]);
+    useEffect(() => {
+        setItems(getContentOfArea(operation.area));
+    }, [])
+
     return (
         <InnerContainer
             onClick={handleClick}
             style={{border: (selected.operation === operation) ? selectedBorder : defaultBorder}}
         >
-            {JSON.stringify(operation)}
             {
-                (selected.operation === operation) ? <Menu onClick={deleteOperatoin}>X</Menu> : <></>
+                (items.length === 0) ?
+                '...'
+                :
+                items.map((text) => {
+                    return (<ItemBox>{text}</ItemBox>);
+                })
             }
+            { (selected.operation === operation) ? <Menu onClick={deleteOperatoin}>X</Menu> : <></> }
         </InnerContainer>
     );
 }
 
-const InnerContainer = styled.span`
+const InnerContainer = styled.div`
+    display : flex;
     border : 1px solid black;
     position : relative;
     background-color : white;
+    min-width: 30px;
 `
 
 const Menu = styled.div`
@@ -171,4 +196,9 @@ const Menu = styled.div`
     right: -10px;
 `
 
+const ItemBox = styled.div`
+    border : 1px solid black;
+    margin : 1px;
+    min-width: 20px;
+`
 export default Frame;
