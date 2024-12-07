@@ -2,14 +2,27 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import parse from "html-react-parser";
 import { Helmet } from "react-helmet";
+import useWebStore from "../../../store/WebStore";
 
 import useHtmlStore from "../../../store/HtmlStore";
 
 const WebHtml = () => {
   const { cssFile, setCssFile, htmlBody, setHtmlBody } = useHtmlStore();
+  const {
+    mouseX,
+    mouseY,
+    text,
+    bubble,
+    setMouseX,
+    setMouseY,
+    setText,
+    setBubble,
+  } = useWebStore();
 
   const [html, setHtml] = useState("");
   const [css, setCss] = useState("");
+  const [tooltip, setTooltip] = useState(null); // 툴팁 상태 (데이터 및 위치)
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 }); // 툴팁 위치
 
   // htmlBody가 변경될 때마다 html 상태를 업데이트
   useEffect(
@@ -28,8 +41,35 @@ const WebHtml = () => {
   const matches = [...css.matchAll(regex)];
 
   // 버블링
-  const handleClick = () => {
-    alert("Input clicked!");
+  const handleClick = (event) => {
+    // const path = [];
+    // let element = event.target;
+    // var cnt = 0;
+    // while (element && element.tagName !== "HTML") {
+    //   const parent = element.parentNode;
+    //   const index = Array.from(parent.children).indexOf(element);
+    //   console.log(index);
+    //   console.log(parent);
+    //   console.log(element.tagName);
+    //   path.push({ tag: element.tagName, index });
+    //   element = parent;
+    //   cnt++;
+    // }
+    // console.log(`cnt: ${cnt}`);
+    // // Zustand 스토어에 경로 저장
+    // WebStore.getState().addNode(path.reverse()); // 경로를 뒤집어 root에서 시작하도록 함
+
+    const newBubbleId = bubble.bubbleId + 1;
+    // 마우스 위치, text WebStore에 저장
+    const mouseX = event.pageX - 40;
+    const mouseY = event.pageY - 370;
+    const text = event.target.textContent;
+    setMouseX(mouseX);
+    setMouseY(mouseY);
+    setBubble({ bubbleId: newBubbleId, text: text });
+    console.log("!!!@@@###");
+    console.log(newBubbleId);
+    console.log(bubble.bubbleId);
   };
 
   const replace = (node) => {
@@ -39,7 +79,9 @@ const WebHtml = () => {
       node.children[0] &&
       node.children[0].type === "text" &&
       node.attribs.class &&
-      node.attribs.class != "newSpan"
+      node.attribs.class != "newSpan" &&
+      node.children[0].data != "" &&
+      node.children[0].data.trim() != ""
     ) {
       var text = node.children[0].data;
       const newNode = {
@@ -56,6 +98,43 @@ const WebHtml = () => {
       node.children[0] = newNode;
       return node;
     }
+    // if (node.children && node.children[0].type === "text") { // callstack size exceeded 에러남.
+    if (
+      (node.name === "p" || node.name === "span") &&
+      node.children &&
+      node.children[0] &&
+      node.children[0].type === "text" &&
+      node.attribs.class != "newSpan"
+    ) {
+      // 첫번째 type이 text가 아닐 수 있음
+      var text = node.children[0].data;
+      // console.log(node);
+      // console.log(node.attribs.class);
+      // console.log(node.children);
+      node.attribs.href = null;
+      const newNode = {
+        type: "tag",
+        name: "span",
+        attribs: {
+          class: "newSpan",
+          style:
+            "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px",
+          onClick: handleClick,
+        },
+        children: [{ type: "text", data: text }],
+      };
+      node.children[0] = newNode;
+      // node.children = [...node.children, newNode];
+      return node;
+      // <a onClick={handleClick} style={style}>
+      //   <span style={styleObject}>{text}</span>
+      // </a>
+    }
+    // if (node.children && node.children[0].type === "text") { // callstack size exceeded 에러남.
+    if (node.name === "a") {
+      node.attribs.href = null;
+      return node;
+    }
   };
 
   return (
@@ -63,6 +142,24 @@ const WebHtml = () => {
       <Helmet>{matches.map((match, index) => parse(css))}</Helmet>
       <Container>
         <WebContainer>{parse(html, { replace })}</WebContainer>
+        {/* 선택된 버블이 마우스 위치에 따라 표시 */}
+        {bubble.text && (
+          <div
+            style={{
+              position: "absolute",
+              left: `${mouseX}px`,
+              top: `${mouseY}px`,
+              fontSize: "14px",
+              padding: "5px",
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              color: "white",
+              borderRadius: "5px",
+              pointerEvents: "none", // 툴팁이 다른 요소와 상호작용하지 않게 함
+            }}
+          >
+            {bubble.text}
+          </div>
+        )}
       </Container>
     </div>
   );

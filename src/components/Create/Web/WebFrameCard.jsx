@@ -1,45 +1,20 @@
-import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import useStore from "../../store/Store";
+import useWebStore from "../../../store/WebStore";
+import useStore from "../../../store/Store";
 
-const Frame = ({ item }) => {
-  const {
-    selectedFrameId,
-    selected,
-    setSelectedFrameId,
-    removeFrame,
-    addToTitle,
-    addToDate,
-    addToDetail,
-  } = useStore((state) => state);
-
-  const ContainerRef = useRef(null);
+const WebFrameCard = ({ item }) => {
+  const { selectedFrameId, setSelectedFrameId, removeFrame } = useWebStore(
+    (state) => state
+  );
 
   const bgColor = "rgba(235, 186, 7, 0.3)";
   const selectedBorder = "3px solid red";
   const defaultBorder = "2px solid rgba(235, 186, 7, 0.7)";
 
-  useEffect(() => {
-    ContainerRef.current.style.top = 100 + "px";
-    ContainerRef.current.style.left = 1000 + "px";
-  }, []);
-
-  const handleMouseUp = (endRow) => () => {
-    if (selected.area != null) {
-      const operation = {
-        type: "drag",
-        area: selected.area,
-        childOperations: [],
-      };
-      if (endRow === "title") {
-        addToTitle(item.id, operation);
-      } else if (endRow === "date") {
-        addToDate(item.id, operation);
-      } else {
-        addToDetail(item.id, operation);
-      }
-    }
+  const handleClick = () => {
+    setSelectedFrameId(item.id);
+    console.log(item.id);
   };
 
   const deleteFrame = () => {
@@ -49,13 +24,13 @@ const Frame = ({ item }) => {
 
   return (
     <Container
-      ref={ContainerRef}
+      onClick={handleClick}
       style={{
         backgroundColor: bgColor,
-        border: defaultBorder,
+        border: selectedFrameId === item.id ? selectedBorder : defaultBorder,
       }}
     >
-      <Row onMouseUp={handleMouseUp("title")} style={{ height: "10%" }}>
+      <Row>
         <Section>Title</Section>
         <Content>
           {item.title.map((operation) => {
@@ -63,7 +38,7 @@ const Frame = ({ item }) => {
           })}
         </Content>
       </Row>
-      <Row onMouseUp={handleMouseUp("date")} style={{ height: "10%" }}>
+      <Row>
         <Section>Date</Section>
         <Content>
           {item.date.map((operation) => {
@@ -71,19 +46,33 @@ const Frame = ({ item }) => {
           })}
         </Content>
       </Row>
-      <Row onMouseUp={handleMouseUp("detail")} style={{ height: "80%" }}>
+      <Row style={{ height: "100%" }}>
         <Content>
           {item.detail.map((operation) => {
             return <Inner frame={item} type={"detail"} operation={operation} />;
           })}
         </Content>
       </Row>
+      {selectedFrameId === item.id ? (
+        <Menu
+          onMouseDown={(event) => {
+            event.stopPropagation();
+          }}
+          onMouseUp={(event) => {
+            event.stopPropagation();
+          }}
+          onClick={deleteFrame}
+        >
+          X
+        </Menu>
+      ) : (
+        <></>
+      )}
     </Container>
   );
 };
 
 const Container = styled.div`
-  position: absolute;
   user-select: none;
   font-size: 12px;
 
@@ -96,8 +85,10 @@ const Container = styled.div`
   border-radius: 4px;
   border: 2px solid rgba(235, 186, 7, 0.7);
 
-  width: 400px;
-  height: 300px;
+  width: 180px;
+  height: 120px;
+
+  flex-shrink: 0;
 `;
 
 const Row = styled.div`
@@ -115,13 +106,10 @@ const Section = styled.div`
 
 const Content = styled.div`
   width: 80%;
-  display: flex;
-  align-items: flex-start;
 `;
 
 const Inner = ({ frame, type, operation }) => {
   const {
-    bubbles,
     removeFromTitle,
     removeFromDate,
     removeFromDetail,
@@ -147,27 +135,10 @@ const Inner = ({ frame, type, operation }) => {
     }
   };
 
-  const getContentOfArea = (area) => {
-    const start = area.start;
-    const end = area.end;
-    const items = [];
-    bubbles.forEach((bubble) => {
-      if (
-        start.x < bubble.x &&
-        bubble.x < end.x &&
-        start.y < bubble.y &&
-        bubble.y < end.y
-      ) {
-        items.push(bubble.str);
-      }
-    });
-    return items;
-  };
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    setItems(getContentOfArea(operation.area));
-  }, []);
-
+  var content = JSON.stringify(operation);
+  if (content.length > 25) {
+    content = content.slice(0, 25) + "...";
+  }
   return (
     <InnerContainer
       onClick={handleClick}
@@ -176,11 +147,7 @@ const Inner = ({ frame, type, operation }) => {
           selected.operation === operation ? selectedBorder : defaultBorder,
       }}
     >
-      {items.length === 0
-        ? "..."
-        : items.map((text) => {
-            return <ItemBox>{text}</ItemBox>;
-          })}
+      {content}
       {selected.operation === operation ? (
         <Menu onClick={deleteOperatoin}>X</Menu>
       ) : (
@@ -190,12 +157,10 @@ const Inner = ({ frame, type, operation }) => {
   );
 };
 
-const InnerContainer = styled.div`
-  display: flex;
+const InnerContainer = styled.span`
   border: 1px solid black;
   position: relative;
   background-color: white;
-  min-width: 30px;
 `;
 
 const Menu = styled.div`
@@ -211,9 +176,4 @@ const Menu = styled.div`
   right: -10px;
 `;
 
-const ItemBox = styled.div`
-  border: 1px solid black;
-  margin: 1px;
-  min-width: 20px;
-`;
-export default Frame;
+export default WebFrameCard;

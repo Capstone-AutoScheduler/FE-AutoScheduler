@@ -228,8 +228,16 @@ const Test = () => {
       node.children[0] &&
       node.children[0].type === "text" &&
       node.attribs.class &&
-      node.attribs.class != "newSpan"
+      node.attribs.class != "newSpan" &&
+      node.children[0].data.trim() != ""
     ) {
+      console.log(node.attribs.class);
+      console.log(node.children[0].type);
+
+      if (node.children[0].data.trim() == "") {
+        console.log(node.children[0].data);
+        console.log("!!@@##");
+      }
       var text = node.children[0].data;
       const newNode = {
         type: "tag",

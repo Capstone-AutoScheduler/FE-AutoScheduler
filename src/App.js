@@ -2,9 +2,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import SideBtn from "./components/SideBtn"
+import SideBtn from "./components/SideBtn";
 import Main from "./pages/Main";
 import Create from "./pages/Create";
+import CreateWeb from "./pages/CreateWeb";
 import GeneratorStore from "./pages/GeneratorStore";
 import Generate from "./pages/Generate";
 import Generator from "./pages/Generator";
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/createWeb" element={<CreateWeb />} />
           <Route path="/store" element={<GeneratorStore />} />
           <Route path="/generate" element={<Generate />} />
           <Route path="/generator" element={<Generator />} />

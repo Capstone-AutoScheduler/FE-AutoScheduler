@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import useStore from "../../store/Store";
+import useStore from "../../../store/Store";
+import useWebStore from "../../../store/WebStore";
 
-const Frame = ({ item }) => {
-  const {
-    selectedFrameId,
-    selected,
-    setSelectedFrameId,
-    removeFrame,
-    addToTitle,
-    addToDate,
-    addToDetail,
-  } = useStore((state) => state);
+const WebFrame = ({ item }) => {
+  const { selectedFrameId, setSelectedFrameId, removeFrame } = useStore(
+    (state) => state
+  );
+
+  const { addToTitle, addToDate, addToDetail, bubble, selected } = useWebStore(
+    (state) => state
+  );
 
   const ContainerRef = useRef(null);
 
@@ -22,7 +21,7 @@ const Frame = ({ item }) => {
 
   useEffect(() => {
     ContainerRef.current.style.top = 100 + "px";
-    ContainerRef.current.style.left = 1000 + "px";
+    ContainerRef.current.style.left = 1090 + "px";
   }, []);
 
   const handleMouseUp = (endRow) => () => {
@@ -47,6 +46,22 @@ const Frame = ({ item }) => {
     removeFrame(item);
   };
 
+  // pdf에서는 bubble의 영역을 저장해 다른 pdf에서 적합한 bubble가져올 때 쓰임.
+  // 이 영역을 이용해서 버블의 text 후에 가져옴.
+  // web에서는 frame에 text를 바로 넣고, mapping배열을 따로 만들어 버블의 위치 저장해줄것임.
+  const handleClick = (endRow) => (event) => {
+    if (bubble.text) {
+      // WebBoard.jsx의 handleClick에서 setText(null)이 먼저 실행되면 어떡하나?, 현재 handleClick에 의해서 변화가 일어나서 재렌더링 되기 때문에 괜찮을 것이다.
+      if (endRow === "title") {
+        addToTitle(item.id, bubble);
+      } else if (endRow === "date") {
+        addToDate(item.id, bubble);
+      } else {
+        addToDetail(item.id, bubble);
+      }
+    }
+  };
+
   return (
     <Container
       ref={ContainerRef}
@@ -55,26 +70,26 @@ const Frame = ({ item }) => {
         border: defaultBorder,
       }}
     >
-      <Row onMouseUp={handleMouseUp("title")} style={{ height: "10%" }}>
+      <Row onClick={handleClick("title")} style={{ height: "10%" }}>
         <Section>Title</Section>
         <Content>
-          {item.title.map((operation) => {
-            return <Inner frame={item} type={"title"} operation={operation} />;
+          {item.title.map((bubble) => {
+            return <Inner frame={item} type={"title"} bubble={bubble} />;
           })}
         </Content>
       </Row>
-      <Row onMouseUp={handleMouseUp("date")} style={{ height: "10%" }}>
+      <Row onClick={handleClick("date")} style={{ height: "10%" }}>
         <Section>Date</Section>
         <Content>
-          {item.date.map((operation) => {
-            return <Inner frame={item} type={"date"} operation={operation} />;
+          {item.date.map((bubble) => {
+            return <Inner frame={item} type={"date"} bubble={bubble} />;
           })}
         </Content>
       </Row>
-      <Row onMouseUp={handleMouseUp("detail")} style={{ height: "80%" }}>
+      <Row onClick={handleClick("detail")} style={{ height: "80%" }}>
         <Content>
-          {item.detail.map((operation) => {
-            return <Inner frame={item} type={"detail"} operation={operation} />;
+          {item.detail.map((bubble) => {
+            return <Inner frame={item} type={"detail"} bubble={bubble} />;
           })}
         </Content>
       </Row>
@@ -119,31 +134,37 @@ const Content = styled.div`
   align-items: flex-start;
 `;
 
-const Inner = ({ frame, type, operation }) => {
+const Inner = ({ frame, type, bubble }) => {
+  const { bubbles, setSelectedOperation } = useStore((state) => state);
+
   const {
-    bubbles,
+    selected,
+    setSelectedBubble,
     removeFromTitle,
     removeFromDate,
     removeFromDetail,
-    selected,
-    setSelectedOperation,
-  } = useStore((state) => state);
+  } = useWebStore((state) => state);
 
   const defaultBorder = "1px solid black";
   const selectedBorder = "2px solid red";
 
   const handleClick = (event) => {
     event.stopPropagation();
-    setSelectedOperation(operation, frame);
+    setSelectedBubble(bubble);
   };
 
-  const deleteOperatoin = () => {
+  //   if (selected.bubble != null) {
+  //     console.log(selected.buuble.text);
+  //   }
+
+  const deleteOperation = () => {
+    console.log("hello!");
     if (type === "title") {
-      removeFromTitle(frame.id, operation);
+      removeFromTitle(frame.id, bubble.bubbleId);
     } else if (type === "date") {
-      removeFromDate(frame.id, operation);
+      removeFromDate(frame.id, bubble.bubbleId);
     } else {
-      removeFromDetail(frame.id, operation);
+      removeFromDetail(frame.id, bubble.bubbleId);
     }
   };
 
@@ -163,29 +184,32 @@ const Inner = ({ frame, type, operation }) => {
     });
     return items;
   };
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    setItems(getContentOfArea(operation.area));
-  }, []);
+  //   const [items, setItems] = useState([]);
+  //   useEffect(() => {
+  //     setItems(getContentOfArea(operation.area));
+  //   }, []);
 
   return (
     <InnerContainer
       onClick={handleClick}
       style={{
         border:
-          selected.operation === operation ? selectedBorder : defaultBorder,
+          selected.bubble.bubbleId === bubble.bubbleId
+            ? selectedBorder
+            : defaultBorder,
       }}
     >
-      {items.length === 0
+      {/* {items.length === 0
         ? "..."
         : items.map((text) => {
             return <ItemBox>{text}</ItemBox>;
-          })}
-      {selected.operation === operation ? (
-        <Menu onClick={deleteOperatoin}>X</Menu>
+          })} */}
+      {selected.bubble.bubbleId === bubble.bubbleId ? (
+        <Menu onClick={deleteOperation}>X</Menu>
       ) : (
         <></>
       )}
+      {bubble.text}
     </InnerContainer>
   );
 };
@@ -216,4 +240,4 @@ const ItemBox = styled.div`
   margin: 1px;
   min-width: 20px;
 `;
-export default Frame;
+export default WebFrame;
