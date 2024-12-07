@@ -6,12 +6,14 @@ const Edit = () => {
     const { results, selectedResult, updateResultAtIndex } = useGenerateStore(state=>state);
 
     const [title, setTitle] = useState('');
+    const [date, setDate] = useState('');
     const [detail, setDetail] = useState('');
     
     useEffect(() => {
         if (selectedResult != null) {
             const selected = results[selectedResult];
             setTitle(selected.title);
+            setDate(selected.date);
             setDetail(selected.detail);
         }
     }, [ selectedResult ]);
@@ -19,7 +21,7 @@ const Edit = () => {
     const applyChange = () => {
         const newResult = {
             title: title,
-            date: 1,
+            date: date,
             detail: detail,
         }
         updateResultAtIndex(selectedResult, newResult);
@@ -33,7 +35,10 @@ const Edit = () => {
                         value={title}
                         onChange={(event) => {setTitle(event.target.value)}}
                     ></Title>
-                    <input type="date" />
+                    <input 
+                        value={date} 
+                        onChange={(event) => {setDate(event.target.value)}}
+                        type="date" />
                 </BoxUpper>
                 <Content 
                     value={detail}

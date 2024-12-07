@@ -4,7 +4,7 @@ import styled from "styled-components"
 import useStore from '../../store/Store'
 
 const Frame = ({ item }) => {
-    const { selectedFrameId, selected, setSelectedFrameId, removeFrame, addToTitle, addToDate, addToDetail } = useStore(state => state)
+    const { selectedFrameId, selected, setSelectedFrameId, removeFrame, addToTitle, addToDate, addToDetail, startDate} = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
@@ -39,6 +39,9 @@ const Frame = ({ item }) => {
         removeFrame(item);
     }
 
+    const [ titleNewShow, setTitleNewShow ] = useState(false);
+    const [ dateNewShow, setDateNewShow ] = useState(false);
+
     return (
         <Container 
             ref={ContainerRef}
@@ -51,22 +54,31 @@ const Frame = ({ item }) => {
                 onMouseUp={handleMouseUp('title')}
                 style={{ height: "10%" }}
             >
-                <Section>Title</Section>
+                <Section>
+                    Title
+                    <Btn onClick={() => setTitleNewShow(true)}>+</Btn>
+                </Section>
                 <Content>
                     {item.title.map((operation) => {
                         return (<Inner frame={item} type={'title'} operation={operation} />);
                     })}
+                    {(titleNewShow) ? <NewInput frameId={item.id} addContent={addToTitle} setShow={setTitleNewShow}/> : <></>}
                 </Content>
             </Row>
             <Row 
                 onMouseUp={handleMouseUp('date')}
                 style={{ height: "10%" }}
             >
-                <Section>Date</Section>
+                <Section>
+                    Date
+                    <Btn onClick={() => setDateNewShow(true)}>+</Btn>
+                </Section>
                 <Content>
+                    {(startDate !== null) ? <StartDate>{startDate}</StartDate> : <></>}
                     {item.date.map((operation) => {
                         return (<Inner frame={item} type={'date'} operation={operation} />);
                     })}
+                    {(dateNewShow) ? <NewInput frameId={item.id} addContent={addToDate} setShow={setDateNewShow}/> : <></>}
                 </Content>
             </Row>
             <Row
@@ -112,12 +124,32 @@ const Section = styled.div`
     font-size: 16px;
     border-right: 2px solid rgba(235, 186, 7, 0.7);
     width: 18%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 const Content = styled.div`
     width: 80%;
     display: flex;
     align-items: flex-start;
+`
+
+const Btn = styled.button`
+    border: 1px solid black;
+    width: 20px;
+    height: 20px;
+    margin: 0px 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const StartDate = styled.div`
+    border: 1px solid black;
+    background-color: #FFFFFF;
 `
 
 const Inner = ({frame, type, operation}) => {
@@ -147,14 +179,21 @@ const Inner = ({frame, type, operation}) => {
         const items = [];
         bubbles.forEach((bubble) => {
             if ((start.x < bubble.x) && (bubble.x < end.x) && (start.y < bubble.y) && ( bubble.y < end.y)) {
-                items.push(bubble.str);
+                if (bubble.str.trim() !== '') {
+                    items.push(bubble.str);
+                }
             }
         })
         return items;
     }
+
     const [items, setItems] = useState([]);
     useEffect(() => {
-        setItems(getContentOfArea(operation.area));
+        if(operation.type === 'drag') {
+            setItems(getContentOfArea(operation.area));
+        } else if (operation.type === 'text') {
+            setItems([operation.text]);
+        }
     }, [])
 
     return (
@@ -201,4 +240,47 @@ const ItemBox = styled.div`
     margin : 1px;
     min-width: 20px;
 `
+
+const NewInput = ({frameId, addContent, setShow}) => {
+    const [value, setValue] = useState('');
+
+    const handleAdd = () => {
+        const operation = {
+            type: "text",
+            text: value,
+            childOperations: []
+        }
+        addContent(frameId, operation);
+
+        setValue('');
+        setShow(false);
+    };
+
+    const handleCancle = () => {
+        setValue('');
+        setShow(false);
+    };
+
+    return (
+        <InputContainer>
+            <input onChange={(event) => {setValue(event.target.value)}} value={value}></input>
+            <AddBtn onClick={handleAdd}>추가</AddBtn>
+            <CancleBtn onClick={handleCancle}>취소</CancleBtn>
+        </InputContainer>
+    );
+}
+
+const InputContainer = styled.div`
+`
+
+const AddBtn = styled.button`
+    border: 1px solid #04B404;
+    background-color: #2EFE2E;
+`
+
+const CancleBtn = styled.button`
+    border: 1px solid #DF0101;
+    background-color: #FA5858;
+`
+
 export default Frame;
