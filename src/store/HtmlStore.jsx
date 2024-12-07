@@ -17,6 +17,12 @@ const useHtmlStore = create((set) => ({
     set({
       htmlBody: htmlBody,
     }),
+
+  bodyForGenerate: "",
+  setBodyForGenerate: (bodyForGenerate) =>
+    set({
+      bodyForGenerate: bodyForGenerate,
+    }),
 }));
 
 export default useHtmlStore;

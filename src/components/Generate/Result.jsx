@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
-import useGenerateStore from '../../store/GenerateStore';
+import useGenerateStore from "../../store/GenerateStore";
 
-import Schedule from './Schedule';
+import Schedule from "./Schedule";
 
 const Result = () => {
     const { results, setResults, appendResult, 
@@ -89,6 +89,28 @@ const Result = () => {
         const output = calculatedDay.toISOString().split('T')[0];
         return output;
     }
+    //
+    //traverse frames
+    //generate schedule using offset
+    console.log("content : ", pdfContent);
+    //console.log('frames : ', frames);
+    //console.log('frame.title : ', pdfContent[frames[0].title[0].startBubbleId + offset].str);
+    frames.forEach((frame, index) => {
+      const result = { titles: null, dates: null, details: null };
+      frame.title.forEach((item) => {
+        //console.log(findItemInArea(item.area, offsetX, offsetY));
+        result.titles = findItemInArea(item.area, offsetX, offsetY);
+      });
+      frame.date.forEach((item) => {
+        //console.log(findItemInArea(item.area, offsetX, offsetY));
+        result.dates = findItemInArea(item.area, offsetX, offsetY);
+      });
+      frame.detail.forEach((item) => {
+        //console.log(findItemInArea(item.area, offsetX, offsetY));
+        result.details = findItemInArea(item.area, offsetX, offsetY);
+      });
+      setResults((prev) => [...prev, result]);
+    });
 
     const findStrInArea = (area, offsetX, offsetY) => {
         const strs = [];
@@ -104,9 +126,8 @@ const Result = () => {
         return strs;
     }
 
-    useEffect(() => {
-        if(pdfContent) { GenerateSchedule(); }
-    }, [pdfContent]);
+    return items;
+  };
 
     return (
         <Container>

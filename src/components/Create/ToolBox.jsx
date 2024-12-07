@@ -7,11 +7,11 @@ import useStore from "../../store/Store";
 const ToolBox = () => {
     const { frames, bubbles, startDate } = useStore((state) => state);
 
-    const printFrames = () => {
-        const stringData = JSON.stringify(frames);
-        console.log(stringData);
-        console.log(JSON.parse(stringData));
-    }
+  const printFrames = () => {
+    const stringData = JSON.stringify(frames);
+    console.log(stringData);
+    console.log(JSON.parse(stringData));
+  };
 
     const saveMachine = () => {
         localStorage.setItem('frames', JSON.stringify(frames));
@@ -29,8 +29,10 @@ const ToolBox = () => {
                 });
             }
         });
-        localStorage.setItem('mapping', JSON.stringify(Mapping));
-    }
+      }
+    });
+    localStorage.setItem("mapping", JSON.stringify(Mapping));
+  };
 
     return (
         <Container>

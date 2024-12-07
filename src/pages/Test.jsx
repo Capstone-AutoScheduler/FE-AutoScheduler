@@ -139,35 +139,35 @@ const Test = () => {
   };
 
   const replace = (node) => {
-    // if (node.name === "p") {
-    //   var text = node.children[0].data;
-    //   var style = node.attribs.style;
-    //   // 스타일 문자열을 객체로 변환
-    //   const styleObject = parseStyle(
-    //     "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px;"
-    //   );
-    //   const newNode = {
-    //     type: "tag",
-    //     name: "span",
-    //     attribs: {
-    //       class: "newSpan",
-    //       style:
-    //         "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px",
-    //       onClick: handleClick,
-    //     },
-    //     children: [{ type: "text", data: text }],
-    //   };
-    //   // node.childeren.push(newNode);
-    //   // delete node.children[0].data;
-    //   node.children = [];
-    //   node.children = [...node.children, newNode];
-    //   return node;
-    //   // <p style={style}>
-    //   //   <span onClick={handleClick} style={styleObject}>
-    //   //     {text}
-    //   //   </span>
-    //   // </p>
-    // }
+    if (node.name === "p") {
+      var text = node.children[0].data;
+      var style = node.attribs.style;
+      // 스타일 문자열을 객체로 변환
+      const styleObject = parseStyle(
+        "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px;"
+      );
+      const newNode = {
+        type: "tag",
+        name: "span",
+        attribs: {
+          class: "newSpan",
+          style:
+            "background-color: lightblue; display: inline; padding: 5px; border-radius: 5px",
+          onClick: handleClick,
+        },
+        children: [{ type: "text", data: text }],
+      };
+      // node.childeren.push(newNode);
+      // delete node.children[0].data;
+      node.children = [];
+      node.children = [...node.children, newNode];
+      return node;
+      // <p style={style}>
+      //   <span onClick={handleClick} style={styleObject}>
+      //     {text}
+      //   </span>
+      // </p>
+    }
     // if (node.children && node.children[0].type === "text") { // callstack size exceeded 에러남.
     // if (node.name === "a" && node.children[0].type === "text") {
     //   // if (
@@ -228,8 +228,16 @@ const Test = () => {
       node.children[0] &&
       node.children[0].type === "text" &&
       node.attribs.class &&
-      node.attribs.class != "newSpan"
+      node.attribs.class != "newSpan" &&
+      node.children[0].data.trim() != ""
     ) {
+      console.log(node.attribs.class);
+      console.log(node.children[0].type);
+
+      if (node.children[0].data.trim() == "") {
+        console.log(node.children[0].data);
+        console.log("!!@@##");
+      }
       var text = node.children[0].data;
       const newNode = {
         type: "tag",

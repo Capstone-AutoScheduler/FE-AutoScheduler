@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react"
-import styled from "styled-components"
+import { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
 
-import useStore from '../../store/Store'
+import useStore from "../../store/Store";
 
 const Frame = ({ item }) => {
     const { selectedFrameId, selected, setSelectedFrameId, removeFrame, addToTitle, addToDate, addToDetail, startDate} = useStore(state => state)
@@ -96,29 +96,29 @@ const Frame = ({ item }) => {
 };
 
 const Container = styled.div`
-    position: absolute;
-    user-select: none;
-    font-size: 12px;
+  position: absolute;
+  user-select: none;
+  font-size: 12px;
 
-    padding: 2px 4px;
+  padding: 2px 4px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
-    border: 2px solid rgba(235, 186, 7, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  border: 2px solid rgba(235, 186, 7, 0.7);
 
-    width: 400px;
-    height: 300px;
-`
+  width: 400px;
+  height: 300px;
+`;
 
 const Row = styled.div`
-    border: 2px solid rgba(235, 186, 7, 0.7);
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-`
+  border: 2px solid rgba(235, 186, 7, 0.7);
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+`;
 
 const Section = styled.div`
     font-size: 16px;
@@ -215,25 +215,25 @@ const Inner = ({frame, type, operation}) => {
 }
 
 const InnerContainer = styled.div`
-    display : flex;
-    border : 1px solid black;
-    position : relative;
-    background-color : white;
-    min-width: 30px;
-`
+  display: flex;
+  border: 1px solid black;
+  position: relative;
+  background-color: white;
+  min-width: 30px;
+`;
 
 const Menu = styled.div`
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 15px;
-    height: 15px;
-    border-radius: 10px;
-    background-color: red;
-    top: -20px;
-    right: -10px;
-`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  background-color: red;
+  top: -20px;
+  right: -10px;
+`;
 
 const ItemBox = styled.div`
     border : 1px solid black;

@@ -1,32 +1,39 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 
-import useStore from "../../store/Store";
+import useStore from "../../../store/Store";
+import useWebStore from "../../../store/WebStore";
 
-import Bubble from "./Bubble";
-import Frame from "./Frame";
-import Overlay from "./Overlay";
+import Bubble from "../Bubble";
+import Frame from "./WebFrame";
+import Overlay from "../Overlay";
 
-import WebHtml from "./Web/WebHtml";
+import WebHtml from "./WebHtml";
 
-const Board = () => {
+const WebBoard = () => {
   const {
     setSelectedArea,
     isDragging,
     setIsDragging,
     bubbles,
-    frames,
-    mouseX,
-    mouseY,
-    setMouseX,
-    setMouseY,
     setSelectedFrameId,
-    selectedFrameId,
     areaStart,
     setAreaStart,
     appendArea,
     areas,
   } = useStore((state) => state);
+  const {
+    mouseX,
+    mouseY,
+    bubble,
+    setMouseX,
+    setMouseY,
+    setBubbleTextNull,
+    frames,
+    selectedFrameId,
+    selected,
+    setSelectedBubble,
+  } = useWebStore();
 
   // init offset
   const boardRef = useRef(null);
@@ -56,14 +63,14 @@ const Board = () => {
     }
   };
 
-  const handleMouseMove = (event) => {
-    setMouseX(event.pageX - offset.x);
-    setMouseY(event.pageY - offset.y);
-  };
+  //   const handleMouseMove = (event) => {
+  //     setMouseX(event.pageX - offset.x);
+  //     setMouseY(event.pageY - offset.y);
+  //   };
 
   useEffect(() => {
-    console.log("frames", frames);
-  }, [frames]);
+    console.log("areas", areas);
+  }, [areas]);
 
   const [currentFrame, setCurrentFrame] = useState(null);
   useEffect(() => {
@@ -74,11 +81,27 @@ const Board = () => {
     }
   }, [selectedFrameId, frames]);
 
+  // 마우스 움직일 때 툴팁 위치 업데이트
+  const handleMouseMove = (event) => {
+    setMouseX(event.pageX - 40);
+    setMouseY(event.pageY - 370);
+  };
+
+  const handleClick = (event) => {
+    if (bubble.text) setBubbleTextNull();
+    if (selected.bubble.BubbleId != 0)
+      setSelectedBubble({
+        bubbleId: 0,
+        text: "",
+      });
+  };
+
   return (
     <Container
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
+      onClick={handleClick}
       ref={boardRef}
     >
       <WebHtml></WebHtml>
@@ -86,7 +109,7 @@ const Board = () => {
         return <Bubble key={bubble.id} item={bubble} />;
       })}
       {currentFrame !== null ? <Frame item={currentFrame} /> : <></>}
-      <Overlay />
+      {/* <Overlay /> */}
       {/*<Area />*/}
       {/*<ArrowMenu />*/}
     </Container>
@@ -99,4 +122,4 @@ const Container = styled.div`
   height: 1200px;
 `;
 
-export default Board;
+export default WebBoard;
