@@ -21,6 +21,7 @@ const Result = () => {
         var offsetX = 0;
         var offsetY = 0;
         var found = false;
+        var startDate = mapping[0].startDate;
         pdfContent.forEach((item) => {
             if(item.str === mapping[0].string) {
                 console.log('found mapping!');
@@ -57,16 +58,36 @@ const Result = () => {
         frames.forEach((frame)=>{
             const result = {title: '', date: '', detail: ''};
             frame.title.forEach((item) => {
-                result.title += findStrInArea(item.area, offsetX, offsetY).join(' ');       
+                var str;
+                if (item.type === 'drag') { str = findStrInArea(item.area, offsetX, offsetY).join(' '); }
+                else if (item.type === 'text') { str = item.text; }
+                result.title += str;
             })
+            var expression = '';
             frame.date.forEach((item) => {
-                result.date += findStrInArea(item.area, offsetX, offsetY).join(' ');
+                var str;
+                if (item.type === 'drag') { str = findStrInArea(item.area, offsetX, offsetY).join(' '); }
+                else if (item.type === 'text') { str = item.text; }
+                expression += str;
             })
+            result.date += handleDate(startDate, expression);
             frame.detail.forEach((item) => {
-                result.detail += findStrInArea(item.area, offsetX, offsetY).join(' ');
+                var str;
+                if (item.type === 'drag') { str = findStrInArea(item.area, offsetX, offsetY).join(' '); }
+                else if (item.type === 'text') { str = item.text; }
+                result.detail += str;
             })
             appendResult(result);
         });
+    }
+
+    const handleDate = (startDate, expression) => {
+        const math = require('mathjs');
+        const day = new Date(startDate) / 86400000;
+        const result = math.evaluate(day + expression);
+        const calculatedDay = new Date(result * 86400000);
+        const output = calculatedDay.toISOString().split('T')[0];
+        return output;
     }
 
     const findStrInArea = (area, offsetX, offsetY) => {

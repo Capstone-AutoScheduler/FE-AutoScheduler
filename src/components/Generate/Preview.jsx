@@ -6,7 +6,7 @@ import useGenerateStore from '../../store/GenerateStore';
 import Palette from './Palette';
 
 const Preview = () => {
-    const { results } = useGenerateStore(state=>state);
+    const { results, scheduleColor } = useGenerateStore(state=>state);
 
     const [ year, setYear ] = useState(2024);
     const [ month, setMonth ] = useState(12);
@@ -34,7 +34,14 @@ const Preview = () => {
         };
         const arr = [];
         const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        console.log('date info', dateInfo);
+        
+        const relatedResults = Array(31).fill(false);
+        results.forEach((result) => {
+            const temp = new Date(result.date);
+            if (temp.getMonth() + 1 === month) {
+                relatedResults[temp.getDate()] = true;
+            }
+        })
         for (var i=0; i < 6; i++) {
             if (dateInfo.startDate.weekday === weekdays[i]) { 
                 break; 
@@ -43,26 +50,46 @@ const Preview = () => {
             }
         }
         for (i=1; i <= 31; i++) {
-            arr.push({ num: i });
+            if (relatedResults[i]) { arr.push({ num:i, box: true}) }
+            else { arr.push({ num: i, box: false }); }
             if (dateInfo.endDate.day === i) { break; } 
         }
         while ( arr.length % 7 !== 0 ) {
             arr.push({ num: -1 })
         }
         setDates(arr);
-        console.log(arr);
     }
 
     useEffect(() => {
         createDate();
     }, [year, month])
 
+    const nextMonth = () => {
+        if (month === 12) {
+            setMonth(1);
+            setYear(val => val + 1);
+        } else {
+            setMonth(val => val + 1)
+        }
+    }
+
+    const prevMonth = () => {
+        if (month === 1) {
+            setMonth(12);
+            setYear(val => val - 1);
+        } else {
+            setMonth(val => val - 1)
+        }
+    }
+
     return (
         <Container>
             <Top>
                 <Palette />
                 <Info>
+                    <MonthBtn onClick={prevMonth}>◀</MonthBtn>
                     {`${year}년 ${month}월`}
+                    <MonthBtn onClick={nextMonth}>▶</MonthBtn>
                 </Info>
             </Top>
             <Calendar>
@@ -73,8 +100,13 @@ const Preview = () => {
                     <Weekday>목</Weekday>
                     <Weekday>금</Weekday>
                     <Weekday>토</Weekday>
-                    {dates.map((date) => {
-                        return (<Day>{(date.num === -1) ? '' : date.num}</Day>);
+                    {dates.map((date, index) => {
+                        return (
+                            <Day key={index}>
+                                <Num>{(date.num === -1) ? '' : date.num}</Num>
+                                {(date.box) ? <Box style={{border: '4px solid ' + scheduleColor}}></Box> : <></>}
+                            </Day>
+                        );
                     })}
             </Calendar>
             <AddBtn>캘린더에 추가하기</AddBtn>
@@ -101,6 +133,15 @@ const Info = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin: 4px;
+    width: 180px;
+    display: flex;
+    justify-content: space-between;
+`
+
+const MonthBtn = styled.button`
+    border: 1px solid black;
+    margin: 0px 4px;
+    border-radius: 8px;
 `
 
 const Calendar = styled.div`
@@ -124,10 +165,26 @@ const Weekday = styled.div`
 
 const Day = styled.div`
     border: 1px solid black;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 const AddBtn = styled.button`
     margin: 4px;
+`
+
+const Num = styled.div`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 12px;
+`
+
+const Box = styled.div`
+    width: 35px;;
+    height: 20px;
 `
 
 export default Preview;
