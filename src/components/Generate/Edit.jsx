@@ -1,21 +1,47 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-import Palette from './Palette';
+import useGenerateStore from '../../store/GenerateStore';
 
 const Edit = () => {
+    const { results, selectedResult, updateResultAtIndex } = useGenerateStore(state=>state);
+
+    const [title, setTitle] = useState('');
+    const [detail, setDetail] = useState('');
+    
+    useEffect(() => {
+        if (selectedResult != null) {
+            const selected = results[selectedResult];
+            setTitle(selected.title);
+            setDetail(selected.detail);
+        }
+    }, [ selectedResult ]);
+
+    const applyChange = () => {
+        const newResult = {
+            title: title,
+            date: 1,
+            detail: detail,
+        }
+        updateResultAtIndex(selectedResult, newResult);
+    };
+
     return (
         <Container>
             <Box>
                 <BoxUpper>
-                    <Title></Title>
+                    <Title 
+                        value={title}
+                        onChange={(event) => {setTitle(event.target.value)}}
+                    ></Title>
                     <input type="date" />
                 </BoxUpper>
-                <Content></Content>
+                <Content 
+                    value={detail}
+                    onChange={(event) => {setDetail(event.target.value)}}
+                ></Content>
             </Box>
             <Down>
-                <Palette></Palette>
-                <button>적용</button>
-                <button>일괄 적용</button>
+                <Btn onClick={applyChange}>적용하기</Btn>
             </Down>
         </Container>
     );
@@ -49,7 +75,12 @@ const Content = styled.textarea`
 `
 
 const Down = styled.div`
-    justify-content: space-between;
+    justify-content: center;
     display: flex;
+`
+
+const Btn = styled.button`
+    border: 1px solid black;
+    padding: 2px 40px;
 `
 export default Edit;
