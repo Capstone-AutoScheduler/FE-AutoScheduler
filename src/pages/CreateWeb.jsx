@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import InputPDF from "../components/Create/InputPDF";
-import ToolBox from "../components/Create/ToolBox";
+import WebToolBox from "../components/Create/Web/WebToolBox";
 import WebFrameBox from "../components/Create/Web/WebFrameBox";
 import WebBoard from "../components/Create/Web/WebBoard";
 import InputWeb from "../components/Create/Web/InputWeb";
@@ -12,11 +12,11 @@ const CreateWeb = () => {
       <Top>
         <Src>
           <h2>#Source Type</h2>
-          <InputWeb />
+          <InputWeb type="body" />
         </Src>
         <Tool>
           <h2>#Tool Box</h2>
-          <ToolBox></ToolBox>
+          <WebToolBox></WebToolBox>
         </Tool>
       </Top>
       <Bottom>

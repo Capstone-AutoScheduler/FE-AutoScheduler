@@ -15,6 +15,10 @@ const useWebStore = create((set) => ({
   bubble: {
     bubbleId: 0,
     text: "",
+    mappings: {
+      depth: 0,
+      childrenIndexes: [],
+    },
   },
   setMouseX: (value) => set({ mouseX: value }),
   setMouseY: (value) => set({ mouseY: value }),
@@ -25,7 +29,7 @@ const useWebStore = create((set) => ({
         ...newBubble, // 전달받은 newBubble로 업데이트
       },
     })),
-  setBubbleText: () =>
+  setBubbleTextNull: () =>
     set((state) => ({
       bubble: {
         ...state.bubble, // 기존 bubble 상태 유지
@@ -134,6 +138,28 @@ const useWebStore = create((set) => ({
         bubble: newBubble,
       },
     })),
+
+  mappings: [
+    {
+      id: 0,
+      str: "target",
+      title: [],
+      date: [],
+      detail: [],
+    },
+    {
+      id: 1,
+      str: "target",
+      title: [],
+      date: [],
+      detail: [],
+    },
+  ],
+  mapping: {
+    id: 0,
+    depth: 0,
+    childrenIndex: 0,
+  },
 }));
 
 export default useWebStore;

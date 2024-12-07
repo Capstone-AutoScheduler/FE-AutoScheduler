@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 
 import useStore from "../../../store/Store";
@@ -28,7 +28,7 @@ const WebBoard = () => {
     bubble,
     setMouseX,
     setMouseY,
-    setBubbleText,
+    setBubbleTextNull,
     frames,
     selectedFrameId,
     selected,
@@ -88,7 +88,7 @@ const WebBoard = () => {
   };
 
   const handleClick = (event) => {
-    if (bubble.text) setBubbleText(null);
+    if (bubble.text) setBubbleTextNull();
     if (selected.bubble.BubbleId != 0)
       setSelectedBubble({
         bubbleId: 0,

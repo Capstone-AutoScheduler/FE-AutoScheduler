@@ -3,14 +3,22 @@ import styled from "styled-components";
 import axios from "axios";
 import useHtmlStore from "../../../store/HtmlStore.jsx";
 
-const InputWeb = () => {
+const InputWeb = ({ type }) => {
   // 상태 관리: textField의 값을 저장
   const [inputValue, setInputValue] = useState("");
-  const { cssFile, setCssFile, htmlBody, setHtmlBody } = useHtmlStore();
+  const {
+    cssFile,
+    setCssFile,
+    htmlBody,
+    setHtmlBody,
+    bodyForGenerate,
+    setBodyForGenerate,
+  } = useHtmlStore();
 
   // 버튼 클릭 시 호출되는 함수
   const handleClick = () => {
-    getHtml();
+    if (type === "body") getBody();
+    else getHtml();
   };
 
   // 텍스트필드 값 변경 시 호출되는 함수
@@ -18,18 +26,32 @@ const InputWeb = () => {
     setInputValue(e.target.value);
   };
 
-  async function getHtml() {
+  async function getBody() {
     // 이벤트 조회 api
     try {
       const response = await axios.get("http://localhost:8080/crawl", {
         params: {
+          type: 0,
           url: inputValue,
         },
       });
       setCssFile(response.data.result.cssFile);
       setHtmlBody(response.data.result.htmlBody);
-      console.log(response.data.result.cssFile);
-      console.log(response.data.result.htmlBody);
+    } catch (error) {
+      console.error("Failed to fetch html:", error);
+    }
+  }
+
+  async function getHtml() {
+    // 이벤트 조회 api
+    try {
+      const response = await axios.get("http://localhost:8080/crawl", {
+        params: {
+          type: 0,
+          url: inputValue,
+        },
+      });
+      setBodyForGenerate(response.data.result.htmlBody);
     } catch (error) {
       console.error("Failed to fetch html:", error);
     }
@@ -53,7 +75,6 @@ const InputWeb = () => {
 
 const Container = styled.div`
   display: flex;
-  border: 1px solid black;
 `;
 
 const Title = styled.div`

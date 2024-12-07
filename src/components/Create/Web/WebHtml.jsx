@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import parse from "html-react-parser";
 import { Helmet } from "react-helmet";
-import useWebStore from "../../../store/WebStore";
 
+import useWebStore from "../../../store/WebStore";
 import useHtmlStore from "../../../store/HtmlStore";
 
 const WebHtml = () => {
@@ -42,22 +42,31 @@ const WebHtml = () => {
 
   // 버블링
   const handleClick = (event) => {
-    // const path = [];
-    // let element = event.target;
-    // var cnt = 0;
-    // while (element && element.tagName !== "HTML") {
-    //   const parent = element.parentNode;
-    //   const index = Array.from(parent.children).indexOf(element);
-    //   console.log(index);
-    //   console.log(parent);
-    //   console.log(element.tagName);
-    //   path.push({ tag: element.tagName, index });
-    //   element = parent;
-    //   cnt++;
-    // }
-    // console.log(`cnt: ${cnt}`);
-    // // Zustand 스토어에 경로 저장
-    // WebStore.getState().addNode(path.reverse()); // 경로를 뒤집어 root에서 시작하도록 함
+    event.preventDefault();
+    const path = [];
+    let element = event.target;
+    var depth = 0;
+    var childrenIndexes = [];
+    while (element && element.tagName !== "BODY") {
+      const parent = element.parentNode;
+      if (parent.tagName === "BODY") {
+        console.log(parent.children);
+        const index = Array.from(parent.children).indexOf(element);
+        console.log(index);
+      }
+      const index = Array.from(parent.children).indexOf(element);
+      childrenIndexes.push(index);
+      console.log("");
+      console.log(`현재 태그 ${element.tagName}`);
+      console.log(`현재 태그의 children ${element.children}`);
+      console.log(`현재 태그가 몇번째 children인지: ${index}`);
+      console.log(`현재 태그의 부모: ${parent}`);
+
+      path.push({ tag: element.tagName, index });
+      element = parent;
+      depth++;
+    }
+    // console.log(`cnt: ${depth}`);
 
     const newBubbleId = bubble.bubbleId + 1;
     // 마우스 위치, text WebStore에 저장
@@ -66,11 +75,14 @@ const WebHtml = () => {
     const text = event.target.textContent;
     setMouseX(mouseX);
     setMouseY(mouseY);
-    setBubble({ bubbleId: newBubbleId, text: text });
-    console.log("!!!@@@###");
-    console.log(newBubbleId);
-    console.log(bubble.bubbleId);
+    setBubble({
+      bubbleId: newBubbleId,
+      text: text,
+      mappings: { depth: depth, childrenIndexes: childrenIndexes },
+    });
   };
+  console.log("check text");
+  console.log(bubble.text);
 
   const replace = (node) => {
     if (
@@ -154,7 +166,7 @@ const WebHtml = () => {
               backgroundColor: "rgba(0, 0, 0, 0.7)",
               color: "white",
               borderRadius: "5px",
-              pointerEvents: "none", // 툴팁이 다른 요소와 상호작용하지 않게 함
+              pointerEvents: "none", // 선택된 버블이 다른 요소와 상호작용하지 않게 함
             }}
           >
             {bubble.text}

@@ -8,6 +8,7 @@ import Create from "./pages/Create";
 import CreateWeb from "./pages/CreateWeb";
 import GeneratorStore from "./pages/GeneratorStore";
 import Generate from "./pages/Generate";
+import GenerateWeb from "./pages/GenerateWeb";
 import Generator from "./pages/Generator";
 import Test from "./pages/Test";
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/createWeb" element={<CreateWeb />} />
           <Route path="/store" element={<GeneratorStore />} />
           <Route path="/generate" element={<Generate />} />
+          <Route path="/generateWeb" element={<GenerateWeb />} />
           <Route path="/generator" element={<Generator />} />
           <Route path="/test" element={<Test />} />
         </Routes>
