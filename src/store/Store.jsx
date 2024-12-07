@@ -139,7 +139,12 @@ const useStore = create((set) => ({
   setAreaEnd: (coord) => set({ areaEnd: coord }),
 
   areas: [],
-  appendArea: (area) => set((state) => ({ areas: [...state.areas, area] })),
+  appendArea: (area) =>
+    set((state) => ({ areas: [...state.areas, area] })),
+
+  startDate: null,
+  setStartDate: (date) => 
+    set({ startDate: date}),
 }));
 
 export default useStore;

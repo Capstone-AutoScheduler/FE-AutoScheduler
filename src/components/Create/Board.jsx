@@ -62,8 +62,8 @@ const Board = () => {
   };
 
   useEffect(() => {
-    console.log("areas", areas);
-  }, [areas]);
+    console.log("frames", frames);
+  }, [frames]);
 
   const [currentFrame, setCurrentFrame] = useState(null);
   useEffect(() => {

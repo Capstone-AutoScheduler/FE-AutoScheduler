@@ -178,13 +178,11 @@ const WebHtml = () => {
 };
 
 const WebContainer = styled.div`
-  border: 2px solid red;
   transform: scale(0.7);
   transform-origin: top left; /* 축소 기준점을 왼쪽 상단으로 설정 */
 `;
 
 const Container = styled.div`
-  border: 2px solid red;
   padding: -600px;
 `;
 

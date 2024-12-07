@@ -19,6 +19,29 @@ const useGenerateStore = create((set) => ({
     schedules: [],
     appendSchedule: (schedule) =>
         set((state) => ({ schedules: [...state.schedules, schedule] })),
+
+    results: [],
+    setResults: (input) => set({
+        results: input
+    }),
+    appendResult: (result) =>
+        set((state) => ({ results: [...state.results, result] })),
+    updateResultAtIndex: (index, newResult) =>
+        set((state) => {
+            const updatedResults = [...state.results];
+            updatedResults[index] = newResult;
+            return { results: updatedResults };
+        }),
+
+    selectedResult: null,
+    setSelectedResult: (index) => set({
+        selectedResult: index,
+    }),
+
+    scheduleColor: '#000000',
+    setScheduleColor: (newColor) => set({
+        scheduleColor: newColor,
+    })
 }));
 
 export default useGenerateStore;
