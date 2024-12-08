@@ -7,31 +7,32 @@ import Board from "../components/Create/Board";
 import InputWeb from "../components/Create/Web/InputWeb";
 
 const Create = () => {
-  return (
+    return (
     <Container>
-      <Top>
-        <Src>
-          <h2>#Source Type</h2>
-          <InputPDF />
-          <InputWeb />
-        </Src>
-        <Tool>
-          <h2>#Tool Box</h2>
-          <ToolBox></ToolBox>
-        </Tool>
-      </Top>
-      <Bottom>
-        <h2>#규칙 생성</h2>
-        <FrameBox></FrameBox>
-        <Board></Board>
-      </Bottom>
+        <Top>
+            <Src>
+                <InputPDF />
+                <InputWeb />
+            </Src>
+            <ToolBox></ToolBox>
+        </Top>
+        <Bottom>
+            <FrameBox></FrameBox>
+            <Board></Board>
+        </Bottom>
     </Container>
   );
 };
 
 const Container = styled.div``;
 
-const Top = styled.div``;
+const Top = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 200px;
+`;
 
 const Bottom = styled.div``;
 
