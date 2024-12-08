@@ -81,8 +81,8 @@ const WebHtml = () => {
       mappings: { depth: depth, childrenIndexes: childrenIndexes },
     });
   };
-  console.log("check text");
-  console.log(bubble.text);
+  //console.log("check text");
+  //console.log(bubble.text);
 
   const replace = (node) => {
     if (

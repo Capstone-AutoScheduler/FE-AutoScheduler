@@ -9,8 +9,8 @@ import GeneratorStore from "./pages/GeneratorStore";
 import Generate from "./pages/Generate";
 import GenerateWeb from "./pages/GenerateWeb";
 import Generator from "./pages/Generator";
-import Test from "./pages/Test";
-
+//import Test from "./pages/Test";
+//<Route path="/test" element={<Test />} />
 import "./App.css";
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
           <Route path="/generate" element={<Generate />} />
           <Route path="/generateWeb" element={<GenerateWeb />} />
           <Route path="/generator" element={<Generator />} />
-          <Route path="/test" element={<Test />} />
+
         </Routes>
       </div>
     </BrowserRouter>
