@@ -1,13 +1,18 @@
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import LogoSVG from '../static/Logo.svg'
 import LogoPNG from '../static/Logo.png'
 
 const Navbar = ()=> {
     const navigate = useNavigate();
+    const location = useLocation();
 
+    const selectedColor = "#008BF0";
+    const selectedBorder = "8px solid #008BF0";
     localStorage.setItem('memberId', 1);
+
+    console.log(location.pathname);
 
     return (
         <Container>
@@ -17,9 +22,24 @@ const Navbar = ()=> {
             </Logo>
             <Menu>
                 <Taps>
-                    <Tap onClick={() => {navigate('/')}}>캘린더</Tap>
-                    <Tap onClick={() => {navigate('/generator')}}>내 생성기</Tap>
-                    <Tap onClick={() => {navigate('/store')}}>생성기 가져오기</Tap>
+                    <Tap 
+                        style={(['/'].includes(location.pathname)) ? { color: selectedColor, borderBottom: selectedBorder } : {}}
+                        onClick={() => {navigate('/')}}
+                    >
+                        캘린더
+                    </Tap>
+                    <Tap
+                        style={(['/generator'].includes(location.pathname)) ? { color: selectedColor, borderBottom: selectedBorder } : {}}
+                        onClick={() => {navigate('/generator')}}
+                    >
+                        내 생성기
+                    </Tap>
+                    <Tap
+                        style={(['/store'].includes(location.pathname)) ? { color: selectedColor, borderBottom: selectedBorder } : {}}
+                        onClick={() => {navigate('/store')}}
+                    >
+                        생성기 가져오기
+                    </Tap>
                 </Taps>
                 <Login>로그인</Login>
             </Menu>
@@ -66,13 +86,22 @@ const Menu = styled.div`
 
 const Taps = styled.div`
     display: flex;
+    height: 100%;
 `
 
 const Tap = styled.div`
+    display:flex;
+    align-items: center;
     font-weight: bold;
-    margin: 20px;
-
+    margin: 0px 20px;
     cursor: pointer;
+    border: 8px solid #FFFFFF;
+
+    &:hover {
+        transition: 0.3s ease, color 0.3s ease;
+        color: #008BF0;
+        border-bottom: 8px solid #008BF0;
+    }
 `
 
 const Login = styled.div`

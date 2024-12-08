@@ -38,8 +38,8 @@ const FrameBox = () => {
 
     return (
         <Container>
-            {frames.map((frame) => {
-                return <FrameCard item={frame} />
+            {frames.map((frame, index) => {
+                return <FrameCard key={index} item={frame} />
             })}
             <AddButton onClick={addFrame}> + </AddButton>
         </Container>
