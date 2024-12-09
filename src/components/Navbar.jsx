@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import LogoSVG from '../static/Logo.svg'
 import LogoPNG from '../static/Logo.png'
 
 const Navbar = ()=> {
