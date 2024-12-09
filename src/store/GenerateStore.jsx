@@ -1,6 +1,11 @@
 import { create } from "zustand";
 
 const useGenerateStore = create((set) => ({
+    generatorLoaded: false,
+    setGeneratorLoaded: (value) => set({
+        generatorLoaded: value,
+    }),
+    
     numPages: 0,
     setNumPages: (num) => set({
         numPages: num,

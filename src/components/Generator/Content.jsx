@@ -6,13 +6,16 @@ import { useNavigate } from 'react-router-dom';
 
 import Card from './Card';
 
-const Content = () => {    
+const Content = () => {
     const navigate = useNavigate();
     const [list, setList] = useState([]);
 
     async function getGeneratorList() {
         try {
-            const response = await axios.get(`http://3.35.252.162:8080/member/bookmark/list/${localStorage.getItem('memberId')}`);
+            const response = await axios.get(`http://3.35.252.162:8080/member/bookmark/list/${localStorage.getItem('memberId')}`,{
+                   timeout: 3000
+                }
+            );
             //console.log(response.data.result.bookmarkList);
             setList(response.data.result.bookmarkList);
         } catch (error) {

@@ -24,7 +24,7 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/createWeb" element={<CreateWeb />} />
           <Route path="/store" element={<GeneratorStore />} />
-          <Route path="/generate" element={<Generate />} />
+          <Route path="/generate/:generatorId" element={<Generate />} />
           <Route path="/generateWeb" element={<GenerateWeb />} />
           <Route path="/generator" element={<Generator />} />
 
