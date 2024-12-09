@@ -85,7 +85,13 @@ const Down = styled.div`
 `
 
 const Btn = styled.button`
-    border: 1px solid black;
+    border: 2px solid #008BF0;
+    margin: 4px;
     padding: 2px 40px;
+    border-radius: 10px;
+
+    &:hover {
+        background-color: #D0D0D0;
+    }
 `
 export default Edit;
