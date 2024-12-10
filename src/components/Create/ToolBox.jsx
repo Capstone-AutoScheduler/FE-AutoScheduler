@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -40,6 +41,7 @@ const ToolBox = () => {
         return Mapping;
     }
 
+    const navigate = useNavigate();
     async function saveGenerator() {
         try {
             const response = await axios.post(`http://3.35.252.162:8080/generator/?memberId=${localStorage.getItem("memberId")}`,
@@ -54,6 +56,7 @@ const ToolBox = () => {
             );
             console.log(response);
             alert("생성기를 저장하였습니다.");
+            navigate('/generator');
         } catch (error) {
             console.error("Failed to fetch html:", error);
             alert("생성기를 저장에 실패하였습니다.");

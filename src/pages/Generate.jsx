@@ -53,7 +53,7 @@ const Generate = () => {
                 </Top>
                 <Bottom>
                     <Edit />
-                    <Preview />
+                    <Preview generatorId={generatorId} />
                 </Bottom>
             </Content>
             <Loading ref={LoadingRef}>
