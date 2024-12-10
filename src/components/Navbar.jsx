@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import Login from './Login'
 import LogoPNG from '../static/Logo.png'
 
 const Navbar = ()=> {
@@ -9,8 +10,6 @@ const Navbar = ()=> {
 
     const selectedColor = "#008BF0";
     const selectedBorder = "8px solid #008BF0";
-    localStorage.setItem('memberId', 1);
-
     console.log(location.pathname);
 
     return (
@@ -40,7 +39,7 @@ const Navbar = ()=> {
                         생성기 가져오기
                     </Tap>
                 </Taps>
-                <Login>로그인</Login>
+                <Login />
             </Menu>
         </Container>
     )
@@ -101,14 +100,6 @@ const Tap = styled.div`
         color: #008BF0;
         border-bottom: 8px solid #008BF0;
     }
-`
-
-const Login = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 28px;
-    cursor: pointer;
 `
 
 export default Navbar
