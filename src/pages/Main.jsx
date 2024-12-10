@@ -10,15 +10,19 @@ import axios from "axios";
 
 // 모달 페이지 import
 import InputDateModal from "../components/Calendar/InputDateModal";
-
 // sideDatailPage import
 import SideDetailPage from "../components/Calendar/SideDetailPage";
-
+import Sidebar from "../components/Calendar/Sidebar";
 // bricks
-import BrickList from "../components/BrickList";
+//import BrickList from "../components/BrickList";
+
+import useSideStore from "../store/SideStore";
 
 const Main = () => {
-  let toolbarLabel; // 드랍 관련 변수
+  //sidebar
+  const { isOpen } = useSideStore((state) => state);
+
+  //let toolbarLabel; // 드랍 관련 변수
   var year, month, day, dayColumn, monthRow; // 드랍 관련 변수
   const [onMakeNewEvent, setOnMakeNewEvent] = useState(); // slot 클릭 시 react-big-calendar에서 보내주는 정보 저장하는 useState
   moment.locale("ko-KR");
@@ -129,7 +133,9 @@ const Main = () => {
     // 이벤트 조회 api
     try {
       const response = await axios.get(
-        "http://3.35.252.162:8080/events/member/6"
+        `http://3.35.252.162:8080/events/member/${localStorage.getItem(
+          "memberId"
+        )}`
       );
       const transformedEvents = response.data.result.events.map((event) => ({
         id: event.eventId,
@@ -147,6 +153,7 @@ const Main = () => {
   }
 
   useEffect(() => {
+    if (localStorage.getItem("memberId"));
     getEvents();
   }, []);
 
@@ -226,33 +233,23 @@ const Main = () => {
       endDate: newEndDate,
     };
     try {
-      const response = await axios.post(
-        "http://3.35.252.162:8080/events/",
-        newEventData,
-        {
-          params: { memberId: 6 },
-        }
-      );
-      id = response.data.result.eventId;
+        const response = await axios.post(
+            "http://3.35.252.162:8080/events/",
+            newEventData,
+            {
+            params: { memberId: 6 },
+            }
+        );
+        id = response.data.result.eventId;
     } catch (error) {
-      console.log("why fucking error", error);
+        console.log("why fucking error", error);
     }
     getEvents();
   }
 
   return (
     <Container>
-      <Sidebar_Container>
-        <Title>AutoSchduler</Title>
-        <Sidebar>
-          <BrickList
-            brickList={bricks}
-            setDraggedEvent={setDraggedEvent}
-            drop={drop}
-            dragStart={dragStart}
-          />
-        </Sidebar>
-      </Sidebar_Container>
+      {isOpen ? <Sidebar /> : <></>}
       <InputDateModal // 일정 추가 모달 생성
         open={onModal}
         close={closeSetOnData}
@@ -262,7 +259,7 @@ const Main = () => {
         saveNewEventData={saveNewEventData}
         getEvents={getEvents}
       />
-      <Calendar_Container>
+      <CalendarContainer>
         <Calendar
           draggable
           localizer={localizer}
@@ -283,7 +280,7 @@ const Main = () => {
           onDragOver={(e) => e.preventDefault()} // 드롭 허용
           onDrop={(e) => newEvent(e)} // 슬롯에 드롭 시 이벤트 추가
         />
-      </Calendar_Container>
+      </CalendarContainer>
       <div className="rightArticle">
         <SideDetailPage
           openModal={openEventModal}
@@ -301,10 +298,10 @@ const Main = () => {
 
 const Container = styled.div`
   display: flex;
-  height: 800px;
+  height: 90vh;
 `;
 
-const Sidebar_Container = styled.div`
+/*
   padding-left: 260px;
   padding-top: 20px;
   width: 330px;
@@ -335,9 +332,14 @@ const Board = styled.div`
   border: 1px solid black;
 `;
 
-const Calendar_Container = styled.div`
-  width: 100vh;
-  padding-top: 120px;
+const Sidebar_Container = styled.div``;
+*/
+
+const CalendarContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default Main;

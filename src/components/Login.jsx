@@ -81,7 +81,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin: 28px;
-  cursor: pointer;
 `;
 
 const LogoutBtn = styled.div`
@@ -89,6 +88,7 @@ const LogoutBtn = styled.div`
     &:hover{
         text-decoration: underline;
     }
+    cursor: pointer;
 `;
 
 const LoginBtn = styled.div`
@@ -96,6 +96,7 @@ const LoginBtn = styled.div`
     &:hover{
         text-decoration: underline;
     }
+    cursor: pointer;
 `;
 
 const ModalOverlay = styled.div`

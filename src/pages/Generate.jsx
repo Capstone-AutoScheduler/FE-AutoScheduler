@@ -18,7 +18,7 @@ import useGenerateStore from "../store/GenerateStore";
 const Generate = () => {
     const { generatorId } = useParams();
     const { generatorLoaded } = useGenerateStore((state) => state);
-    const { isOpen, setIsOpen } = useSideStore((state) => state);
+    const { isOpen } = useSideStore((state) => state);
     const [type, setType] = useState("PDF");
     const selectPDF = () => {
         setType("PDF");
