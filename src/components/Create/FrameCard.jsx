@@ -71,8 +71,6 @@ const Container = styled.div`
     user-select: none;
     font-size: 12px;
 
-    padding: 2px 4px;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -96,11 +94,11 @@ const Row = styled.div`
 const Section = styled.div`
     font-size: 16px;
     border-right: 2px solid rgba(235, 186, 7, 0.7);
-    width: 18%;
+    width: 24%;
 `
 
 const Content = styled.div`
-    width: 80%;
+    width: 70%;
 `
 
 const Inner = ({frame, type, operation}) => {

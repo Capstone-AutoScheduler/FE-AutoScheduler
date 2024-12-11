@@ -18,13 +18,18 @@ const StandardDate = () => {
 }
 
 const Container = styled.div`
+    width: 190px;
 `
 
 const Input = styled.input`
 `
 
-const Btn = styled.button`
-    border: 1px solid black;
+const Btn = styled.button`  
+  margin: 4px;
+  padding: 4px;
+  background-color: #AEAEAE;
+  color: #FFFFFF;
+  border-radius: 4px;
 `
 
 export default StandardDate;
