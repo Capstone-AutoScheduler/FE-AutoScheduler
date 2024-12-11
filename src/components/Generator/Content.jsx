@@ -9,6 +9,7 @@ import Card from './Card';
 const Content = () => {
     const navigate = useNavigate();
     const [list, setList] = useState([]);
+    const [openCreate, setOpenCreate] = useState(false);
 
     async function getGeneratorList() {
         try {
@@ -16,7 +17,7 @@ const Content = () => {
                    timeout: 3000
                 }
             );
-            //console.log(response.data.result.bookmarkList);
+            console.log(response.data.result.bookmarkList);
             setList(response.data.result.bookmarkList);
         } catch (error) {
             console.error("Failed to get generator list", error);
@@ -33,7 +34,19 @@ const Content = () => {
                 {list.map((item, index) => {
                     return (<Card key={index} item={item}/>);
                 })}
-                <Btn onClick={() => {navigate('/create')}}>+ 새로운 생성기</Btn>
+                <Btn onClick={() => {setOpenCreate(true);}}>
+                {
+                    (openCreate)
+                    ?
+                    <>
+                        <div style={{fontWeight:'bold', fontSize:'18px'}}>Source Type</div>
+                        <SelectBtn onClick={() => {navigate('/create')}}>PDF</SelectBtn>
+                        <SelectBtn onClick={() => {navigate('/createWeb')}}>Web</SelectBtn>                    
+                    </>
+                    :
+                    '+ 새로운 생성기'
+                }
+                </Btn>
             </Box>
         </Container>
     )
@@ -63,6 +76,19 @@ const Btn = styled.button`
     background-color : #FFFFFF;
     border: 3px solid #81B7F5;
     border-radius: 20px;
+`
+
+const SelectBtn = styled.button`
+    margin: 20px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-weight: bold;
+    background-color: #81B7F5;
+    &:hover{
+        margin: 16px;
+        padding: 14px 22px;
+    }
 `
 
 export default Content;

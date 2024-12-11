@@ -17,18 +17,15 @@ import useGenerateStore from "../store/GenerateStore";
 
 const Generate = () => {
     const { generatorId } = useParams();
-    const { generatorLoaded } = useGenerateStore((state) => state);
+    const { generatorLoaded, sourceType, initStore } = useGenerateStore((state) => state);
     const { isOpen } = useSideStore((state) => state);
-    const [type, setType] = useState("PDF");
-    const selectPDF = () => {
-        setType("PDF");
-    };
-    const selectWeb = () => {
-        setType("Web");
-    };
 
     const ContentRef = useRef();
     const LoadingRef = useRef();
+    useEffect(() => {
+        initStore();
+    }, [])
+
     useEffect(() => {
         if (generatorLoaded) {
             ContentRef.current.style.visibility = 'visible';
@@ -44,12 +41,8 @@ const Generate = () => {
             {isOpen ? <Sidebar /> : <></>}
             <Content ref={ContentRef}>
                 <Top>
-                    <Type>
-                        <button onClick={selectPDF}>PDF</button>
-                        <button onClick={selectWeb}>Web</button>
-                        {type === "PDF" ? <ReadPDF /> : <InputWeb type="html" />}
-                    </Type>
-                    {type === "PDF" ? <Result generatorId={generatorId} /> : <WebResult />}
+                    <Type>{sourceType === "PDF" ? <ReadPDF /> : <InputWeb type="html" />}</Type>
+                    {sourceType === "WEB" ?  <WebResult /> : <Result generatorId={generatorId} />}
                 </Top>
                 <Bottom>
                     <Edit />

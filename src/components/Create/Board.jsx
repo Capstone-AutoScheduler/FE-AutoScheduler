@@ -35,7 +35,8 @@ const Board = () => {
       const rect = boardRef.current.getBoundingClientRect();
       setOffset({ x: rect.left, y: rect.top });
     }
-  }, [bubbles]);
+  }, []);
+
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleMouseDown = (event) => {

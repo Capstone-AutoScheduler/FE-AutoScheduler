@@ -54,6 +54,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     overflow-x: auto;
+    overflow-y: hidden;
     gap: 8px;
 
 `

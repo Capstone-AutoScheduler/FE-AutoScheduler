@@ -133,7 +133,7 @@ const Main = () => {
     // 이벤트 조회 api
     try {
       const response = await axios.get(
-        `http://3.35.252.162:8080/events/member/${localStorage.getItem(
+        `http://3.35.252.162:8080/event/member/${localStorage.getItem(
           "memberId"
         )}`
       );

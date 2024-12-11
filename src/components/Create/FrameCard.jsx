@@ -43,7 +43,7 @@ const FrameCard = ({ item }) => {
                 </Content>
             </Row>
             <Row
-                style={{height: '100%'}}
+                style={{height: '60px'}}
             >
                 <Content>
                     {item.detail.map((operation) => {
@@ -89,6 +89,8 @@ const Row = styled.div`
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    height: 27px;
+        overflow: hidden;
 `
 
 const Section = styled.div`
@@ -99,6 +101,7 @@ const Section = styled.div`
 
 const Content = styled.div`
     width: 70%;
+
 `
 
 const Inner = ({frame, type, operation}) => {

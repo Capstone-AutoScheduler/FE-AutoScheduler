@@ -10,8 +10,7 @@ const Navbar = ()=> {
 
     const selectedColor = "#008BF0";
     const selectedBorder = "8px solid #008BF0";
-    console.log(location.pathname);
-
+    
     return (
         <Container>
             <Logo onClick={() => navigate('/')}>

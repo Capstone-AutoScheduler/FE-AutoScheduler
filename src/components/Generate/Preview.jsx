@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -8,6 +9,7 @@ import Palette from './Palette';
 
 const Preview = ({generatorId}) => {
     const { results, scheduleColor } = useGenerateStore(state=>state);
+    const navigate = useNavigate();
 
     const [ year, setYear ] = useState(2024);
     const [ month, setMonth ] = useState(12);
@@ -83,10 +85,6 @@ const Preview = ({generatorId}) => {
         }
     }
 
-    useEffect(() => {
-        console.log('results', results);
-    })
-
     async function saveSchedules() {
         try {
             const events = [];
@@ -104,6 +102,8 @@ const Preview = ({generatorId}) => {
             const response = await axios.post(`http://3.35.252.162:8080/event/multipleEvents/${localStorage.getItem('memberId')}/${generatorId}`, body);
             console.log(response);
             console.log('일정 저장 성공!')
+            alert('일정을 저장하였습니다.');
+            navigate('/');
         } catch (error) {
             console.error("Failed to save schedules", error);
         }

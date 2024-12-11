@@ -1,9 +1,25 @@
 import { create } from "zustand";
 
 const useGenerateStore = create((set) => ({
+    initStore: () => { set({
+        generatorLoaded: false,
+        numPages: 0,
+        targetPage: 1,
+        pdfContent: null,
+        schedules: [],
+        results: [],
+        selectedResult: null,
+        scheduleColor: '#000000',
+    })},
+
     generatorLoaded: false,
     setGeneratorLoaded: (value) => set({
         generatorLoaded: value,
+    }),
+
+    sourceType: null,
+    setSourceType: (type) => set({
+        sourceType: type,
     }),
     
     numPages: 0,
