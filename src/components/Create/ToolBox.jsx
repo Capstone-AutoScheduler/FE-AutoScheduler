@@ -8,7 +8,7 @@ import StandardDate from "./ToolBox/StandardDate";
 import useStore from "../../store/Store";
 
 const ToolBox = () => {
-    const { frames, bubbles, startDate } = useStore((state) => state);
+    const { initStore, frames, bubbles, startDate, isMapping } = useStore((state) => state);
 
     const [generatorName, setGeneratorName] = useState('');
     const [generatorDetail, setGeneratorDetail] = useState('');
@@ -42,24 +42,33 @@ const ToolBox = () => {
     }
 
     const navigate = useNavigate();
-    async function saveGenerator() {
-        try {
-            const response = await axios.post(`http://3.35.252.162:8080/generator/?memberId=${localStorage.getItem("memberId")}`,
-                {
-                    generatorTitle: generatorName,
-                    generatorDetail: generatorDetail,
-                    frames: frames,
-                    mapping: createMapping(),
-                    sourceType: "PDF",
-                    webUrl: "string",
-                }
-            );
-            console.log(response);
-            alert("생성기를 저장하였습니다.");
-            navigate('/generator');
-        } catch (error) {
-            console.error("Failed to fetch html:", error);
-            alert("생성기를 저장에 실패하였습니다.");
+    async function saveGenerator(event) {
+        event.target.disabled = true;
+        setTimeout(() => {
+            event.target.disabled = false;
+        }, 2000)
+        if ( isMapping ) {
+            try {
+                const response = await axios.post(`http://3.35.252.162:8080/generator/?memberId=${localStorage.getItem("memberId")}`,
+                    {
+                        generatorTitle: generatorName,
+                        generatorDetail: generatorDetail,
+                        frames: frames,
+                        mapping: createMapping(),
+                        sourceType: "PDF",
+                        webUrl: "string",
+                    }
+                );
+                console.log(response);
+                alert("생성기를 저장하였습니다.");
+                initStore();
+                navigate('/generator');
+            } catch (error) {
+                console.error("Failed to fetch html:", error);
+                alert("생성기를 저장에 실패하였습니다.");
+            }
+        } else {
+            alert('mapping을 설정해주세요!');
         }
     }
 
@@ -70,6 +79,7 @@ const ToolBox = () => {
             <BtnBox>
             <Btn onClick={printFrames}>Print frames</Btn>
             <Btn onClick={saveMachine}>Save</Btn>
+            <Btn onClick={initStore}>Init Page</Btn>
             </BtnBox>
         </Left>
 
@@ -83,7 +93,7 @@ const ToolBox = () => {
                 value={generatorDetail}
                 onChange={(event) => {setGeneratorDetail(event.target.value);}}
             />
-            <Btn style={{backgroundColor: '#008BF0'}} onClick={saveGenerator}>저장하기</Btn>
+            <Btn onClick={(e) => {saveGenerator(e)}}>저장하기</Btn>
         </SaveBox>
     </Container>
   );
@@ -113,12 +123,20 @@ const Btn = styled.button`
   background-color: #AEAEAE;
   color: #FFFFFF;
   border-radius: 4px;
+
+  &:disabled {
+    background-color: #828282;
+  }
 `;
 
 const SaveBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 280px;
+
+  button {
+    background-color: #008BF0;
+  }
 `;
 
 export default ToolBox;

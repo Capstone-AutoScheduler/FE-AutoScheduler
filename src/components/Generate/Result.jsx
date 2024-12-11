@@ -10,7 +10,7 @@ const Result = ({ generatorId }) => {
     const {
         results, setResults, appendResult,
         numPages, targetPage, increaseTargetPage, pdfContent,
-        setGeneratorLoaded,
+        setGeneratorLoaded, setSourceType,
     } = useGenerateStore((state) => state);
 
     //const frames = JSON.parse(localStorage.getItem("frames"));
@@ -22,10 +22,12 @@ const Result = ({ generatorId }) => {
     async function getGeneratorInfo() {
         try {
             const response = await axios.get(`http://3.35.252.162:8080/generator/${generatorId}`, {timeout: 3000});
+            console.log(response.data.result);
             //console.log(response.data.result.frames);
             //console.log(response.data.result.mapping);
             setFrames(response.data.result.frames);
             setMapping(response.data.result.mapping);
+            setSourceType(response.data.result.sourceType);
             setTimeout(()=>{
                 setGeneratorLoaded(true);
             }, 1000);
@@ -146,10 +148,10 @@ const Result = ({ generatorId }) => {
     }, []);
 
     useEffect(() => {
-        if (pdfContent) {
+        if ((pdfContent !== null) && (frames !== null) && (mapping !== null)) {
             GenerateSchedule();
         }
-    }, [pdfContent]);
+    }, [pdfContent, frames, mapping]);
 
     return (
         <Container>

@@ -11,7 +11,7 @@ const Sidebar = () => {
         // 이벤트 조회 api
         try {
             const response = await axios.get(`http://3.35.252.162:8080/event/member/${localStorage.getItem('memberId')}/recent`);
-            console.log(response.data.result);
+            //console.log(response.data.result);
             setBricks(response.data.result.events);
         } catch (error) {
             console.error("Failed to fetch events:", error);
@@ -28,10 +28,16 @@ const Sidebar = () => {
                 <div>최근 생성한 일정</div>
                 <div style={{fontSize:'12px'}}>최신순▼</div>
             </Top>
-            <CardBox>            
-                {bricks.map((brick, index) => {
-                return (<Card key={index} brick={brick}></Card>);
-            })}
+            <CardBox>
+                {
+                    (bricks)
+                    ?
+                    <div style={{height:'80%', color:'#ffffff', display:'flex', alignItems:'center', justifyContent:'center'}}>최근 생성한 일정이 없습니다...</div>
+                    :
+                    bricks.map((brick, index) => {
+                        return (<Card key={index} brick={brick}></Card>);
+                    })
+                }
             </CardBox>
         </Container>
     );
@@ -90,16 +96,18 @@ const Card = ({brick}) => {
     return (
         <CardContainer>
             <CardTop>
-                <div style={{fontSize: '12px'}}>{formatDate(brick.startDate)}</div>
+                <div style={{ fontSize: '14px'}}>{formatDate(brick.startDate)}</div>
                 <GeneratorInfo onClick={() => {navigate(`/generator`)}}>생성기ID: {brick.generatorId}</GeneratorInfo> 
             </CardTop>
-            <div>{brick.eventTitle}</div>
-            <div>{brick.eventBody}</div>
+            <div style={{fontWeight: 'bold'}}>{brick.eventTitle}</div>
+            <div style={{fontSize:'12px'}}>{brick.eventBody}</div>
         </CardContainer>
     );
 }
 
 const CardContainer = styled.div`
+
+
     background-color: rgba(255,255,255,20%);
     border-radius: 12px;
     width: 200px;
