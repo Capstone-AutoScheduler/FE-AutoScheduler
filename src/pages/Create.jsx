@@ -1,19 +1,15 @@
 import styled from "styled-components";
 
-import InputPDF from "../components/Create/InputPDF";
+import Src from "../components/Create/Src";
 import ToolBox from "../components/Create/ToolBox";
 import FrameBox from "../components/Create/FrameBox";
 import Board from "../components/Create/Board";
-import InputWeb from "../components/Create/Web/InputWeb";
 
 const Create = () => {
     return (
     <Container>
         <Top>
-            <Src>
-                <InputPDF />
-                <InputWeb />
-            </Src>
+            <Src></Src>
             <ToolBox></ToolBox>
         </Top>
         <Bottom>
@@ -24,7 +20,10 @@ const Create = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 const Top = styled.div`
     display: flex;
@@ -32,12 +31,22 @@ const Top = styled.div`
     align-items: center;
     justify-content: space-around;
     height: 200px;
+
+    background-color: #ffffff;
+    flex-grow: 1;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px var(--Gray-800, #dedede);
 `;
 
-const Bottom = styled.div``;
-
-const Src = styled.div``;
-
-const Tool = styled.div``;
+const Bottom = styled.div`
+    background-color: #ffffff;
+    flex-grow: 1;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px var(--Gray-800, #dedede);
+`;
 
 export default Create;

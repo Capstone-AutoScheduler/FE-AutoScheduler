@@ -83,14 +83,13 @@ const ToolBox = () => {
                 value={generatorDetail}
                 onChange={(event) => {setGeneratorDetail(event.target.value);}}
             />
-            <Btn style={{ backgroundColor: "#FF3333" }} onClick={saveGenerator}>저장하기</Btn>
+            <Btn style={{backgroundColor: '#008BF0'}} onClick={saveGenerator}>저장하기</Btn>
         </SaveBox>
     </Container>
   );
 };
 
 const Container = styled.div`
-  border: 1px solid black;
   display: flex;
   height: 100%;
 `;
@@ -109,8 +108,11 @@ const GeneratorDetail = styled.input`
 const BtnBox = styled.div``;
 
 const Btn = styled.button`
-  border: 1px solid black;
   margin: 4px;
+  padding: 4px;
+  background-color: #AEAEAE;
+  color: #FFFFFF;
+  border-radius: 4px;
 `;
 
 const SaveBox = styled.div`

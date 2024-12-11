@@ -95,7 +95,6 @@ const Board = () => {
 
 const Container = styled.div`
   position: relative;
-  border: 1px solid black;
   height: 1200px;
 `;
 

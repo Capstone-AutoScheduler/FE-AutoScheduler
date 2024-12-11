@@ -60,7 +60,6 @@ const InputWeb = ({ type }) => {
   return (
     <div>
       <Container>
-        <Title>웹 주소</Title>
         <Input
           type="text"
           value={inputValue}
