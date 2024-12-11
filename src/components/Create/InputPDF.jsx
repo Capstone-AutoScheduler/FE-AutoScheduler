@@ -102,16 +102,15 @@ const InputPDF = () => {
 
   return (
     <Container>
-      <span>PDF 파일</span>
       <input type="file" onChange={handleFileChange}></input>
       {
       (PDFfile)
       ?
-      <div>
+      <Page>
       <span>Page: {page}/{numPages}</span>
-      <button onClick={prevPage}>prev page</button>
-      <button onClick={nextPage}>next page</button>
-      </div>
+      <Btn onClick={prevPage}>이전</Btn>
+      <Btn onClick={nextPage}>다음</Btn>
+      </Page>
       :
       <></>
       }
@@ -120,7 +119,19 @@ const InputPDF = () => {
 };
 
 const Container = styled.div`
-  border: 1px solid black;
+  margin: 10px;
 `;
+
+const Page = styled.div`
+  margin: 8px 0px;
+`
+
+const Btn = styled.button`
+  background-color: #AEAEAE;
+  color: #FFFFFF;
+  padding: 4px;
+  margin: 0px 4px;
+  border-radius: 4px;
+`
 
 export default InputPDF;

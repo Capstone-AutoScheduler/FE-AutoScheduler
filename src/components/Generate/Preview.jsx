@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 
 import useGenerateStore from '../../store/GenerateStore';
 
 import Palette from './Palette';
 
-const Preview = () => {
+const Preview = ({generatorId}) => {
     const { results, scheduleColor } = useGenerateStore(state=>state);
+    const navigate = useNavigate();
 
     const [ year, setYear ] = useState(2024);
     const [ month, setMonth ] = useState(12);
@@ -82,6 +85,30 @@ const Preview = () => {
         }
     }
 
+    async function saveSchedules() {
+        try {
+            const events = [];
+            results.forEach((item) => {
+                const obj = {
+                    eventTitle: item.title,
+                    eventBody: item.detail,
+                    startDate: item.date + "T00:00:00.000Z",
+                    endDate: item.date + "T00:00:00.000Z"
+                }
+                events.push(obj);
+            })
+            //add items into events array
+            const body = { events: events };
+            const response = await axios.post(`http://3.35.252.162:8080/event/multipleEvents/${localStorage.getItem('memberId')}/${generatorId}`, body);
+            console.log(response);
+            console.log('일정 저장 성공!')
+            alert('일정을 저장하였습니다.');
+            navigate('/');
+        } catch (error) {
+            console.error("Failed to save schedules", error);
+        }
+    }
+
     return (
         <Container>
             <Top>
@@ -109,7 +136,14 @@ const Preview = () => {
                         );
                     })}
             </Calendar>
-            <AddBtn>캘린더에 추가하기</AddBtn>
+            <AddBtn 
+                onClick={(event) => {
+                    event.target.disabled= true;
+                    saveSchedules();
+                }}
+            >
+                캘린더에 추가하기
+            </AddBtn>
         </Container>
     );
 }
@@ -148,8 +182,6 @@ const Calendar = styled.div`
     width: 500px;
     height: 240px;
     margin: 4px;
-    background-color: gray;
-
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
@@ -157,22 +189,36 @@ const Calendar = styled.div`
 `
 
 const Weekday = styled.div`
-    border: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
+    border-bottom: 3px solid #bebebe;
 `
 
 const Day = styled.div`
-    border: 1px solid black;
+    border: 2px solid #bebebe;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 8px;
 `
 
 const AddBtn = styled.button`
-    margin: 4px;
+    margin: 2px;
+    padding: 2px;
+    color: #FFFFFF;
+    background-color: #008BF0;
+    border-radius : 10px;
+
+    &:hover {
+        background-color: #006BD0;
+    }
+
+    &:disabled {
+        background-color: #808080;
+    }
 `
 
 const Num = styled.div`

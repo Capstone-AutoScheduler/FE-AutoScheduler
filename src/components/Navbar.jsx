@@ -1,11 +1,16 @@
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import LogoSVG from '../static/Logo.svg'
+import Login from './Login'
 import LogoPNG from '../static/Logo.png'
 
 const Navbar = ()=> {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const selectedColor = "#008BF0";
+    const selectedBorder = "8px solid #008BF0";
+    
     return (
         <Container>
             <Logo onClick={() => navigate('/')}>
@@ -13,9 +18,27 @@ const Navbar = ()=> {
                 <div>AutoScheduler</div>
             </Logo>
             <Menu>
-                <Tap onClick={() => {navigate('/')}}>캘린더</Tap>
-                <Tap onClick={() => {navigate('/generator')}}>내 생성기</Tap>
-                <Tap onClick={() => {navigate('/store')}}>생성기 가져오기</Tap>
+                <Taps>
+                    <Tap 
+                        style={(['/'].includes(location.pathname)) ? { color: selectedColor, borderBottom: selectedBorder } : {}}
+                        onClick={() => {navigate('/')}}
+                    >
+                        캘린더
+                    </Tap>
+                    <Tap
+                        style={(['/generator'].includes(location.pathname)) ? { color: selectedColor, borderBottom: selectedBorder } : {}}
+                        onClick={() => {navigate('/generator')}}
+                    >
+                        내 생성기
+                    </Tap>
+                    <Tap
+                        style={(['/store'].includes(location.pathname)) ? { color: selectedColor, borderBottom: selectedBorder } : {}}
+                        onClick={() => {navigate('/store')}}
+                    >
+                        생성기 가져오기
+                    </Tap>
+                </Taps>
+                <Login />
             </Menu>
         </Container>
     )
@@ -54,13 +77,28 @@ const IMG = styled.img`
 const Menu = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+`
+
+const Taps = styled.div`
+    display: flex;
+    height: 100%;
 `
 
 const Tap = styled.div`
+    display:flex;
+    align-items: center;
     font-weight: bold;
-    margin: 20px;
-
+    margin: 0px 20px;
     cursor: pointer;
+    border: 8px solid #FFFFFF;
+
+    &:hover {
+        transition: 0.3s ease, color 0.3s ease;
+        color: #008BF0;
+        border-bottom: 8px solid #008BF0;
+    }
 `
 
 export default Navbar

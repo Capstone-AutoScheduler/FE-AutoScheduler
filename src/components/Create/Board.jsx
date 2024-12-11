@@ -35,7 +35,8 @@ const Board = () => {
       const rect = boardRef.current.getBoundingClientRect();
       setOffset({ x: rect.left, y: rect.top });
     }
-  }, [bubbles]);
+  }, []);
+
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleMouseDown = (event) => {
@@ -95,7 +96,6 @@ const Board = () => {
 
 const Container = styled.div`
   position: relative;
-  border: 1px solid black;
   height: 1200px;
 `;
 

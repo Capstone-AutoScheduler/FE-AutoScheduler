@@ -38,8 +38,8 @@ const FrameBox = () => {
 
     return (
         <Container>
-            {frames.map((frame) => {
-                return <FrameCard item={frame} />
+            {frames.map((frame, index) => {
+                return <FrameCard key={index} item={frame} />
             })}
             <AddButton onClick={addFrame}> + </AddButton>
         </Container>
@@ -47,13 +47,14 @@ const FrameBox = () => {
 }
 
 const Container = styled.div`
-    border: 1px solid black;
+    border-bottom : 2px solid #AEAEAE;
     height: 160px;
     margin: 0px 0px 4px 0px;
 
     display: flex;
     align-items: center;
-    overflow-x: scroll;
+    overflow-x: auto;
+    overflow-y: hidden;
     gap: 8px;
 
 `
@@ -61,8 +62,10 @@ const Container = styled.div`
 const AddButton = styled.button`
     width: 180px;
     height: 120px;
-    border-radius: 15px;
+    border-radius: 5px;
     flex-shrink: 0;
+
+    border: 4px solid #A0A0A0;
 `
 
 export default FrameBox;

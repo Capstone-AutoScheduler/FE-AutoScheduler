@@ -5,7 +5,7 @@ import useStore from '../../store/Store'
 import LockPNG from '../../images/lock.png'
 
 const Bubble = ({ item }) => {
-    const { selected, setSelectedBubble, setMapping } = useStore(state => state)
+    const { selected, setSelectedBubble, setMapping, setIsMapping } = useStore(state => state)
 
     const ContainerRef = useRef(null);
 
@@ -36,6 +36,7 @@ const Bubble = ({ item }) => {
     function mapBubble(event) {
         console.log('click');
         setMapping(item.id, true);
+        setIsMapping(true);
         event.stopPropagation();
     }
 
