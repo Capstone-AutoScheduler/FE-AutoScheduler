@@ -41,7 +41,7 @@ const Generate = () => {
             {isOpen ? <Sidebar /> : <></>}
             <Content ref={ContentRef}>
                 <Top>
-                    <Type>{sourceType === "PDF" ? <ReadPDF /> : <InputWeb type="html" />}</Type>
+                    <Type>{sourceType === "PDF" ? <ReadPDF /> : <InputWeb Update={true} />}</Type>
                     {sourceType === "WEB" ?  <WebResult /> : <Result generatorId={generatorId} />}
                 </Top>
                 <Bottom>

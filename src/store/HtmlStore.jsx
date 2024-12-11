@@ -18,11 +18,20 @@ const useHtmlStore = create((set) => ({
       htmlBody: htmlBody,
     }),
 
+  updatedHtmlBody: "",
+  setUpdatedHtmlBody: (updatedHtmlBody) =>
+    set({
+      updatedHtmlBody: updatedHtmlBody,
+    }),
+
   bodyForGenerate: "",
   setBodyForGenerate: (bodyForGenerate) =>
     set({
       bodyForGenerate: bodyForGenerate,
     }),
+
+  // isUpdatedButton: false,
+  // setIsUpdatedButton: (bool) => set({ isUpdatedButton: bool }),
 }));
 
 export default useHtmlStore;
