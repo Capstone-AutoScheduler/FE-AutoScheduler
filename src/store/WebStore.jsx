@@ -139,27 +139,33 @@ const useWebStore = create((set) => ({
       },
     })),
 
-  mappings: [
-    {
-      id: 0,
-      str: "target",
-      title: [],
-      date: [],
-      detail: [],
-    },
-    {
-      id: 1,
-      str: "target",
-      title: [],
-      date: [],
-      detail: [],
-    },
-  ],
-  mapping: {
-    id: 0,
-    depth: 0,
-    childrenIndex: 0,
-  },
+  mappingList: [], // 초기값 설정
+  addMapping: (newMapping) =>
+    set((state) => ({
+      mappingList: [...state.mappingList, newMapping],
+    })),
+  removeMappingById: (idToRemove) =>
+    set((state) => ({
+      mappingList: state.mappingList.filter((item) => item.id !== idToRemove),
+    })),
+
+  // mapping형식
+  // mapping: {
+  //   id: 0,
+  //   depth: 0,
+  //   childrenIndexes: 0,
+  //   countBubble: 0,
+  // },
+
+  // appendMapping: (frame) =>
+  //   set((state) => ({ frames: [...state.frames, frame] })),
+  // removeFrame: (frame) =>
+  //   set((state) => ({
+  //     frames: state.frames.filter((item) => item !== frame),
+  //   })),
+
+  isHoverEnabled: false,
+  setIsHoverEnabled: (bool) => set({ isHoverEnabled: bool }),
 }));
 
 export default useWebStore;

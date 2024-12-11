@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useWebStore from "../../../store/WebStore";
 
 const WebToolBox = () => {
-  const { frames } = useWebStore((state) => state);
+  const { frames, mappingList } = useWebStore((state) => state);
 
   const printFrames = () => {
     const stringData = JSON.stringify(frames);
@@ -13,6 +13,7 @@ const WebToolBox = () => {
 
   const saveMachine = () => {
     localStorage.setItem("frames", JSON.stringify(frames));
+    localStorage.setItem("mappingList", JSON.stringify(mappingList));
     //   var Mapping = [];
     //   bubbles.forEach((bubble) => {
     //     if (bubble.mapping) {

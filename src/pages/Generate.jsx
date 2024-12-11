@@ -29,7 +29,7 @@ const Generate = () => {
           <Type>
             <button onClick={selectPDF}>PDF</button>
             <button onClick={selectWeb}>Web</button>
-            {type === "PDF" ? <ReadPDF /> : <InputWeb type="html" />}
+            {type === "PDF" ? <ReadPDF /> : <InputWeb Update={true} />}
           </Type>
           {type === "PDF" ? <Result /> : <WebResult />}
         </Top>
