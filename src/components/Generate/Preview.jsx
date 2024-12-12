@@ -93,7 +93,8 @@ const Preview = ({generatorId}) => {
                     eventTitle: item.title,
                     eventBody: item.detail,
                     startDate: item.date + "T00:00:00.000Z",
-                    endDate: item.date + "T00:00:00.000Z"
+                    endDate: item.date + "T00:00:00.000Z",
+                    eventColor: scheduleColor,
                 }
                 events.push(obj);
             })
