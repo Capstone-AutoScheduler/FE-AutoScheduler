@@ -13,7 +13,6 @@ const Card = ({item}) => {
     }, [])
     return (
         <Container onClick={() => {navigate(`/generate/${item.generatorId}`)}}>
-            <Title>{item.generatorTitle}</Title>
             <Info>
                 <Creator>
                     <CreateContent>
@@ -28,6 +27,7 @@ const Card = ({item}) => {
                     </TypeContent>
                 </Type>
             </Info>
+            <Title>{item.generatorTitle}</Title>
             <Detail>{item.generatorDetail}</Detail>
         </Container>
     );
@@ -88,6 +88,12 @@ const TypeContent = styled.div`
 
 const Detail = styled.div`
     color: #BBBBBB;
+    display: -webkit-box; /* 플렉스박스를 사용한 레이아웃 */
+    -webkit-box-orient: vertical; /* 텍스트를 세로 방향으로 정렬 */
+    -webkit-line-clamp: 3; /* 최대 줄 수를 3줄로 제한 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: wrap;
 `
 
 export default Card;
