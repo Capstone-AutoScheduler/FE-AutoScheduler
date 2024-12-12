@@ -1,26 +1,18 @@
 import styled from "styled-components";
 
-import InputPDF from "../components/Create/InputPDF";
+import WebSrc from "../components/Create/Web/WebSrc";
 import WebToolBox from "../components/Create/Web/WebToolBox";
 import WebFrameBox from "../components/Create/Web/WebFrameBox";
 import WebBoard from "../components/Create/Web/WebBoard";
-import InputWeb from "../components/Create/Web/InputWeb";
 
 const CreateWeb = () => {
   return (
     <Container>
       <Top>
-        <Src>
-          <h2>#Source Type</h2>
-          <InputWeb type="body" />
-        </Src>
-        <Tool>
-          <h2>#Tool Box</h2>
-          <WebToolBox></WebToolBox>
-        </Tool>
+        <WebSrc></WebSrc>
+        <WebToolBox></WebToolBox>
       </Top>
       <Bottom>
-        <h2>#규칙 생성</h2>
         <WebFrameBox></WebFrameBox>
         <WebBoard></WebBoard>
       </Bottom>
@@ -28,14 +20,33 @@ const CreateWeb = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-const Top = styled.div``;
+const Top = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 200px;
 
-const Bottom = styled.div``;
+  background-color: #ffffff;
+  flex-grow: 1;
+  margin: 20px;
+  padding-top: 30px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px 0px var(--Gray-800, #dedede);
+`;
 
-const Src = styled.div``;
-
-const Tool = styled.div``;
+const Bottom = styled.div`
+  background-color: #ffffff;
+  flex-grow: 1;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px 0px var(--Gray-800, #dedede);
+`;
 
 export default CreateWeb;

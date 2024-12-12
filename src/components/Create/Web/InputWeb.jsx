@@ -4,11 +4,12 @@ import axios from "axios";
 import useHtmlStore from "../../../store/HtmlStore.jsx";
 import useEclassLoginStore from "../../../store/eclassLoginStore.jsx";
 
-const InputWeb = ({ Update }) => {
+const InputWeb = ({ Update, Generate }) => {
   // props안오면 그냥 빈값???
   // 상태 관리: textField의 값을 저장
   const [inputValue, setInputValue] = useState("");
   const [isUpdatedButton, setIsUpdatedButton] = useState(false);
+  const [isGenerateButton, setIsGenerateButton] = useState(false);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isLoginVisible, setIsLoginVisible] = useState(false); // 로그인 창의 표시 여부 관리
@@ -20,10 +21,12 @@ const InputWeb = ({ Update }) => {
     setCssFile,
     htmlBody,
     setHtmlBody,
-    bodyForGenerate,
-    setBodyForGenerate,
+    BodyToGenerate,
+    setBodyToGenerate,
     updateHtmlBody,
     setUpdatedHtmlBody,
+    url,
+    setUrl,
     // isUpdatedButton,
     // setIsUpdatedButton,
   } = useHtmlStore();
@@ -32,15 +35,25 @@ const InputWeb = ({ Update }) => {
 
   useEffect(() => {
     setIsUpdatedButton(Update);
+    setIsUpdatedButton(Generate);
   }, []);
 
   // 버튼 클릭 시 호출되는 함수
   const handleClick = () => {
     if (!isLogin) {
-      getBody();
+      if (!Generate) {
+        getBody();
+      } else {
+        getBodyToGenerate();
+      }
     } else {
-      getEclassBody();
+      if (!Generate) {
+        getEclassBody();
+      } else {
+        getEclassBodyToGenerate();
+      }
     }
+    setUrl(inputValue);
   };
 
   // 버튼 클릭 시 호출되는 함수
@@ -145,24 +158,48 @@ const InputWeb = ({ Update }) => {
     }
   }
 
-  // async function getHtml() {
-  //   // 이벤트 조회 api
-  //   try {
-  //     const response = await axios.get("http://localhost:8080/crawl", {
-  //       params: {
-  //         type: 0,
-  //         url: inputValue,
-  //       },
-  //     });
-  //     setBodyForGenerate(response.data.result.htmlBody);
-  //   } catch (error) {
-  //     console.error("Failed to fetch html:", error);
-  //   }
-  // }
+  async function getBodyToGenerate() {
+    // 이벤트 조회 api
+    try {
+      const response = await axios.get("http://localhost:8080/crawl", {
+        params: {
+          type: 0,
+          url: inputValue,
+        },
+      });
+      setBodyToGenerate(response.data.result.htmlBody);
+    } catch (error) {
+      console.error("Failed to fetch html:", error);
+    }
+  }
+
+  async function getEclassBodyToGenerate() {
+    // eclass 로그인 크롤링
+    // 이벤트 조회 api
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/crawl-with-login",
+        {
+          params: {
+            loginUrl: "https://mportal.cau.ac.kr/common/auth/SSOlogin.do",
+            targetUrl: inputValue,
+            username: submittedUsername,
+            password: submittedPassword,
+            type: 0,
+          },
+        }
+      );
+      setBodyToGenerate(response.data.result.htmlBody);
+    } catch (error) {
+      console.error("Failed to fetch html:", error);
+      alert("로그인 정보가 올바르지 않습니다.");
+    }
+  }
 
   return (
     <div>
       <Container>
+        <Title>웹 주소</Title>
         <Input
           type="text"
           value={inputValue}
@@ -284,7 +321,7 @@ const Header = styled.div`
 `;
 
 const Input = styled.input`
-  width: 600px;
+  width: 460px;
   padding: 10px;
   margin: 10px;
   font-size: 12px;

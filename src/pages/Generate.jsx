@@ -10,92 +10,104 @@ import Edit from "../components/Generate/Edit";
 import Preview from "../components/Generate/Preview";
 import InputWeb from "../components/Create/Web/InputWeb";
 
-import LoadingBall from "../static/LoadingBall.svg"
+import LoadingBall from "../static/LoadingBall.svg";
 
 import useSideStore from "../store/SideStore";
 import useGenerateStore from "../store/GenerateStore";
 
 const Generate = () => {
-    const { generatorId } = useParams();
-    const { generatorLoaded, sourceType, initStore } = useGenerateStore((state) => state);
-    const { isOpen } = useSideStore((state) => state);
+  const { generatorId } = useParams();
+  const { generatorLoaded, sourceType, initStore } = useGenerateStore(
+    (state) => state
+  );
+  const { isOpen } = useSideStore((state) => state);
 
-    const ContentRef = useRef();
-    const LoadingRef = useRef();
-    useEffect(() => {
-        initStore();
-    }, [])
+  const ContentRef = useRef();
+  const LoadingRef = useRef();
+  useEffect(() => {
+    initStore();
+  }, []);
 
-    useEffect(() => {
-        if (generatorLoaded) {
-            ContentRef.current.style.visibility = 'visible';
-            LoadingRef.current.style.display = 'none';
-        } else {
-            ContentRef.current.style.visibility = 'hidden';
-            LoadingRef.current.style.display = 'flex';
-        }
-    }, [generatorLoaded])
+  useEffect(() => {
+    if (generatorLoaded) {
+      ContentRef.current.style.visibility = "visible";
+      LoadingRef.current.style.display = "none";
+    } else {
+      ContentRef.current.style.visibility = "hidden";
+      LoadingRef.current.style.display = "flex";
+    }
+  }, [generatorLoaded]);
 
-    return (
-        <Container>
-            {isOpen ? <Sidebar /> : <></>}
-            <Content ref={ContentRef}>
-                <Top>
-                    <Type>{sourceType === "PDF" ? <ReadPDF /> : <InputWeb Update={true} />}</Type>
-                    {sourceType === "WEB" ?  <WebResult /> : <Result generatorId={generatorId} />}
-                </Top>
-                <Bottom>
-                    <Edit />
-                    <Preview generatorId={generatorId} />
-                </Bottom>
-            </Content>
-            <Loading ref={LoadingRef}>
-                <img src={LoadingBall}></img>
-                <div style={{ textAlign: "center" }}>생성기 불러오는 중...</div>
-            </Loading>
-        </Container>
-    );
+  return (
+    <Container>
+      {isOpen ? <Sidebar /> : <></>}
+      <Content ref={ContentRef}>
+        <Top>
+          <Type>
+            {sourceType === "PDF" ? (
+              <ReadPDF />
+            ) : (
+              <InputWeb Update={true} Generate={true} />
+            )}
+          </Type>
+          {sourceType === "WEB" ? (
+            <WebResult generatorId={generatorId} />
+          ) : (
+            <Result generatorId={generatorId} />
+          )}
+        </Top>
+        <Bottom>
+          <Edit />
+          <Preview generatorId={generatorId} />
+        </Bottom>
+      </Content>
+      <Loading ref={LoadingRef}>
+        <img src={LoadingBall}></img>
+        <div style={{ textAlign: "center" }}>생성기 불러오는 중...</div>
+      </Loading>
+    </Container>
+  );
 };
 
 const Container = styled.div`
-    display: flex;
-    height: 90vh;
+  display: flex;
+  height: 90vh;
 `;
 
 const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
 `;
 
 const Top = styled.div`
-    background-color: #ffffff;
-    margin: 10px;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px 0px var(--Gray-800, #dedede);
+  background-color: #ffffff;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px 0px var(--Gray-800, #dedede);
 `;
 
 const Type = styled.div`
-    height: 100px;
+  height: 100px;
 `;
 
 const Bottom = styled.div`
-    margin: 8px 0px 0px 0px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-around;
+  margin: 8px 0px 0px 0px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
 `;
 
 const Loading = styled.div`
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
-    display: flex;
-    flex-direction: column;
-`
+  display: flex;
+  flex-direction: column;
+`;
 
 export default Generate;

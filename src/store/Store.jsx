@@ -1,36 +1,37 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-  initStore: () => set({
-    isDragging: false,
-    bubbles: [],
-    isMapping: false,
-    frames: [
-      {
-        id: 0,
-        str: "target",
-        title: [],
-        date: [],
-        detail: [],
+  initStore: () =>
+    set({
+      isDragging: false,
+      bubbles: [],
+      isMapping: false,
+      frames: [
+        {
+          id: 0,
+          str: "target",
+          title: [],
+          date: [],
+          detail: [],
+        },
+        {
+          id: 1,
+          str: "target",
+          title: [],
+          date: [],
+          detail: [],
+        },
+      ],
+      selectedFrameId: 0,
+      selected: {
+        operation: null,
+        bubble: null,
+        area: null,
       },
-      {
-        id: 1,
-        str: "target",
-        title: [],
-        date: [],
-        detail: [],
-      },
-    ],
-    selectedFrameId: 0,
-    selected: {
-      operation: null,
-      bubble: null,
-      area: null,
-    },
-    areaStart: null,
-    areas: [],
-    startDate: null,
-  }),
+      areaStart: null,
+      areas: [],
+      startDate: null,
+    }),
 
   isDragging: false,
   setIsDragging: (bool) => set({ isDragging: bool }),
@@ -42,12 +43,12 @@ const useStore = create((set) => ({
   setMapping: (targetId, bool) =>
     set((state) => ({
       bubbles: state.bubbles.map((bubble) =>
-        bubble.id === targetId ? { ...bubble, mapping: bool } : bubble,
-    ),
+        bubble.id === targetId ? { ...bubble, mapping: bool } : bubble
+      ),
     })),
   isMapping: false,
-  setIsMapping: (value) => set({ isMapping: value}),
-  
+  setIsMapping: (value) => set({ isMapping: value }),
+
   frames: [
     {
       id: 0,
@@ -172,12 +173,10 @@ const useStore = create((set) => ({
   setAreaEnd: (coord) => set({ areaEnd: coord }),
 
   areas: [],
-  appendArea: (area) =>
-    set((state) => ({ areas: [...state.areas, area] })),
+  appendArea: (area) => set((state) => ({ areas: [...state.areas, area] })),
 
   startDate: null,
-  setStartDate: (date) => 
-    set({ startDate: date}),
+  setStartDate: (date) => set({ startDate: date }),
 }));
 
 export default useStore;

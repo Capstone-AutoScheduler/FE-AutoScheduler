@@ -3,29 +3,60 @@ import { styled } from "styled-components";
 import useHtmlStore from "../../store/HtmlStore";
 import useGenerateStore from "../../store/GenerateStore";
 import parse from "html-react-parser";
+import axios from "axios";
 
 import Schedule from "./Schedule";
 
-const WebResult = () => {
+const WebResult = ({ generatorId }) => {
   const {
     cssFile,
     setCssFile,
     htmlBody,
     setHtmlBody,
-    bodyForGenerate,
-    setBodyForGenerate,
+    bodyToGenerate,
+    setBodyToGenerate,
     updatedHtmlBody,
     setUpdatedHtmlBody,
   } = useHtmlStore();
-  const { results, setResults, appendResult } = useGenerateStore(
-    (state) => state
-  );
-  const frames = JSON.parse(localStorage.getItem("frames"));
-  const mappingList = JSON.parse(localStorage.getItem("mappingList"));
+  const {
+    results,
+    setResults,
+    appendResult,
+    setGeneratorLoaded,
+    setSourceType,
+  } = useGenerateStore((state) => state);
+  // const frames = JSON.parse(localStorage.getItem("frames"));
+  // const mappingList = JSON.parse(localStorage.getItem("mappingList"));
   const htmlRef = useRef(null); // ref로 html 요소를 참조
   // const [bubblesInArea, setBubblesInArea] = useState([]);
 
+  const [frames, setFrames] = useState(null);
+  const [mappingList, setMappingList] = useState(null);
+
+  async function getGeneratorInfo() {
+    try {
+      const response = await axios.get(
+        `http://3.35.252.162:8080/generator/${generatorId}`,
+        { timeout: 3000 }
+      );
+      console.log("data 확인");
+      console.log(response.data.result);
+      console.log("data 세부 사항 확인");
+      console.log(response.data.result.frames);
+      console.log(response.data.result.mapping);
+      setFrames(response.data.result.frames);
+      setMappingList(response.data.result.mapping);
+      setSourceType(response.data.result.sourceType);
+      setTimeout(() => {
+        setGeneratorLoaded(true);
+      }, 1000);
+    } catch (error) {
+      console.error("Failed to get generator information", error);
+    }
+  }
+
   const GenerateSchedule = () => {
+    console.log("start generating");
     var startDate = null;
     setResults([]);
     frames.forEach((frame, index) => {
@@ -236,21 +267,41 @@ const WebResult = () => {
   };
 
   useEffect(() => {
-    if (bodyForGenerate) {
-      GenerateSchedule();
-    }
-  }, [bodyForGenerate]);
+    setGeneratorLoaded(false);
+    getGeneratorInfo();
+  }, []);
 
   useEffect(() => {
-    if (updatedHtmlBody) {
-      GenerateNewSchedule();
+    // 여기 발표 후 다시 생각해보기
+    if (bodyToGenerate !== "" && frames !== null) {
+      GenerateSchedule();
+      setBodyToGenerate("");
+      setFrames(null);
     }
-  }, [updatedHtmlBody]);
+  }, [bodyToGenerate, frames]);
+
+  useEffect(() => {
+    if (updatedHtmlBody !== "" && mappingList !== null) {
+      console.log("%%");
+      console.log("^^^^^");
+      console.log(updatedHtmlBody);
+      GenerateNewSchedule();
+      setUpdatedHtmlBody("");
+      setFrames(null);
+      setMappingList(null);
+    }
+  }, [updatedHtmlBody, mappingList]);
+
+  // useEffect(() => {
+  //   if (frames !== null && mappingList !== null) {
+  //     GenerateSchedule();
+  //   }
+  // }, [frames, mappingList]);
 
   return (
     <Container>
       <div style={{ display: "none" }}>
-        {parse(bodyForGenerate, { replace })}
+        {parse(bodyToGenerate, { replace })}
         {parse(updatedHtmlBody, { replace: replaceUpdateHtml })}
       </div>
       {results.map((result, index) => {
