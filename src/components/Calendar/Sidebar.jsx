@@ -11,7 +11,7 @@ const Sidebar = () => {
         // 이벤트 조회 api
         try {
             const response = await axios.get(`http://3.35.252.162:8080/event/member/${localStorage.getItem('memberId')}/recent`);
-            //console.log(response.data.result);
+            console.log(response.data.result);
             setBricks(response.data.result.events);
         } catch (error) {
             console.error("Failed to fetch events:", error);
@@ -30,7 +30,7 @@ const Sidebar = () => {
             </Top>
             <CardBox>
                 {
-                    (bricks)
+                    (bricks.length == 0)
                     ?
                     <div style={{height:'80%', color:'#ffffff', display:'flex', alignItems:'center', justifyContent:'center'}}>최근 생성한 일정이 없습니다...</div>
                     :
