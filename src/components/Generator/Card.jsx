@@ -14,18 +14,18 @@ const Card = ({item}) => {
     return (
         <Container onClick={() => {navigate(`/generate/${item.generatorId}`)}}>
             <Info>
-                <Creator>
-                    <CreateContent>
-                        <div style={{marginRight:'4px', backgroundColor:'#008bf0', width: '15px', height: '15px', borderRadius: '15px'}}></div>
-                        <div>{item.memberName}</div>
-                    </CreateContent>
-                </Creator>
                 <Type>
                     <TypeContent>
                         <div style={{marginRight:'4px', backgroundColor: typeColor, width: '15px', height: '15px', borderRadius: '15px'}}></div>
                         <div style={{color: typeColor}}>{item.sourceType}</div>
                     </TypeContent>
                 </Type>
+                <Creator>
+                    <CreateContent>
+                        <div style={{marginRight:'4px', backgroundColor:'#008bf0', width: '15px', height: '15px', borderRadius: '15px'}}></div>
+                        <div>{item.memberName}</div>
+                    </CreateContent>
+                </Creator>
             </Info>
             <Title>{item.generatorTitle}</Title>
             <Detail>{item.generatorDetail}</Detail>
