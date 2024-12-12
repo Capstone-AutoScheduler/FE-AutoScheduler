@@ -1,11 +1,14 @@
 import { create } from "zustand";
 
 const useHtmlStore = create((set) => ({
-  // url: null,
-  // setUrl: (url) =>
-  //   set({
-  //     url: url,
-  //   }),
+  initHtml: () =>
+    set({
+      cssFile: "",
+      htmlBody: "",
+      updatedHtmlBody: "",
+      bodyToGenerate: "",
+    }),
+
   cssFile: "",
   setCssFile: (cssFile) =>
     set({
@@ -24,10 +27,16 @@ const useHtmlStore = create((set) => ({
       updatedHtmlBody: updatedHtmlBody,
     }),
 
-  bodyForGenerate: "",
-  setBodyForGenerate: (bodyForGenerate) =>
+  bodyToGenerate: "",
+  setBodyToGenerate: (bodyToGenerate) =>
     set({
-      bodyForGenerate: bodyForGenerate,
+      bodyToGenerate: bodyToGenerate,
+    }),
+
+  url: "",
+  setUrl: (url) =>
+    set({
+      url: url,
     }),
 
   // isUpdatedButton: false,

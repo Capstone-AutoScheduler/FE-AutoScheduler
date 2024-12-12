@@ -1,6 +1,34 @@
 import { create } from "zustand"; // create로 zustand를 불러옵니다.
 
 const useWebStore = create((set) => ({
+  initStore: () =>
+    set({
+      frames: [
+        {
+          id: 0,
+          str: "target",
+          title: [],
+          date: [],
+          detail: [],
+        },
+        {
+          id: 1,
+          str: "target",
+          title: [],
+          date: [],
+          detail: [],
+        },
+      ],
+      selectedFrameId: 0,
+      selected: {
+        bubble: {
+          bubbleId: 0,
+          text: "",
+        },
+      },
+      startDate: null,
+    }),
+
   nodes: [],
   addNode: (path) =>
     set((state) => {
