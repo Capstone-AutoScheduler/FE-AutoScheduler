@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import axios from "axios";
 
 import useGenerateStore from "../../store/GenerateStore";
+import useHtmlStore from "../../store/HtmlStore";
 
 import Schedule from "./Schedule";
 
@@ -18,6 +19,7 @@ const Result = ({ generatorId }) => {
     setGeneratorLoaded,
     setSourceType,
   } = useGenerateStore((state) => state);
+  const { isClikedRefresh } = useHtmlStore();
 
   //const frames = JSON.parse(localStorage.getItem("frames"));
   //const mapping = JSON.parse(localStorage.getItem("mapping"));
@@ -38,9 +40,11 @@ const Result = ({ generatorId }) => {
       setFrames(response.data.result.frames);
       setMapping(response.data.result.mapping);
       setSourceType(response.data.result.sourceType);
-      setTimeout(() => {
-        setGeneratorLoaded(true);
-      }, 1000);
+      if (!isClikedRefresh) {
+        setTimeout(() => {
+          setGeneratorLoaded(true);
+        }, 1000);
+      }
     } catch (error) {
       console.error("Failed to get generator information", error);
     }
@@ -125,11 +129,16 @@ const Result = ({ generatorId }) => {
   };
 
   const handleDate = (startDate, expression) => {
+    console.log(`startDate ${startDate}`);
+    console.log(typeof startDate);
     const math = require("mathjs");
     const day = new Date(startDate) / 86400000;
     const result = math.evaluate(day + expression);
     const calculatedDay = new Date(result * 86400000);
     const output = calculatedDay.toISOString().split("T")[0];
+    console.log(`output ${output}`);
+    console.log(typeof output);
+
     return output;
   };
 

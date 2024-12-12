@@ -11,8 +11,9 @@ const WebSrc = () => {
 };
 
 const Container = styled.div`
-  width: 1000px;
+  width: 750px;
   height: 180px;
+  margin-left: 14px;
 `;
 
 const Title = styled.div`

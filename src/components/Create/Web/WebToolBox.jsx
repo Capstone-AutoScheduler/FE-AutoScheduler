@@ -24,18 +24,6 @@ const WebToolBox = () => {
   const saveMachine = () => {
     localStorage.setItem("frames", JSON.stringify(frames));
     localStorage.setItem("mappingList", JSON.stringify(mappingList));
-    //   var Mapping = [];
-    //   bubbles.forEach((bubble) => {
-    //     if (bubble.mapping) {
-    //       Mapping.push({
-    //         bubbleId: bubble.id,
-    //         string: bubble.str,
-    //         x: bubble.x,
-    //         y: bubble.y,
-    //       });
-    //     }
-    //   });
-    //   localStorage.setItem("mapping", JSON.stringify(Mapping));
   };
 
   const navigate = useNavigate();
@@ -57,6 +45,7 @@ const WebToolBox = () => {
             mapping: mappingList,
             sourceType: "WEB",
             webUrl: url,
+            loginRequired: false,
           }
         );
         console.log(response);
@@ -111,7 +100,8 @@ const WebToolBox = () => {
 };
 
 const Container = styled.div`
-  border: 1px solid black;
+  display: flex;
+  height: 100%;
 `;
 
 const Left = styled.div``;

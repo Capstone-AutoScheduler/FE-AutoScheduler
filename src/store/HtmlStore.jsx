@@ -39,6 +39,23 @@ const useHtmlStore = create((set) => ({
       url: url,
     }),
 
+  submittedUsername: "",
+  setSubmittedUsername: (submittedUsername) =>
+    set({
+      submittedUsername: submittedUsername,
+    }),
+
+  submittedPassword: "",
+  setSubmittedPassword: (submittedPassword) =>
+    set({
+      submittedPassword: submittedPassword,
+    }),
+
+  isClikedRefresh: false,
+  setIsClikedRefresh: (bool) => set({ isClikedRefresh: bool }),
+
+  getEvent: false,
+  setGetEvent: (bool) => set({ getEvent: bool }),
   // isUpdatedButton: false,
   // setIsUpdatedButton: (bool) => set({ isUpdatedButton: bool }),
 }));
