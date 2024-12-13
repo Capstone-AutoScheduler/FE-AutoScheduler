@@ -147,7 +147,7 @@ const Inner = ({ frame, type, operation }) => {
           selected.operation === operation ? selectedBorder : defaultBorder,
       }}
     >
-      {content}
+      {content.text}
       {selected.operation === operation ? (
         <Menu onClick={deleteOperatoin}>X</Menu>
       ) : (

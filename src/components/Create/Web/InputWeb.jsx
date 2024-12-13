@@ -13,8 +13,8 @@ const InputWeb = ({ Update, Generate }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isLoginVisible, setIsLoginVisible] = useState(false); // 로그인 창의 표시 여부 관리
-  const [submittedUsername, setSubmittedUsername] = useState(""); // 로그인 후 저장된 아이디
-  const [submittedPassword, setSubmittedPassword] = useState(""); // 로그인 후 저장된 비밀번호
+  // const [submittedUsername, setSubmittedUsername] = useState(""); // 로그인 후 저장된 아이디
+  // const [submittedPassword, setSubmittedPassword] = useState(""); // 로그인 후 저장된 비밀번호
   const [isLogin, setIsLogin] = useState(false);
   const {
     cssFile,
@@ -27,6 +27,10 @@ const InputWeb = ({ Update, Generate }) => {
     setUpdatedHtmlBody,
     url,
     setUrl,
+    submittedUsername,
+    setSubmittedUsername,
+    submittedPassword,
+    setSubmittedPassword,
     // isUpdatedButton,
     // setIsUpdatedButton,
   } = useHtmlStore();
@@ -53,7 +57,6 @@ const InputWeb = ({ Update, Generate }) => {
         getEclassBodyToGenerate();
       }
     }
-    setUrl(inputValue);
   };
 
   // 버튼 클릭 시 호출되는 함수
@@ -106,6 +109,7 @@ const InputWeb = ({ Update, Generate }) => {
       });
       setCssFile(response.data.result.cssFile);
       setHtmlBody(response.data.result.htmlBody);
+      setUrl(inputValue);
     } catch (error) {
       console.error("Failed to fetch html:", error);
       alert("유효하지 않은 Url입니다.");
@@ -129,6 +133,7 @@ const InputWeb = ({ Update, Generate }) => {
       );
       setCssFile(response.data.result.cssFile);
       setHtmlBody(response.data.result.htmlBody);
+      setUrl(inputValue);
     } catch (error) {
       console.error("Failed to fetch html:", error);
       alert("로그인 정보가 올바르지 않습니다.");
@@ -144,7 +149,7 @@ const InputWeb = ({ Update, Generate }) => {
         {
           params: {
             loginUrl: "https://mportal.cau.ac.kr/common/auth/SSOlogin.do",
-            targetUrl: inputValue,
+            targetUrl: url,
             username: submittedUsername,
             password: submittedPassword,
             type: 0,
@@ -207,28 +212,13 @@ const InputWeb = ({ Update, Generate }) => {
           placeholder="웹 주소를 입력해주세요."
         />
         <Button onClick={handleClick}>확인</Button>
-        <Button
-          onClick={toggleLogin}
-          style={{
-            display: "flex",
-            marginTop: "14px",
-            marginLeft: "25px",
-            backgroundColor: "rgba(60, 105, 255, 1)",
-            width: "90px",
-            height: "32px",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          로그인
-        </Button>
         {isUpdatedButton ? (
           <Button
             onClick={handleClickUpdate}
             style={{
               display: "flex",
               marginTop: "14px",
-              marginLeft: "10px",
+              marginLeft: "25px",
               backgroundColor: "rgba(211, 47, 47, 1)",
               width: "90px",
               height: "32px",
@@ -238,7 +228,23 @@ const InputWeb = ({ Update, Generate }) => {
           >
             업데이트
           </Button>
-        ) : null}
+        ) : (
+          <Button
+            onClick={toggleLogin}
+            style={{
+              display: "flex",
+              marginTop: "14px",
+              marginLeft: "25px",
+              backgroundColor: "rgba(60, 105, 255, 1)",
+              width: "90px",
+              height: "32px",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            로그인
+          </Button>
+        )}
         {/* 로그인 창 모달 */}
         {isLoginVisible && (
           <ModalOverlay onClick={toggleLogin}>

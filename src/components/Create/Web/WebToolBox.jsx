@@ -10,7 +10,7 @@ import useHtmlStore from "../../../store/HtmlStore";
 
 const WebToolBox = () => {
   const { initStore, frames, mappingList } = useWebStore((state) => state); // initStore고치기!!!
-  const { url, initHtml } = useHtmlStore();
+  const { url, initHtml, submittedUsername } = useHtmlStore();
 
   const [generatorName, setGeneratorName] = useState("");
   const [generatorDetail, setGeneratorDetail] = useState("");
@@ -24,18 +24,6 @@ const WebToolBox = () => {
   const saveMachine = () => {
     localStorage.setItem("frames", JSON.stringify(frames));
     localStorage.setItem("mappingList", JSON.stringify(mappingList));
-    //   var Mapping = [];
-    //   bubbles.forEach((bubble) => {
-    //     if (bubble.mapping) {
-    //       Mapping.push({
-    //         bubbleId: bubble.id,
-    //         string: bubble.str,
-    //         x: bubble.x,
-    //         y: bubble.y,
-    //       });
-    //     }
-    //   });
-    //   localStorage.setItem("mapping", JSON.stringify(Mapping));
   };
 
   const navigate = useNavigate();
@@ -45,6 +33,10 @@ const WebToolBox = () => {
       event.target.disabled = false;
     }, 2000);
     if (frames || mappingList) {
+      var required = false;
+      if (submittedUsername) {
+        required = true;
+      }
       try {
         const response = await axios.post(
           `http://3.35.252.162:8080/generator/?memberId=${localStorage.getItem(
@@ -57,6 +49,7 @@ const WebToolBox = () => {
             mapping: mappingList,
             sourceType: "WEB",
             webUrl: url,
+            loginRequired: required,
           }
         );
         console.log(response);
@@ -111,7 +104,8 @@ const WebToolBox = () => {
 };
 
 const Container = styled.div`
-  border: 1px solid black;
+  display: flex;
+  height: 100%;
 `;
 
 const Left = styled.div``;

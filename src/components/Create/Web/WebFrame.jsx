@@ -13,6 +13,10 @@ const WebFrame = ({ item }) => {
     (state) => state
   );
 
+  const [titleNewShow, setTitleNewShow] = useState(false);
+  const [dateNewShow, setDateNewShow] = useState(false);
+  const [detailNewShow, setDetailNewShow] = useState(false);
+
   const ContainerRef = useRef(null);
 
   const bgColor = "rgba(235, 186, 7, 0.3)";
@@ -77,20 +81,55 @@ const WebFrame = ({ item }) => {
             return <Inner frame={item} type={"title"} bubble={bubble} />;
           })}
         </Content>
+        {/* {titleNewShow ? (
+          <NewInput
+            frameId={item.id}
+            addContent={addToTitle}
+            setShow={setTitleNewShow}
+          />
+        ) : (
+          <></>
+        )} */}
       </Row>
       <Row onClick={handleClick("date")} style={{ height: "10%" }}>
-        <Section>Date</Section>
+        <Section>
+          Date <Btn onClick={() => setDateNewShow(true)}>+</Btn>
+        </Section>
         <Content>
           {item.date.map((bubble) => {
             return <Inner frame={item} type={"date"} bubble={bubble} />;
           })}
+          {dateNewShow ? (
+            <NewInput
+              frameId={item.id}
+              addContent={addToDate}
+              setShow={setDateNewShow}
+            />
+          ) : (
+            <></>
+          )}
         </Content>
       </Row>
       <Row onClick={handleClick("detail")} style={{ height: "80%" }}>
+        <Btn
+          onClick={() => setDetailNewShow(true)}
+          style={{ marginTop: "4px" }}
+        >
+          +
+        </Btn>
         <Content>
           {item.detail.map((bubble) => {
             return <Inner frame={item} type={"detail"} bubble={bubble} />;
           })}
+          {detailNewShow ? (
+            <NewInput
+              frameId={item.id}
+              addContent={addToDetail}
+              setShow={setDetailNewShow}
+            />
+          ) : (
+            <></>
+          )}
         </Content>
       </Row>
     </Container>
@@ -126,12 +165,27 @@ const Section = styled.div`
   font-size: 16px;
   border-right: 2px solid rgba(235, 186, 7, 0.7);
   width: 18%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Content = styled.div`
   width: 80%;
   display: flex;
   align-items: flex-start;
+`;
+
+const Btn = styled.button`
+  border: 1px solid black;
+  width: 20px;
+  height: 20px;
+  margin: 0px 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Inner = ({ frame, type, bubble }) => {
@@ -240,4 +294,54 @@ const ItemBox = styled.div`
   margin: 1px;
   min-width: 20px;
 `;
+
+const NewInput = ({ frameId, addContent, setShow }) => {
+  const { bubble, setBubble } = useWebStore((state) => state);
+  const [value, setValue] = useState("");
+
+  const handleAdd = () => {
+    const inputBubble = {
+      type: "text",
+      bubbleId: bubble.Id + 1,
+      text: value,
+      mappings: {},
+    };
+    addContent(frameId, inputBubble);
+    setBubble(inputBubble);
+
+    setValue("");
+    setShow(false);
+  };
+
+  const handleCancle = () => {
+    setValue("");
+    setShow(false);
+  };
+
+  return (
+    <InputContainer>
+      <input
+        onChange={(event) => {
+          setValue(event.target.value);
+        }}
+        value={value}
+      ></input>
+      <AddBtn onClick={handleAdd}>추가</AddBtn>
+      <CancleBtn onClick={handleCancle}>취소</CancleBtn>
+    </InputContainer>
+  );
+};
+
+const InputContainer = styled.div``;
+
+const AddBtn = styled.button`
+  border: 1px solid #04b404;
+  background-color: #2efe2e;
+`;
+
+const CancleBtn = styled.button`
+  border: 1px solid #df0101;
+  background-color: #fa5858;
+`;
+
 export default WebFrame;

@@ -4,6 +4,7 @@ import useHtmlStore from "../../store/HtmlStore";
 import useGenerateStore from "../../store/GenerateStore";
 import parse from "html-react-parser";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Schedule from "./Schedule";
 
@@ -17,6 +18,10 @@ const WebResult = ({ generatorId }) => {
     setBodyToGenerate,
     updatedHtmlBody,
     setUpdatedHtmlBody,
+    isClikedRefresh,
+    setIsClikedRefresh,
+    setUrl,
+    setGetEvent,
   } = useHtmlStore();
   const {
     results,
@@ -24,6 +29,7 @@ const WebResult = ({ generatorId }) => {
     appendResult,
     setGeneratorLoaded,
     setSourceType,
+    scheduleColor,
   } = useGenerateStore((state) => state);
   // const frames = JSON.parse(localStorage.getItem("frames"));
   // const mappingList = JSON.parse(localStorage.getItem("mappingList"));
@@ -32,6 +38,7 @@ const WebResult = ({ generatorId }) => {
 
   const [frames, setFrames] = useState(null);
   const [mappingList, setMappingList] = useState(null);
+  const navigate = useNavigate();
 
   async function getGeneratorInfo() {
     try {
@@ -47,6 +54,9 @@ const WebResult = ({ generatorId }) => {
       setFrames(response.data.result.frames);
       setMappingList(response.data.result.mapping);
       setSourceType(response.data.result.sourceType);
+      setUrl(response.data.result.webUrl);
+      console.log("isClikedRefresh");
+      console.log(isClikedRefresh);
       setTimeout(() => {
         setGeneratorLoaded(true);
       }, 1000);
@@ -70,21 +80,36 @@ const WebResult = ({ generatorId }) => {
         result.title += str;
       });
       var expression = "";
-      frame.date.forEach((bubble) => {
+      frame.date.forEach((bubble, idx) => {
         var str;
         str = findTextInHtml(
           bubble.mappings.depth,
           bubble.mappings.childrenIndexes
         );
-        expression += str;
+        expression += str.replace(/\D/g, "");
+        console.log("날짜 출력");
+        console.log(str.replace(/\D/g, ""));
       });
-      // result.date += handleDate(startDate, expression);
+      if (expression.length === 7) {
+        expression =
+          expression.toString().slice(0, 4) + "0" + expression.toString(4);
+      }
+      expression =
+        expression.toString().slice(0, 4) +
+        "-" +
+        expression.toString().slice(4, 6) +
+        "-" +
+        expression.toString().slice(6);
+      result.date += expression;
       frame.detail.forEach((bubble) => {
         var str;
-        str = findTextInHtml(
-          bubble.mappings.depth,
-          bubble.mappings.childrenIndexes
-        );
+        if (bubble.type === "text") str = bubble.text;
+        else {
+          str = findTextInHtml(
+            bubble.mappings.depth,
+            bubble.mappings.childrenIndexes
+          );
+        }
         result.detail += str;
       });
       appendResult(result);
@@ -277,6 +302,7 @@ const WebResult = ({ generatorId }) => {
       GenerateSchedule();
       setBodyToGenerate("");
       setFrames(null);
+      setIsClikedRefresh(false);
     }
   }, [bodyToGenerate, frames]);
 
@@ -292,11 +318,17 @@ const WebResult = ({ generatorId }) => {
     }
   }, [updatedHtmlBody, mappingList]);
 
+  // // generator페이지에서 refresh버튼 눌렀을 때
   // useEffect(() => {
-  //   if (frames !== null && mappingList !== null) {
+  //   setGeneratorLoaded(false);
+  //   getGeneratorInfo();
+  //   if (frames !== null) {
   //     GenerateSchedule();
+  //     setBodyToGenerate("");
+  //     setFrames(null);
   //   }
-  // }, [frames, mappingList]);
+  //   setGetEvent(true);
+  // }, [isClikedRefresh]);
 
   return (
     <Container>

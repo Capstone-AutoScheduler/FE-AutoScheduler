@@ -35,7 +35,8 @@ const Top = styled.div`
   background-color: #ffffff;
   flex-grow: 1;
   margin: 20px;
-  padding-top: 30px;
+  padding-top: 26px;
+  padding-bottm: 20px;
   border-radius: 20px;
   box-shadow: 0px 0px 10px 0px var(--Gray-800, #dedede);
 `;

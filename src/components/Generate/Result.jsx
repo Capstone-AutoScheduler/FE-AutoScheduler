@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import axios from "axios";
 
 import useGenerateStore from "../../store/GenerateStore";
+import useHtmlStore from "../../store/HtmlStore";
 
 import Schedule from "./Schedule";
 
@@ -18,6 +19,7 @@ const Result = ({ generatorId }) => {
     setGeneratorLoaded,
     setSourceType,
   } = useGenerateStore((state) => state);
+  const { isClikedRefresh } = useHtmlStore();
 
   //const frames = JSON.parse(localStorage.getItem("frames"));
   //const mapping = JSON.parse(localStorage.getItem("mapping"));
@@ -126,6 +128,8 @@ const Result = ({ generatorId }) => {
   };
 
   const handleDate = (startDate, expression) => {
+    console.log(`startDate ${startDate}`);
+    console.log(typeof startDate);
     const math = require("mathjs");
     const day = new Date(startDate) / 86400000;
     const result = math.evaluate(day + expression);

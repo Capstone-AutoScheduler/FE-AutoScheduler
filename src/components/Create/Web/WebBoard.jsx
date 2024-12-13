@@ -89,7 +89,7 @@ const WebBoard = () => {
   // 마우스 움직일 때 툴팁 위치 업데이트
   const handleMouseMove = (event) => {
     setMouseX(event.pageX - 40);
-    setMouseY(event.pageY - 370);
+    setMouseY(event.pageY - 510);
   };
 
   const handleClick = (event) => {
