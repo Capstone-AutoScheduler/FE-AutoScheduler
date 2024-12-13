@@ -112,7 +112,8 @@ const Result = ({ generatorId }) => {
         }
         expression += str;
       });
-      result.date += handleDate(startDate, expression);
+      if(startDate === null) { result.date += handleFormDate(expression); } 
+      else { result.date += handleDate(startDate, expression); }
       frame.detail.forEach((item) => {
         var str;
         if (item.type === "drag") {
@@ -134,11 +135,27 @@ const Result = ({ generatorId }) => {
     const result = math.evaluate(day + expression);
     const calculatedDay = new Date(result * 86400000);
     const output = calculatedDay.toISOString().split("T")[0];
-    console.log(`output ${output}`);
-    console.log(typeof output);
-
+    //console.log('output', output);
     return output;
   };
+
+  const handleFormDate = (expression) => {
+    console.log('expression', expression.replace(/\s+/g, ''));
+    const dateString = expression.replace(/\s+/g, '');
+    const regexList = [
+      /^(\d{4})\uB144(\d{2})\uC6D4(\d{2})\uC77C$/, // yyyy년mm월dd일
+      /^(\d{4})\/(\d{2})\/(\d{2})$/, // yyyy/mm/dd
+      /^(\d{4})\.(\d{2})\.(\d{2})$/, // yyyy.mm.dd
+    ];
+    for (let i = 0; i < regexList.length; i++) {
+      const match = dateString.match(regexList[i]);
+      if (match) {
+        // 매칭된 결과로 표준 형식으로 변환
+        const [_, year, month, day] = match;
+        return `${year}-${month}-${day}`;
+      }
+    }
+  }
 
   const findStrInArea = (area, offsetX, offsetY) => {
     const strs = [];
