@@ -10,7 +10,7 @@ import useHtmlStore from "../../../store/HtmlStore";
 
 const WebToolBox = () => {
   const { initStore, frames, mappingList } = useWebStore((state) => state); // initStore고치기!!!
-  const { url, initHtml } = useHtmlStore();
+  const { url, initHtml, submittedUsername } = useHtmlStore();
 
   const [generatorName, setGeneratorName] = useState("");
   const [generatorDetail, setGeneratorDetail] = useState("");
@@ -33,6 +33,10 @@ const WebToolBox = () => {
       event.target.disabled = false;
     }, 2000);
     if (frames || mappingList) {
+      var required = false;
+      if (submittedUsername) {
+        required = true;
+      }
       try {
         const response = await axios.post(
           `http://3.35.252.162:8080/generator/?memberId=${localStorage.getItem(
@@ -45,7 +49,7 @@ const WebToolBox = () => {
             mapping: mappingList,
             sourceType: "WEB",
             webUrl: url,
-            loginRequired: false,
+            loginRequired: required,
           }
         );
         console.log(response);

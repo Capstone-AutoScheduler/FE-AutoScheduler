@@ -28,11 +28,10 @@ const Card = ({ item }) => {
   }, []);
 
   const handleClick = (event) => {
-    // event.stopPropagation(); // 클릭 이벤트가 부모로 전파되지 않도록 막음
-    // if (item.loginRequired === false) getBodyToGenerate();
-    // else getEclassBodyToGenerate();
-    // setIsClikedRefresh(true);
-    // navigate(`/generate/${item.generatorId}`);
+    event.stopPropagation(); // 클릭 이벤트가 부모로 전파되지 않도록 막음
+    if (item.loginRequired === false) getBodyToGenerate();
+    else getEclassBodyToGenerate();
+    navigate(`/generate/${item.generatorId}`);
   };
 
   async function getBodyToGenerate() {
@@ -57,6 +56,9 @@ const Card = ({ item }) => {
     // eclass 로그인 크롤링
     // 이벤트 조회 api
     try {
+      console.log("!!@@##$$%%^^&&");
+
+      console.log(submittedUsername);
       const response = await axios.get(
         "http://localhost:8080/crawl-with-login",
         {

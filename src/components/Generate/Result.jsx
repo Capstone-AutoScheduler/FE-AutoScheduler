@@ -40,11 +40,9 @@ const Result = ({ generatorId }) => {
       setFrames(response.data.result.frames);
       setMapping(response.data.result.mapping);
       setSourceType(response.data.result.sourceType);
-      if (!isClikedRefresh) {
-        setTimeout(() => {
-          setGeneratorLoaded(true);
-        }, 1000);
-      }
+      setTimeout(() => {
+        setGeneratorLoaded(true);
+      }, 1000);
     } catch (error) {
       console.error("Failed to get generator information", error);
     }

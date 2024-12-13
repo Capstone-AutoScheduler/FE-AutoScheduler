@@ -57,11 +57,9 @@ const WebResult = ({ generatorId }) => {
       setUrl(response.data.result.webUrl);
       console.log("isClikedRefresh");
       console.log(isClikedRefresh);
-      if (!isClikedRefresh) {
-        setTimeout(() => {
-          setGeneratorLoaded(true);
-        }, 1000);
-      }
+      setTimeout(() => {
+        setGeneratorLoaded(true);
+      }, 1000);
     } catch (error) {
       console.error("Failed to get generator information", error);
     }
@@ -105,10 +103,13 @@ const WebResult = ({ generatorId }) => {
       result.date += expression;
       frame.detail.forEach((bubble) => {
         var str;
-        str = findTextInHtml(
-          bubble.mappings.depth,
-          bubble.mappings.childrenIndexes
-        );
+        if (bubble.type === "text") str = bubble.text;
+        else {
+          str = findTextInHtml(
+            bubble.mappings.depth,
+            bubble.mappings.childrenIndexes
+          );
+        }
         result.detail += str;
       });
       appendResult(result);
@@ -299,7 +300,6 @@ const WebResult = ({ generatorId }) => {
     // 여기 발표 후 다시 생각해보기
     if (bodyToGenerate !== "" && frames !== null) {
       GenerateSchedule();
-      // saveSchedules();
       setBodyToGenerate("");
       setFrames(null);
       setIsClikedRefresh(false);
@@ -317,41 +317,6 @@ const WebResult = ({ generatorId }) => {
       setMappingList(null);
     }
   }, [updatedHtmlBody, mappingList]);
-
-  async function saveSchedules() {
-    try {
-      const events = [];
-      results.forEach((item) => {
-        console.log("**");
-        console.log(item.title);
-        console.log(item.detail);
-        console.log(item.date);
-        console.log(item.date);
-        const obj = {
-          eventTitle: item.title,
-          eventBody: item.detail,
-          startDate: item.date + "T00:00:00.000Z",
-          endDate: item.date + "T00:00:00.000Z",
-          eventColor: scheduleColor,
-        };
-        events.push(obj);
-      });
-      //add items into events array
-      const body = { events: events };
-      const response = await axios.post(
-        `http://3.35.252.162:8080/event/multipleEvents/${localStorage.getItem(
-          "memberId"
-        )}/${generatorId}`,
-        body
-      );
-      console.log(response);
-      console.log("일정 저장 성공!");
-      alert("일정을 저장하였습니다.");
-      navigate("/");
-    } catch (error) {
-      console.error("Failed to save schedules", error);
-    }
-  }
 
   // // generator페이지에서 refresh버튼 눌렀을 때
   // useEffect(() => {

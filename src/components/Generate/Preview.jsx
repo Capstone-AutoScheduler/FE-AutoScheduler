@@ -107,11 +107,6 @@ const Preview = ({ generatorId }) => {
     try {
       const events = [];
       results.forEach((item) => {
-        console.log("**");
-        console.log(item.title);
-        console.log(item.detail);
-        console.log(item.date);
-        console.log(item.date);
         const obj = {
           eventTitle: item.title,
           eventBody: item.detail,
@@ -137,15 +132,6 @@ const Preview = ({ generatorId }) => {
       console.error("Failed to save schedules", error);
     }
   }
-
-  //   // generator페이지에서 refresh버튼 눌렀을 때
-  //   useEffect(() => {
-  //     if (isClikedRefresh === true) {
-  //       //   alert("도착!");
-  //       saveSchedules();
-  //       setIsClikedRefresh(false);
-  //     }
-  //   }, []);
 
   return (
     <Container>

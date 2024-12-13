@@ -11,13 +11,6 @@ const useWebStore = create((set) => ({
           date: [],
           detail: [],
         },
-        {
-          id: 1,
-          str: "target",
-          title: [],
-          date: [],
-          detail: [],
-        },
       ],
       selectedFrameId: 0,
       selected: {
@@ -41,6 +34,7 @@ const useWebStore = create((set) => ({
   mouseX: 0,
   mouseY: 0,
   bubble: {
+    type: "",
     bubbleId: 0,
     text: "",
     mappings: {
@@ -68,13 +62,6 @@ const useWebStore = create((set) => ({
   frames: [
     {
       id: 0,
-      str: "target",
-      title: [],
-      date: [],
-      detail: [],
-    },
-    {
-      id: 1,
       str: "target",
       title: [],
       date: [],
